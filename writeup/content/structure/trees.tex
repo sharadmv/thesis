@@ -1,0 +1,32 @@
+\chapter{What is structure learning?}
+Admittedly, structure learning is an overloaded term, so in this chapter, we aim to define it and provide example problems. We will also identify and focus on its Bayesian variant.
+
+\section{Learning structure}
+Learning structure from data is an age-old problem, and can be broadly defined as an unsupervised learning problem wherein a user has data
+and a priori assumes some unobserved, or \emph{latent}, organization of the data. Example organizations of the data might include a flat clustering structure, i.e. the data can be partitioned into some $k$ distinct groups. A logical extension of a flat clustering organization is a mixed-membership model, where data can be organized into $k$ groups but each datum may belong to many groups simultaneously. 
+In this work, we are particularly interested in hierarchical clustering structure, where data are organized into a tree structure, with data closer on the tree being logically or semantically similar.
+
+A structure learning algorithm takes in data, and assumes some class of structures. It then recovers a plausible structure and returns it to the user. Formally, we assume a structure class $\structures$ and return a candidate structure $\structure \in \structures$.
+For each of these problem settings, corresponding algorithms exist which have various properties and trade-offs. 
+Perhaps the most famous is the $k$-means algorithm, which recovers a $k$-partition of the data.  Analogously in hierarchical clustering, single-linkage clustering recovers a candidate tree that organizes data hierarchically.
+
+\subsection{Bayesian structure learning}
+Bayesian structure learning can be formalized as a \emph{latent variable model} (LVM). In a latent variable model, we define a generative process
+wherein latent variables are responsible for generating a set of observed data. Formally, we assume a prior distribution over structures $\p(\structure)$
+and sample from structure $\structure$ from it. Data are then generated
+given the sampled structure from a likelihood model $\p(\data\given\structure)$. Recovering the latent structure is performed via Bayesian inference to compute the posterior distribution $\p(\structure\given\data)$. The generative model is pictured in \autoref{fig:structure-learning}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[]{tikz/lvm}
+\caption{The graphical model for Bayesian structure learning}
+\label{fig:structure-learning}
+\end{figure}
+
+As in the non-Bayesian setting, we a priori have a structure class
+$\structures$ in mind, but must additionally choose a prior distribution over structures $\p(\structure)$ to continue. The structures of interest are often discrete, combinatorial structures, such as partitions in the case of flat clustering and trees in the case of hierarchical clustering.
+We thus look to Bayesian nonparametrics for these prior distributions, which will be discussed in detail in \autoref{chap:bnhc}. 
+
+\chapter{Bayesian nonparametric hierarchical clustering}
+\label{chap:bnhc}
+

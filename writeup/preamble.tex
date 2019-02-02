@@ -1,0 +1,25 @@
+\usepackage[english]{babel}
+\usepackage{
+    float,
+    import,
+    subcaption,
+    tikz,
+    tikzscale
+}
+\usetikzlibrary{bayesnet}
+
+\addto\extrasenglish{%
+  \renewcommand{\chapterautorefname}{Chapter}%
+} 
+
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{property}[theorem]{Property}
+
+\import{notation/}{probability.tex}
+\import{notation/}{trees.tex}
