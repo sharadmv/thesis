@@ -1,6 +1,8 @@
-\chapter{Adding interaction to Bayesian nonparametric hierarchical clustering}
+%\chapter{Adding interaction to Bayesian nonparametric hierarchical clustering}
+\chapter{Interactive Bayesian hierarchical clustering}
 \label{chap:ibhc}
 
+\section{Motivation}
 Clustering is a basic tool of exploratory data analysis. There are a variety of efficient algorithms---including $k$-means, EM for Gaussian mixtures, and hierarchical agglomerative schemes---that are widely used for discovering ``natural'' groups in data. Unfortunately, they don't always find a grouping that suits the user's needs.
 
 This is inevitable. In any moderately complex data set, there are many different plausible grouping criteria. Should a collection of rocks be grouped according to value, or shininess, or geological properties? Should animal pictures be grouped according to the Linnaean taxonomy, or cuteness? Different users have different priorities, and an unsupervised algorithm has no way to magically guess these.
@@ -8,7 +10,7 @@ This is inevitable. In any moderately complex data set, there are many different
 As a result, a rich body of work on {\it constrained} clustering has emerged.
 In this setting, a user supplies guidance, typically in the form of ``must-link'' or ``cannot-link'' constraints, pairs of points that must be placed together or apart. Introduced by \citet{WC00}, these constraints have since been incorporated into many different {\it flat} clustering procedures~\cite{WCRS01,BBC04,BBM04,KBDM05,BJ14}.
 
-In this paper, we introduce constraints to {\it hierarchical clustering}, the recursive partitioning of a data set into successively smaller clusters to form a tree. A hierarchy has several advantages over a flat clustering. First, there is no need to specify the number of clusters in advance. Second, the tree captures cluster structure at multiple levels of granularity, simultaneously. As such, trees are particularly well-suited for exploratory data analysis and the discovery of natural groups.
+In this chapter, we introduce constraints to {\it hierarchical clustering}, the recursive partitioning of a data set into successively smaller clusters to form a tree. A hierarchy has several advantages over a flat clustering. First, there is no need to specify the number of clusters in advance. Second, the tree captures cluster structure at multiple levels of granularity, simultaneously. As such, trees are particularly well-suited for exploratory data analysis and the discovery of natural groups.
 
 There are several well-established methods for hierarchical clustering, the most prominent among which are the bottom-up agglomerative methods such as average linkage (see, for instance, Chapter 14 of \cite{HTF09}). But they suffer from the same problem of under-specification that is the scourge of unsupervised learning in general. And, despite the rich literature on incorporating additional guidance into flat clustering, there has been relatively little work on the hierarchical case.
 
@@ -18,12 +20,12 @@ A wealth of research addresses learning taxonomies from triplets {\it alone}, mo
 
 We consider an interactive process during which a user incrementally adds constraints.
 \begin{itemize}
-\item Starting with a pool of data $X \subseteq \mathbb{R}^d$, the machine builds a candidate hierarchy $T$.
+\item Starting with a pool of data $\data \subseteq \mathbb{R}^d$, the machine builds a candidate hierarchy $\tree$.
 \item The set of constraints $C$ is initially empty.
 \item Repeat:
 \begin{itemize}
-\item The machine presents the user with a small portion of $T$: specifically, its restriction to $O(1)$ leaves $S \subset X$. We denote this $T |_S$.
-\item The user either accepts $T|_S$, or provides a triplet constraint $(\{a,b\},c)$ that is violated by it.
+\item The machine presents the user with a small portion of $\tree$: specifically, its restriction to $O(1)$ leaves $S \subset X$. We denote this $\tree|_S$.
+\item The user either accepts $\tree|_S$, or provides a triplet constraint $(\{a,b\},c)$ that is violated by it.
 \item If a triplet is provided, the machine adds it to $C$ and modifies the tree $T$ accordingly.
 \end{itemize}
 \end{itemize}
@@ -39,7 +41,7 @@ The nonparametric Bayes literature contains a variety of different distributiona
 
 \subsubsection*{The querying strategy}
 
-What is a good way to select the subsets $S$? A simple option is to pick them at random from $X$. We show that this strategy leads to convergence to the target tree $T^*$. Along the way, we define a suitable distance function for measuring how close $T$ is to $T^*$. 
+What is a good way to select the subsets $S$? A simple option is to pick them at random from $\data$. We show that this strategy leads to convergence to the target tree $\tree^*$. Along the way, we define a suitable distance function for measuring how close $\tree$ is to $\tree^*$. 
 
 %This allows us to give a simple rule for when to stop querying if we seek a tree $\epsilon$-close to the target.
 
@@ -86,23 +88,23 @@ In this paper, we will work with joint distributions over both tree structure an
 
 The Dirichlet diffusion tree (DDT) is a 
 generative model for $d$-dimensional vectors
-$x_1, x_2, \ldots, x_N$. Data
+$\x_1, \x_2, \ldots, \x_N$. Data
 are generated sequentially via a continuous-time
 process, lasting from time $t = 0$ to $t = 1$,
 whereupon they reach their final value.
 
-The first point, $x_1$, is generated
+The first point, $\x_1$, is generated
 via a Brownian motion, beginning at the origin, i.e.
-$X_1(t + dt) = X_1(t) + \mathcal{N}(0, \sigma^2I_ddt)$
-where $X_1(t)$ represents the value of $x_1$ at time $t$.
-The next point, $x_2$, follows the path created
-by $x_1$ until
+$X_1(t + dt) = X_1(t) + \N(0, \sigma^2I_ddt)$
+where $X_1(t)$ represents the value of $\x_1$ at time $t$.
+The next point, $\x_2$, follows the path created
+by $\x_1$ until
 it eventually \emph{diverges}
 at a random time, according to a specified
 acquisition function $a(t)$.
-When $x_2$ diverges, it creates
+When $\x_2$ diverges, it creates
 an internal node in the tree structure
-which contains both the time and value of $x_2$
+which contains both the time and value of $\x_2$
 when it diverged.
 After divergence, it continues until $t = 1$ with 
 an independent Brownian motion.
@@ -132,7 +134,7 @@ the generative process.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.45\textwidth]{img/ddt}
+    \includegraphics[width=0.45\textwidth]{img/ibhc/ddt}
     \caption{An example DDT with 1-dimensional data. Blue lines represent paths
     taken by each data point, and black dots represent nodes of the tree.
     The rightmost dots are leaves and the others are nodes
@@ -165,11 +167,11 @@ DDT given data can be done with the
 Metropolis-Hastings (MH) algorithm,
 an MCMC method.
 The MH algorithm 
-obtains samples from target distribution $p(x)$
+obtains samples from target distribution $p(\x)$
 indirectly by instead sampling
-from a conditional ``proposal'' distribution $q(x | x')$,
+from a conditional ``proposal'' distribution $q(\x | \x')$,
 creating a Markov chain whose stationary
-distribution is $p(x)$, assuming $q$ satisfies some conditions.
+distribution is $\p(\x)$, assuming $q$ satisfies some conditions.
 Our choice of proposal distribution
 modifies the DDT's tree structure
 via a \emph{subtree-prune and regraft} (SPR) move,
@@ -179,11 +181,11 @@ other distributions over hierarchies.
 \subsubsection*{The Subtree-Prune and Regraft Move}
 \label{app:sprsampler}
 An SPR move consists of first a \emph{prune} then a \emph{regraft}.
-Suppose $T$ is a binary tree with $n$ leaves.
-Let $s$ be a non-root node in $T$ 
+Suppose $\tree$ is a binary tree with $n$ leaves.
+Let $s$ be a non-root node in $\tree$ 
 selected uniformly at random and
 $S$ be its corresponding subtree.
-To prune $S$ from $T$, we 
+To prune $S$ from $\tree$, we 
 remove $s$'s parent $p$
 from $T$, and replace $p$ with $s$'s sibling.
 
@@ -196,7 +198,7 @@ $p$ with children $s$ and $v$ and parent $u$
 
 \begin{figure*}[htp!]
     \centering
-    \includegraphics[width=\textwidth]{img/SPRMove}
+    \includegraphics[width=\textwidth]{img/ibhc/SPRMove}
     \caption{In the subtree-prune and regraft (SPR) move, a subtree $S$
         is selected uniformly at random and is then pruned from the tree. 
             Next, a regraft location is selected from the valid regraft locations, and $S$ is re-attached
@@ -220,36 +222,36 @@ as all conditional distributions are Gaussian.
 
 Impressive as the Dirichlet diffusion tree is, there is no reason to suppose that it will magically find a tree that suits the user's needs. But a little interaction can be helpful in improving the outcome.
 
-Let $T^*$ denote the target hierarchical clustering. It is not necessarily the case that the user would be able to write this down explicitly, but this is the tree that captures the distinctions he/she is able to make, or wants to make. Figure~\ref{fig:refinement} (left) shows an example, for a small data set of 5 points. In this case, the user does not wish to distinguish between points $1,2,3$, but does wish to place them in a cluster that excludes point $4$.
+Let $\tree^*$ denote the target hierarchical clustering. It is not necessarily the case that the user would be able to write this down explicitly, but this is the tree that captures the distinctions he/she is able to make, or wants to make. Figure~\ref{fig:refinement} (left) shows an example, for a small data set of 5 points. In this case, the user does not wish to distinguish between points $1,2,3$, but does wish to place them in a cluster that excludes point $4$.
 
-We could posit our goal as exactly recovering $T^*$. But in many cases, it is good enough to find a tree that captures all the distinctions within $T^*$ but also possibly has some extraneous distinctions, as in the right-hand side of Figure~\ref{fig:refinement}.
+We could posit our goal as exactly recovering $\tree^*$. But in many cases, it is good enough to find a tree that captures all the distinctions within $\tree^*$ but also possibly has some extraneous distinctions, as in the right-hand side of Figure~\ref{fig:refinement}.
 
 \begin{figure}
     \centering
-    \includegraphics[width=3in]{img/refinement.pdf}
+    \includegraphics[width=3in]{img/ibhc/refinement.pdf}
     \caption{Target tree $T^*$ (left) and a refinement of it.}
     \label{fig:refinement}
 \end{figure}
 
-Formally, given data set $X$, we say $S \subseteq X$ is a {\it cluster} of tree $T$ if there is some node of $T$ whose descendant leaves are exactly $S$. We say $T$ is a {\it refinement} of $T^*$ if they have the same set of leaves, and moreover every cluster of $T^*$ is also a cluster of $T$. This, then, is our goal: to find a refinement of the target clustering $T^*$.
+Formally, given data set $\data$, we say $S \subseteq \data$ is a {\it cluster} of tree $\tree$ if there is some node of $\tree$ whose descendant leaves are exactly $S$. We say $\tree$ is a {\it refinement} of $\tree^*$ if they have the same set of leaves, and moreover every cluster of $\tree^*$ is also a cluster of $\tree$. This, then, is our goal: to find a refinement of the target clustering $\tree^*$.
 
 \subsection{Triplets}
 
 The user provides feedback in the form of triplets. The constraint $(\{a,b\},c)$ means that the tree should have a cluster containing $a$ and $b$ but not $c$. Put differently, the lowest common ancestor of $a,b$ should be a strict descendant of the lowest common ancestor of $a,b,c$.
 
-Let $\Delta(T)$ denote the set of all proper triplet constraints embodied in tree $T$. If $T$ has $n$ nodes, then $|\Delta(T)| \leq {n \choose 3}$. For non-binary trees, it will be smaller than this number. Figure~\ref{fig:refinement} (left), for instance, has no triplet involving $1,2,3$. 
+Let $\Delta(\tree)$ denote the set of all proper triplet constraints embodied in tree $\tree$. If $\tree$ has $n$ nodes, then $|\Delta(\tree)| \leq {n \choose 3}$. For non-binary trees, it will be smaller than this number. Figure~\ref{fig:refinement} (left), for instance, has no triplet involving $1,2,3$. 
 
 Refinement can be characterized in terms of triplets.
 \begin{restatable}{lemma}{treerefinement}
 \label{thm:treerefinement}
-Tree $T$ is a refinement of tree $T'$ if and only if $\Delta(T') \subseteq \Delta(T)$.
+Tree $\tree$ is a refinement of tree $\tree'$ if and only if $\Delta(\tree') \subseteq \Delta(\tree)$.
 \end{restatable}
 \begin{proof}
 See supplement.
 \end{proof}
-In particular, {\it any triplet-querying scheme that converges to the full set of triplets of the target tree $T^*$ is also guaranteed to produce trees that converge to a refinement of $T^*$.}
+In particular, {\it any triplet-querying scheme that converges to the full set of triplets of the target tree $\tree^*$ is also guaranteed to produce trees that converge to a refinement of $\tree^*$.}
 
-With this lemma in mind, it is natural to measure how close a tree $T$ is to the target $T^*$ with the following (asymmetric) distance function, which we call {\it triplet distance} (TD):
+With this lemma in mind, it is natural to measure how close a tree $\tree$ is to the target $\tree^*$ with the following (asymmetric) distance function, which we call {\it triplet distance} (TD):
 
 %\subsection{Triplet Distance}
 %To better understand the performance of clustering algorithm
@@ -276,7 +278,7 @@ With this lemma in mind, it is natural to measure how close a tree $T$ is to the
 
 %\begin{figure}[H]
 %    \centering
-%    \includegraphics[width=0.5\textwidth]{img/KWayTree}
+%    \includegraphics[width=0.5\textwidth]{img/ibhc/KWayTree}
 %    \caption{A 4-way classification tree on the left
 %    and a refinement of it on the right. Nodes
 %    with matching colors represent matching clusters.}
@@ -290,13 +292,13 @@ With this lemma in mind, it is natural to measure how close a tree $T$ is to the
 %is
 
 \begin{align}
-    \mathrm{TD}(T^*, T) = \frac{\sum_{c \in \Delta(T^*)} \mathbb{I}(c \notin \Delta(T)) }{|\Delta(T^*)|}
+    \mathrm{TD}(\tree^*, \tree) = \frac{\sum_{c \in \Delta(\tree^*)} \mathbb{I}(c \notin \Delta(\tree)) }{|\Delta(\tree^*)|}
 \end{align}
 where $\mathbb{I}$ is the indicator function.
 % Lemma
 %If $T$ is a refinement of $T^*$, their triplet distance is zero
 %as $\mathcal{C}(T^*) \subseteq \mathcal{C}(T)$.
-This distance is zero exactly when $T$ is a refinement of $T^*$, in which case we have reached our goal. 
+This distance is zero exactly when $\tree$ is a refinement of $\tree^*$, in which case we have reached our goal. 
 
 %User guidance can assist in under-specified
 %unsupervised learning problems. We now
@@ -385,9 +387,9 @@ all of them.
 
 \subsection{Finding a tree consistent with constraints}
 \label{sec:aho}
-We start with a randomly initialized hierarchy $T$
+We start with a randomly initialized hierarchy $\tree$
 over our data
-and show an induced subtree $T|_S$ to the user, obtaining the
+and show an induced subtree $\tree|_S$ to the user, obtaining the
 first triplet. The next step is constructing  
 a new tree that satisfies the triplet.
 This begins the feedback cycle; a user provides a triplet
@@ -435,7 +437,7 @@ It is based on the subtree prune and regraft move.
 
 \begin{figure*}[htp!]
     \centering
-    \includegraphics[width=\textwidth]{img/ConstrainedSPRMove}
+    \includegraphics[width=\textwidth]{img/ibhc/ConstrainedSPRMove}
     \caption{
             Visualized is a constrained-SPR move.
             Pruning is identical  but
@@ -496,26 +498,26 @@ A constrained-SPR Markov chain is irreducible.
 
 \begin{proof}
 (sketch) To show irreducibility,
-we show that a tree $T$ has an non-zero
+we show that a tree $\tree$ has an non-zero
 probability of reaching an arbitrary tree
-$T'$ via constrained-SPR moves where
-both $T$ and $T'$ satisfy a set of triplets $C$.
+$\tree'$ via constrained-SPR moves where
+both $\tree$ and $\tree'$ satisfy a set of triplets $C$.
 Our proof strategy
 is to construct a canonical tree 
-$T_C$, and show that there exists
-a non-zero probability path from $T$ to $T_C$,
-and therefore from $T'$ to $T_C$.
+$\tree_C$, and show that there exists
+a non-zero probability path from $\tree$ to $\tree_C$,
+and therefore from $\tree'$ to $\tree_C$.
 We then show that for a given constrained-SPR move,
 the reverse move has a non-zero probability.
-Thus, there exists a path from $T$ to $T_C$ to
-$T'$, satisfying irreducibility.
+Thus, there exists a path from $\tree$ to $\tree_C$ to
+$\tree'$, satisfying irreducibility.
 
 Recall that the split at a node in a binary
 tree that satisfies triplet set $C$
 corresponds to a binary partition
 of the Aho graph at the node (see Section \ref{sec:aho}).
-$T_C$ is a tree such that
-every node in $T_C$ is in \emph{canonical form}.
+$\tree_C$ is a tree such that
+every node in $\tree_C$ is in \emph{canonical form}.
 A node is in canonical form if it is a leaf node,
 or, the partition of the Aho graph
 at that node can be written as $(l, r)$.
@@ -530,24 +532,24 @@ via constrained-SPR moves.
 We then make two constrained-SPR moves to convert
 the partition at $s$ into the form $(l, r)$ (see \autoref{fig:canonical}).
 We convert all nodes into canonical form recursively, turning 
-an arbitrary tree $T$ into $T_C$.
+an arbitrary tree $\tree$ into $\tree_C$.
 
 Finally, the reverse constrained-SPR move has a non-zero
 probability. Suppose
-we perform a constrained-SPR move on tree $T_1$, converting it into $T_2$ by 
+we perform a constrained-SPR move on tree $\tree_1$, converting it into $\tree_2$ by 
 detaching subtree $s$
 and attaching it to branch $(u, v)$.
-A constrained-SPR move on $T_2$ can select
+A constrained-SPR move on $\tree_2$ can select
 $s$ for pruning 
-and can regraft it to form $T_1$ with a non-zero
+and can regraft it to form $\tree_1$ with a non-zero
 probability since
-$T_1$ satisfies the same constraint set as $C$.
+$\tree_1$ satisfies the same constraint set as $C$.
 For a full proof, please refer to the supplement.
 \end{proof}
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{img/CanonicalTree}
+    \includegraphics[width=\textwidth]{img/ibhc/CanonicalTree}
     \caption{The process of converting $s$ into canonical form.
     We first group nodes from $l$ into their own isolated subtree, then perform
     two constrained-SPR moves to put $s$ into canonical form.}
@@ -603,7 +605,7 @@ Recall that in the DDT's sampling procedure for regraft branches,
 a particle at a node picks a branch, and either diverges from that
 branch or recursively samples the node's child.
 Let $s$ be the root of the subtree we are currently grafting 
-back onto tree $T$, let $C$ be the
+back onto tree $\tree$, let $C$ be the
 triplet set, and let $\texttt{leaves}(u)$
 denote the descendant-leaves of node $u$.
 Suppose we are are currently at node $u$,
@@ -681,20 +683,20 @@ adding new triplets into the sampler.
 Suppose we have been sampling trees with constrained-SPR moves
 with satisfying triplet set $C$ 
 and we obtain a new triplet $u = (\{a, b\}, c)$ from a user query. 
-We take the current tree $T$ and find the least common ancestor 
+We take the current tree $\tree$ and find the least common ancestor 
 (call it $z$) of $a$ and $b$. We then call 
 \texttt{BUILD}$(C + \{u\})$ on just the nodes in 
 $\texttt{leaves}(z)$, and 
-we substitute the resulting subtree at position $z$ in tree $T$.
+we substitute the resulting subtree at position $z$ in tree $\tree$.
 
 \subsection{Intelligent subset queries}
 We now have a method to sample a constrained
 distribution over candidate trees.
-Given a particular candidate tree $T$,
+Given a particular candidate tree $\tree$,
 our first strategy for subtree querying
 is to pick a random subset $S$ of the leaves
 of constant size, and show the user
-the induced subtree over the subset, $T|_S$.
+the induced subtree over the subset, $\tree|_S$.
 We call this \emph{random subtree querying}.
 But can we use a set of trees produced by the sampler
 to make better subtree queries?
@@ -711,35 +713,36 @@ and hopefully the resulting triplet from the user will
 reduce the ambiguity.
 
 More precisely, we desire a notion of tree variance.
-Given a set of trees $\mathcal{T}$, what is the variance
+Given a set of trees $\trees$, what is the variance
+%TODO: check this
 over a given subset of the data $S$?
 We propose using the notion of tree distance
 as a starting point. 
-For a given tree $T$, the tree distance between two nodes $a$ and $b$,
+For a given tree $\tree$, the tree distance between two nodes $a$ and $b$,
 denoted $\texttt{treedist}_T(a, b)$,
-is the number of edges of $T$ needed to get from $a$ to $b$.
+is the number of edges of $\trees$ needed to get from $a$ to $b$.
 Consider two leaves $u$ and $v$. If the tree structure around
 them is static, we expect the tree distance
 between $u$ and $v$ to change very little, as the surrounding tree
 will not change. However, if there is
 ambiguity in the surrounding structure, the tree distance will
 be more variable.
-Given a subset of data $S$ and a set of trees $\mathcal{T}$,
+Given a subset of data $S$ and a set of trees $\trees$,
 the tree distance variance (TDV) of the trees over the subset is defined as:
 \begin{align}
-    \text{TDV}(\mathcal{T}, S) = \max_{u, v \in S}\mathrm{Var}_{T \in \mathcal{T}}[\texttt{treedist}_{T|_S}(u, v)]
+    \text{TDV}(\trees, S) = \max_{u, v \in S}\mathrm{Var}_{\tree \in \trees}[\texttt{treedist}_{\tree|_S}(u, v)]
 \end{align}
 
 This measure of variance is
 the \emph{max} of the variance of tree distance between
 any two points in the subset. Computing this requires
-$O(|\mathcal{T}||S|^2 \log|S|)$ time, and since since $|S|$ is constant,
+$O(|\trees||S|^2 \log|S|)$ time, and since since $|S|$ is constant,
 it is not prohibitively expensive.
 
-Given a set of trees from the sampler $\mathcal{T}$,
+Given a set of trees from the sampler $\trees$,
 we now select a high-variance subtree
 by instantiating $L$ random subsets of constant size, $S_1, \ldots, S_L$
-and picking $\text{argmax}_l \text{TDV}(\mathcal{T}, S_l)$.
+and picking $\text{argmax}_l \text{TDV}(\trees, S_l)$.
 We call this \emph{active subtree querying}.
 Although using tree variance will help reconcile ambiguity in the tree structure,
 if a set of samples from a tree all violate the same triplet,
@@ -750,24 +753,24 @@ local optima.
 
 \section{Experiments}
 
-\begin{figure*}
-    \begin{subfigure}[]{0.5\textwidth}
+\begin{figure}
+    \centering
+    \begin{subfigure}[]{0.7\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{img/Fisher Iris-result.png}
-        \caption{Fisher Iris}
+        \includegraphics[width=\textwidth]{img/ibhc/Fisher-Iris-result.png} \caption{Fisher Iris}
         \label{fig:iris-result}
     \end{subfigure}
-    \begin{subfigure}[]{0.5\textwidth}
+    \\
+    \begin{subfigure}[]{0.7\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{img/MNIST-result.png}
+        \includegraphics[width=\textwidth]{img/ibhc/MNIST-result.png}
         \caption{MNIST}
         \label{fig:mnist-result}
     \end{subfigure}
     \caption{The average of four runs of constrained-SPR samplers
     for the Fisher Iris dataset and the MNIST dataset, using 5 different querying schemes. A query was made every 100 iterations.}
     \label{fig:main-results}
-\end{figure*}
-
+\end{figure}
 
 We evaluated the convergence properties of five different querying schemes.
 In a ``simple query'', a user is presented with three random data
@@ -779,7 +782,7 @@ In an ``active query'', the user is shown a high variance
 subtree using tree-distance variance.
 Finally, in an ``interleaved query'', the user is alternatively shown a random
 subtree and a high variance subtree.
-In each experiment, $T^*$ was known, so user queries were simulated
+In each experiment, $\tree^*$ was known, so user queries were simulated
 by picking a triplet
 violated by the root split of the queried tree, 
 and if no such triplet existed, recursing on a child.
@@ -801,7 +804,7 @@ and if no such triplet existed, recursing on a child.
 Each scheme was evaluated on four different datasets.
 The first dataset, MNIST \cite{MNIST}, is an 10-way image classification
 dataset where the data are 28 x 28 images of digits.
-The target tree $T^*$ is simply the $K$-way classification 
+The target tree $\tree^*$ is simply the $K$-way classification 
 tree over the data.
 The second dataset is Fisher Iris, a 3-way flower
 classification problem, where each of 150 flowers has

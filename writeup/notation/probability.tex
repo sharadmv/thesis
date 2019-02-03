@@ -1,5 +1,17 @@
 \newcommand*{\p}{p}
 
+\newcommand*{\idx}{n}
+\newcommand*{\n}{\idx}
 \newcommand*{\numdata}{N}
-\newcommand*{\data}{x_{1:\numdata}}
+\newcommand*{\datum}{x}
+\newcommand*{\x}{\datum}
+\newcommand*{\data}{\mathbf{\datum}_{1:\numdata}}
+\newcommand*{\dataset}{\data}
 \newcommand*{\given}{\,|\,}
+
+\renewcommand*{\k}{k}
+
+\newcommand*{\state}{s}
+\newcommand*{\T}{T}
+\newcommand*{\sequence}{\{\state_1, \ldots, \state_{\T}\}}
+\newcommand*{\sequencen}{\{\state_1^{(\idx)}, \ldots, \state_{\T}^{(\n)}\}_{\n = 1}^{\numdata}}

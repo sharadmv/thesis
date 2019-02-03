@@ -1,32 +1,45 @@
-\chapter{What is structure learning?}
-Admittedly, structure learning is an overloaded term, so in this chapter, we aim to define it and provide example problems. We will also identify and focus on its Bayesian variant.
+\chapter{Background}
+%Admittedly, structure learning is an overloaded term, so in this chapter, we aim to define it and provide example problems. We will also identify and focus on its Bayesian variant.
+In this chapter we define the Bayesian structure learning problem and cover relevant technical background material.
 
-\section{Learning structure}
-Learning structure from data is an age-old problem, and can be broadly defined as an unsupervised learning problem wherein a user has data
-and a priori assumes some unobserved, or \emph{latent}, organization of the data. Example organizations of the data might include a flat clustering structure, i.e. the data can be partitioned into some $k$ distinct groups. A logical extension of a flat clustering organization is a mixed-membership model, where data can be organized into $k$ groups but each datum may belong to many groups simultaneously. 
+\section{What is structure learning?}
+Learning structure is a broad problem; we define it as an unsupervised learning problem wherein a user has data
+and a priori assumes some unobserved, or \emph{latent}, organization of the data. Example organizations of the data might include a flat clustering structure, i.e. the data can be partitioned into some $\k$ distinct groups. A logical extension of a flat clustering organization is a mixed-membership model, where data can be organized into $\k$ groups but each datum may belong to many groups simultaneously. 
 In this work, we are particularly interested in hierarchical clustering structure, where data are organized into a tree structure, with data closer on the tree being logically or semantically similar.
 
 A structure learning algorithm takes in data, and assumes some class of structures. It then recovers a plausible structure and returns it to the user. Formally, we assume a structure class $\structures$ and return a candidate structure $\structure \in \structures$.
 For each of these problem settings, corresponding algorithms exist which have various properties and trade-offs. 
-Perhaps the most famous is the $k$-means algorithm, which recovers a $k$-partition of the data.  Analogously in hierarchical clustering, single-linkage clustering recovers a candidate tree that organizes data hierarchically.
+Perhaps the most famous is the $\k$-means algorithm, which recovers a $\k$-partition of the data.  Analogously in mixed-membership modeling, latent Dirichlet allocation (LDA) recovers a topic model structure for text data.
 
-\subsection{Bayesian structure learning}
-Bayesian structure learning can be formalized as a \emph{latent variable model} (LVM). In a latent variable model, we define a generative process
-wherein latent variables are responsible for generating a set of observed data. Formally, we assume a prior distribution over structures $\p(\structure)$
-and sample from structure $\structure$ from it. Data are then generated
-given the sampled structure from a likelihood model $\p(\data\given\structure)$. Recovering the latent structure is performed via Bayesian inference to compute the posterior distribution $\p(\structure\given\data)$. The generative model is pictured in \autoref{fig:structure-learning}.
+\subsection{Hierarchical clustering}
+Hierarchical clustering is a structure learning problem
+where the structure class is trees. Specifically,
+given a dataset $\dataset$,
+we are interested in rooted trees with $\numdata$ leaves
+with each leaf corresponding to a data point.
+Such a tree tree encodes relationships between data: 
+if data points $a$ and $b$ are close in data space, we'd hope
+the leaves corresponding to $a$ and $b$ appear closer
+together in a tree that captures the data's structure.
 
-\begin{figure}[t]
-\centering
-\includegraphics[]{tikz/lvm}
-\caption{The graphical model for Bayesian structure learning}
-\label{fig:structure-learning}
-\end{figure}
+Algorithms for hierarchical clustering can be broadly
+divided into two categories: divisive and agglomerative.
+Divisive, or top-down, clustering algorithms recover a tree by recursively
+partitioning data until just leaves remain. Examples
+include spectral clustering \citep{} and recursive $\k$-means.
+Agglomerative, or bottom-up, clustering algorithms
+initialize clusters as leaves, and recursively
+merge clusters until a full binary tree is formed.
+Pairs of clusters to merge are chosen according to
+a heuristic, also called a linkage-criterion,
+an example of which is single-linkage,
+where clusters are merged according to the minimum
+distance between data points in each cluster.
 
-As in the non-Bayesian setting, we a priori have a structure class
-$\structures$ in mind, but must additionally choose a prior distribution over structures $\p(\structure)$ to continue. The structures of interest are often discrete, combinatorial structures, such as partitions in the case of flat clustering and trees in the case of hierarchical clustering.
-We thus look to Bayesian nonparametrics for these prior distributions, which will be discussed in detail in \autoref{chap:bnhc}. 
-
-\chapter{Bayesian nonparametric hierarchical clustering}
-\label{chap:bnhc}
-
+\subsection{Linear dynamical systems}
+In a linear dynamical system (LDS), 
+each observed data point is a sequence, 
+$\x = \sequence$, and our dataset
+is a collection of such sequences, $\sequencen$.
+The underlying structure class is
+a linear transformation
