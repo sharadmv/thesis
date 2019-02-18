@@ -1,0 +1,150 @@
+An exponential family distribution $p(x | \theta)$
+is parameterized by 
+natural parameter function $\eta(\theta)$,
+sufficient statistics function $t(x)$,
+and log-partition function  $\log Z(\eta(\theta))$,
+such that
+\begin{align*}
+    p(x | \theta) = \exp{\left\langle\eta(\theta), t(x)\right\rangle - \log Z(\eta(\theta))}
+\end{align*}
+
+\section{Categorical distribution}
+\label{sec:stats-categorical}
+The categorical distribution is a distribution
+over discrete sets (one-hot vectors $z$) in $R^K$,
+and is parametrized by a $K$-simplex vector $\pi$.
+
+\begin{align*}
+    p(z | \pi) = \pi^Tz
+\end{align*}
+\subsection{Exponential family parametrization}
+\begin{align*}
+    \eta(\pi) &= \log \pi \\
+    t(z) &= z \\
+    \log Z(\eta(\pi)) &= \log\sum_{k = 1}^K \exp{\eta(\pi)_k} = 0\\
+\end{align*}
+
+\section{Dirichlet distribution}
+\label{sec:stats-dirichlet}
+The Dirichlet distribution is a distribution
+over the $K$-simplex
+and is parametrized by a vector $\alpha$.
+
+\begin{align*}
+    p(\pi | \alpha) = \frac{\Gamma\left(\sum_k \alpha_k\right)}{\prod_k\Gamma(\alpha_k)}\prod_{k = 1}^K \pi_k^{\alpha_k - 1}
+\end{align*}
+
+\subsection{Exponential family parametrization}
+\begin{align*}
+    \eta(\alpha) &= \alpha - 1\\
+    t(\pi) &= \log \pi \\
+    \log Z(\eta(\alpha)) &= \sum_{k = 1}^K \log \Gamma(\alpha_k) - \log \Gamma\left(\sum_{k = 1}^K \alpha_k\right)
+\end{align*}
+
+\section{Gaussian distribution}
+\label{sec:stats-gaussian}
+
+The Gaussian distribution is a distribution
+distribution over vectors in $\R^d$,
+and is parametrized by mean $\mu$ and covariance $\Sigma$.
+
+\begin{align}
+        p(x | \mu, \Sigma) = \frac{1}{(2\pi)^{\frac{d}{2}}|\Sigma|^{\frac{1}{2}}} \exp{(x - \mu)^T\Sigma^{-1}(x - \mu)}
+\end{align}
+
+\subsection{Exponential family parametrization}
+
+\begin{align*}
+    \eta(\mu, \Sigma) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1} \\ \Sigma^{-1}\mu\end{bmatrix} \\
+    t(x) &= \begin{bmatrix}xx^T \\ x\end{bmatrix} \\
+    \log Z(\eta(\mu, \Sigma)) &= \frac{1}{2}\mu^T\Sigma^{-1}\mu + \frac{1}{2}\log |\Sigma| + \frac{d}{2}\log 2\pi
+\end{align*}
+
+\section{Inverse-Wishart (IW) distribution}
+\label{sec:stats-iw}
+
+The inverse-Wishart (IW) distribution is a
+distribution over positive definite matrices in $\R^{d \times d}$
+and is parametrized by scale matrix $\Psi$ and degrees of freedom $\nu$.
+
+\begin{align}
+        p(\Sigma | \Psi, \nu) = \frac{|\Psi|^{\frac{\nu}{2}}}{2^{\frac{\nu d}{2}}\Gamma_d(\frac{\nu}{2})}|\Sigma|^{\frac{-(\nu + d + 1)}{2}} \exp{-\frac{1}{2}\tr(\Psi\Sigma^{-1})}
+\end{align}
+
+\subsection{Exponential family parametrization}
+
+\begin{align*}
+    \eta(\Psi, \nu) &= \begin{bmatrix}\Psi \\ \nu + d + 1\end{bmatrix} \\
+    t(\Sigma) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1} \\ -\frac{1}{2}\log |\Sigma|\end{bmatrix} \\
+    \log Z(\eta(\Psi, \nu)) &= -\frac{\nu}{2}\log |\Psi| + \frac{\nu d}{2}\log 2 + \log \Gamma_d\left(\frac{\nu}{2}\right)
+\end{align*}
+
+\section{Normal-inverse-Wishart (NIW) distribution}
+\label{sec:stats-niw}
+
+The Normal-inverse-Wishart (NIW) is a
+distribution over the tuple of vectors in $\R^d$ and 
+positive definite matrices in $\R^{d \times d}$
+and is parametrized by
+scale matrix $\Psi$,
+mean $\mu_0$,
+scale $\kappa$,
+and degrees of freedom $\nu$.
+
+\begin{align}
+        p(\mu, \Sigma | \Psi, \mu_0, \kappa, \nu) &= \IW(\Sigma|\Psi,\nu)\N(\mu|\mu_0,\frac{1}{\kappa}\Sigma) \\
+\end{align}
+
+\subsection{Exponential family parametrization}
+\begin{align*}
+    \eta(\Psi, \mu_0, \kappa, \nu) &= \begin{bmatrix}\Psi + \kappa\mu_0\mu_0^T\\\kappa \mu_0\\\kappa\\\nu + d + 1\end{bmatrix} \\
+    t(\mu, \Sigma) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1}\\\Sigma^{-1}\mu\\-\frac{1}{2}\mu^T\Sigma^{-1}\mu\\-\frac{1}{2}\log|\Sigma|\end{bmatrix} \\
+    \log Z(\eta(\Psi, \nu)) &= -\frac{\nu}{2}\log |\Psi| + \frac{\nu d}{2}\log 2 + \log \Gamma_d\left(\frac{\nu}{2}\right) - \frac{d}{2} \log \kappa
+\end{align*}
+
+\section{Matrix normal (MN) distribution}
+\label{sec:stats-mn}
+
+The matrix normal (MN) is 
+a distribution over $\R^{m \times n}$
+matrices, parametrized by 
+mean $M_0 \in \R^{m \times n}$,
+row covariance $S \in \R^{m \times m}$,
+and column covariance $V \in \R^{n \times n}$ .
+
+
+\begin{align}
+        p(M | M_0, S, V) &= \frac{1}{(2\pi)^{\frac{mn}{2}}|S|^{\frac{n}{2}}|V|^{\frac{m}{2}}} \exp{-\frac{1}{2}\tr\left(V^{-1}(M - M_0)^TS^{-1}(M - M_0)\right)}
+\end{align}
+
+\subsection{Exponential family parametrization}
+\begin{align*}
+    \eta(M_0, S, V) &= \begin{bmatrix}-\frac{1}{2}(V \otimes S)^{-1}\\(V \otimes S)^{-1}\vec(M_0)\end{bmatrix} \\
+    t(M) &= \begin{bmatrix}\vec(M)\vec(M)^T\\\vec(M)\end{bmatrix} \\
+    \log Z(\eta(M_0, S, V)) &= \frac{mn}{2}\log 2\pi + \frac{n}{2}\log|S| + \frac{m}{2}\log|V| + \frac{1}{2}\tr(V^{-1}M_0^TS^{-1}M_0) 
+\end{align*}
+
+\section{Matrix normal inverse-Wishart (MNIW) distribution}
+\label{sec:stats-mniw}
+
+The matrix normal inverse Wishart (MNIW) is 
+a distribution over the tuple of $\R^{m \times n}$
+matrices and $\R^{m \times m}$ covariance matrices, parametrized by 
+scale matrix $\Psi$,
+mean $M_0 \in \R^{m \times n}$,
+column covariance $V \in \R^{n \times n}$,
+and degrees of freedom $\nu$.
+
+
+\begin{align}
+        p(\Sigma, M | \Psi, M_0, V, \nu) &= \IW(\Sigma|\Psi, \nu) \times \MN(M|M_0, \Sigma, V) \\
+        &= \frac{|\Psi|^{\frac{\nu}{2}}}{2^{\frac{\nu m}{2}}\Gamma_m(\frac{\nu}{2})}|\Sigma|^{\frac{-(\nu + m + 1)}{2}} \exp {-\frac{1}{2}\tr(\Psi\Sigma^{-1})} \\
+        &\times \frac{1}{(2\pi)^{\frac{mn}{2}}|\Sigma|^{\frac{n}{2}}|V|^{\frac{m}{2}}} \exp{-\frac{1}{2}\tr\left(V^{-1}(M - M_0)^T\Sigma^{-1}(M - M_0)\right)}
+\end{align}
+
+\subsection{Exponential family parametrization}
+\begin{align*}
+    \eta(\Psi, M_0, V, \nu) &= \begin{bmatrix}\Psi + M_0V^{-1}M_0^T\\M_0V^{-1}\\V^{-1}\\\nu + m + n + 1\end{bmatrix} \\
+    t(\Sigma, M) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1}\\\Sigma^{-1}M\\-\frac{1}{2}M^T\Sigma^{-1}M\\-\frac{1}{2}\log|\Sigma|\end{bmatrix} \\
+    \log Z(\eta(\Psi, M_0, V, \nu)) &= \frac{m}{2}\log|V| + \frac{mn}{2}\log 2\pi - \frac{\nu}{2}\log |\Psi| + \frac{\nu m}{2}\log 2 + \log \Gamma_d\left(\frac{\nu}{2}\right)
+\end{align*}

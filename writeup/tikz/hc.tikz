@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    \node[const](structure){$\structure$};
+    \node[obs, below=of structure](data){$\data$};
+    
+    \edge{structure}{data};
+\end{tikzpicture}

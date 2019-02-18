@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    \node[latent](xt){$x_t$};
+    \node[latent, right=of xt](xt1){$x_{t + 1}$};
+    \node[obs, below=of xt](yt){$y_t$};
+    \node[obs, below=of xt1](yt1){$y_{t + 1}$};
+    
+    \edge{xt}{xt1};
+    \edge{xt}{yt};
+    \edge{xt1}{yt1};
+\end{tikzpicture}

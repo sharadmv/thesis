@@ -1,4 +1,11 @@
 \newcommand*{\p}{p}
+\newcommand*{\N}{N}
+\newcommand*{\IW}{IW}
+\newcommand*{\tr}{\mathrm{tr}}
+\renewcommand*{\vec}{\mathrm{vec}}
+\newcommand*{\MN}{MN}
+\newcommand*{\NIW}{NIW}
+\newcommand*{\MNIW}{MNIW}
 
 \newcommand*{\idx}{n}
 \newcommand*{\n}{\idx}
@@ -11,7 +18,31 @@
 
 \renewcommand*{\k}{k}
 
+\renewcommand*{\t}{t}
 \newcommand*{\state}{s}
 \newcommand*{\T}{T}
 \newcommand*{\sequence}{\{\state_1, \ldots, \state_{\T}\}}
 \newcommand*{\sequencen}{\{\state_1^{(\idx)}, \ldots, \state_{\T}^{(\n)}\}_{\n = 1}^{\numdata}}
+\newcommand*{\dynmat}{\mathbf{A}}
+\newcommand*{\dyncovar}{\bm{\Sigma}}
+\newcommand*{\A}{\dynmat}
+
+\newcommand{\vmpmessage}[2]{m^{\text{VMP}}_{#1 \rightarrow #2}}
+\newcommand{\nvmpmessage}[2]{m^{\text{NVMP}}_{#1 \rightarrow #2}}
+\renewcommand{\not}[1]{\backslash #1}
+
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\var}{X}
+\newcommand{\vars}{\bm{X}}
+\newcommand{\parents}{\bm{\pi}}
+\newcommand{\children}{\bm{\xi}}
+\newcommand{\coparents}{\bm{\nu}}
+\newcommand{\hidden}{\bm{H}}
+\newcommand{\visible}{\bm{V}}
+\newcommand{\KL}{\text{KL}}
+
+\newcommand{\globals}{\theta}
+\newcommand{\locals}{\bm{z}}
+\newcommand{\observed}{\bm{x}}
+\renewcommand{\L}{L}

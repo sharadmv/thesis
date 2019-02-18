@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    \node[obs](s1){$\state_1$};
+    \node[obs, right=of s1](s2){$\state_2$};
+    \node[obs, right=of s2](sT){$\state_\T$};
+    \node[const, above=of s2](A){$\dynmat,\dyncovar$};
+    
+    \edge{s1}{s2}
+    \edge{s1}{s2}
+    \edge[dashed]{s2}{sT}
+    \edge{A}{s2}
+    \edge{A}{sT}
+    \plate{plate}{(s1) (s2) (sT)}{$N$}
+\end{tikzpicture}

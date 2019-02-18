@@ -6,12 +6,18 @@
 \usepackage{thmtools}
 \usepackage{thm-restate}
 \usepackage{
+    algorithm,
+    algorithmic,
+    bm,
+    caption,
     float,
     import,
+    mathtools,
     natbib,
     subcaption,
     tikz,
-    tikzscale
+    tikzscale,
+    times
 }
 \usetikzlibrary{bayesnet}
 
@@ -19,7 +25,6 @@
   \renewcommand{\chapterautorefname}{Chapter}%
 } 
 
-\newcommand{\theHalgorithm}{\arabic{algorithm}}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -28,5 +33,6 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{property}[theorem]{Property}
 
+\import{notation/}{general.tex}
 \import{notation/}{probability.tex}
 \import{notation/}{trees.tex}

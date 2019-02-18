@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    \node[latent](x){$x_i$};
+    \node[obs, below=of x](y){$y_i$};
+    
+    \edge{x}{y};
+    \plate{plate1}{
+        (x) (y)
+    } {$N$};
+\end{tikzpicture}

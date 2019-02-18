@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    \node[obs](y){$y_i$};
+    
+    \node[latent, above=of y](x){$x_i$};
+    \node[latent, above=of x](z){$z_i$};
+    \node[latent, right=of z](mu){$\mu_k, \Sigma_k$};
+    \node[latent, above=of z](pi){$\pi$};
+    
+    \edge{pi}{z};
+    \edge{z}{x};
+    \edge{mu}{x};
+    \edge{x}{y};
+    
+    \plate{plate1}{
+        (x) (y) (z)
+    } {$N$};
+    \plate{plate2}{
+        (mu)
+    } {$K$};
+\end{tikzpicture}

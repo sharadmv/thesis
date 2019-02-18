@@ -1,0 +1,9 @@
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclarePairedDelimiter\lr{\{}{\}}
+
+\newcommand*{\R}{\mathbb{R}}
+\renewcommand*{\d}{d}
+
+\let\oldexp\exp
+\renewcommand{\exp}[1]{\oldexp\lr{#1}}
