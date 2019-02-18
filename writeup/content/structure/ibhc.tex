@@ -8,7 +8,7 @@ Clustering is a basic tool of exploratory data analysis. There are a variety of 
 This is inevitable. In any moderately complex data set, there are many different plausible grouping criteria. Should a collection of rocks be grouped according to value, or shininess, or geological properties? Should animal pictures be grouped according to the Linnaean taxonomy, or cuteness? Different users have different priorities, and an unsupervised algorithm has no way to magically guess these.
 
 As a result, a rich body of work on {\it constrained} clustering has emerged.
-In this setting, a user supplies guidance, typically in the form of ``must-link'' or ``cannot-link'' constraints, pairs of points that must be placed together or apart. Introduced by \citet{WagstaffConstrainedKnowledge}, these constraints have since been incorporated into many different {\it flat} clustering procedures~\citep{Wagstaff2000ClusteringConstraints,Bansal2004CorrelationClustering,Basu2004,Kulis2009Semi-supervisedApproach,BiswasActiveHumans}.
+In this setting, a user supplies guidance, typically in the form of ``must-link'' or ``cannot-link'' constraints, pairs of points that must be placed together or apart. Introduced by \citet{Wagstaff2001}, these constraints have since been incorporated into many different {\it flat} clustering procedures~\citep{Wagstaff2000,Bansal2004,Basu2004,Kulis2009,Biswas2004}.
 
 In this chapter, we introduce constraints to {\it hierarchical clustering}, the recursive partitioning of a data set into successively smaller clusters to form a tree. A hierarchy has several advantages over a flat clustering. First, there is no need to specify the number of clusters in advance. Second, the tree captures cluster structure at multiple levels of granularity, simultaneously. As such, trees are particularly well-suited for exploratory data analysis and the discovery of natural groups.
 
@@ -16,7 +16,7 @@ There are several well-established methods for hierarchical clustering, the most
 
 What form might the user's guidance take? The usual must-link and cannot-link constraints make little sense when data has hierarchical structure. Among living creatures, for instance, should {\tt elephant} and {\tt tiger} be linked? At some level, yes, but at a finer level, no. A more straightforward assertion is that {\tt elephant} and {\tt tiger} should be linked in a cluster that does not include {\tt snake}. We can write this as a {\it triplet} $(\{\mbox{\tt elephant}, \mbox{\tt tiger}\}, \mbox{\tt snake})$. We could also assert $(\{\mbox{\tt tiger}, \mbox{\tt leopard}\}, \mbox{\tt elephant})$. Formally, $(\{a,b\},c)$ stipulates that the hierarchy contains a subtree (that is, a cluster) containing $a$ and $b$ but not $c$.
 
-A wealth of research addresses learning taxonomies from triplets {\it alone}, mostly in the field of phylogenetics: see \citet{Felsenstein2004InferringPhylogenies} for an overview, and \citet{Aho1981} for a central algorithmic result. Let's say there are $\numdata$ data items to be clustered, and that the user seeks a particular hierarchy $\tree^*$ on these items. This $\tree^*$ embodies at most ${\numdata \choose 3}$ triplet constraints, possibly less if it is not binary. It was pointed out in \citet{Tamuz2011AdaptivelyKernel} that roughly $\numdata \log \numdata$ carefully-chosen triplets are enough to fully specify $\tree^*$ if it is balanced. This is also a lower bound: there are $\numdata^{\Omega(\numdata)}$ different labeled rooted trees, so each tree requires $\Omega(\numdata \log \numdata)$ bits, on average, to write down---and each triple provides $O(1)$ bits of information, since there are just three possible outcomes for each set of points $a,b,c$. Although $\numdata \log \numdata$ is a big improvement over $\numdata^3$, it is impractical for a user to provide this much guidance when the number of points is large. In such cases, a hierarchical clustering cannot be obtained on the basis of constraints alone; the geometry of the data must play a role.
+A wealth of research addresses learning taxonomies from triplets {\it alone}, mostly in the field of phylogenetics: see \citet{Felsenstein2004} for an overview, and \citet{Aho1981} for a central algorithmic result. Let's say there are $\numdata$ data items to be clustered, and that the user seeks a particular hierarchy $\tree^*$ on these items. This $\tree^*$ embodies at most ${\numdata \choose 3}$ triplet constraints, possibly less if it is not binary. It was pointed out in \citet{Tamuz2011} that roughly $\numdata \log \numdata$ carefully-chosen triplets are enough to fully specify $\tree^*$ if it is balanced. This is also a lower bound: there are $\numdata^{\Omega(\numdata)}$ different labeled rooted trees, so each tree requires $\Omega(\numdata \log \numdata)$ bits, on average, to write down---and each triple provides $O(1)$ bits of information, since there are just three possible outcomes for each set of points $a,b,c$. Although $\numdata \log \numdata$ is a big improvement over $\numdata^3$, it is impractical for a user to provide this much guidance when the number of points is large. In such cases, a hierarchical clustering cannot be obtained on the basis of constraints alone; the geometry of the data must play a role.
 
 We consider an interactive process during which a user incrementally adds constraints.
 \begin{itemize}
@@ -54,11 +54,11 @@ Finally, we present a series of experiments that illustrate how a little interac
 
 \subsection{Other related work}
 
-A related problem that has been studied in more detail~\citep{ZollerActiveClustering,ErikssonActiveSimilarities,KrishnamurthyEfficientClustering} is that of building a hierarchical clustering where the only information available is pairwise similarities between points, but these are initially hidden and must be individually queried.
+A related problem that has been studied in more detail~\citep{Zoller2000,Eriksson2011,Krishnamurthy2012} is that of building a hierarchical clustering where the only information available is pairwise similarities between points, but these are initially hidden and must be individually queried.
 
-In another variant of interactive flat clustering~\citep{Balcan2008ClusteringFeedback,AwasthiSupervisedClustering,AwasthiLocalClustering}, the user is allowed to specify that individual clusters be merged or split. A succession of such operations can always lead to a target clustering, and a question of interest is how quickly this convergence can be achieved.
+In another variant of interactive flat clustering~\citep{Balcan2008,Awasthi2010,Awasthi2013}, the user is allowed to specify that individual clusters be merged or split. A succession of such operations can always lead to a target clustering, and a question of interest is how quickly this convergence can be achieved.
 
-Finally, it is worth mentioning the use of triplet constraints in learning other structures, such as Euclidean embeddings~\citep{Borg1997ModernApplications}.
+Finally, it is worth mentioning the use of triplet constraints in learning other structures, such as Euclidean embeddings~\citep{Borg1997}.
 
 \iffalse
 \section{Bayesian hierarchical clustering}
@@ -247,7 +247,7 @@ an algorithm that returns
 a tree consistent with a set of triplets.
 
 The simplest algorithm to solve this problem is
-the \texttt{BUILD} algorithm, introduced in \citet{ASSU81}.
+the \texttt{BUILD} algorithm, introduced in \citet{Aho1981}.
 Given a set of triplets $C$, \texttt{BUILD}
 will either return a tree that satisfies $C$, or error 
 if no such tree exists.
@@ -658,7 +658,7 @@ The third dataset, Zoo ~\citep{Lichman2013}, is a set of 93 animals
 and 15 binary morphological features for each of animals,
 the target tree being the induced binary tree 
 from the Open Tree of Life ~\citep{Hinchliff2015}.
-The fourth dataset is 20 Newsgroups ~\citep{20News}, a
+The fourth dataset is 20 Newsgroups ~\citep{Joachims1997}, a
 corpus of text articles on 20 different subjects. We use
 the first 10 principal components as features
 in this classification problem.
