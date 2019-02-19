@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    
+    \node[obs](x_n){$x_n$};
+    \node[latent, above=of x_n](z_n){$z_n$};
+    \node[latent, left=of z_n](b_n){$e_n$};
+    \node[latent, below=of b_n](t_n){$t_n$};
+    \node[const, right=of z_n](s){$s_{1:M}$};
+    \node[latent, above=of z_n](tau){$\tau$};
+    
+    \edge{s}{tau};
+    \edge{s}{t_n};
+    \edge{tau}{t_n};
+    \edge{z_n}{t_n};
+    \edge{x_n}{z_n};
+
+    \plate{plate1}{
+        (t_n) (b_n) (z_n) (x_n)
+    } {$N$};
+    
+\end{tikzpicture}

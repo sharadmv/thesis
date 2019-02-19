@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+
+  % Define nodes
+  \node[obs]                               (x_i) {$x_n$};
+  \node[latent, above=of x_i]            (z_i) {$z_n$};
+
+  % Connect the nodes
+  \edge {z_i} {x_i} ; %
+
+  % Plates
+  \plate {yx} {(x_i)(z_i)} {$N$} ;
+
+\end{tikzpicture}

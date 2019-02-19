@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+
+    \node[obs] (o1) {$\observation_1$};
+    \node[obs, right=of o1] (o2) {$\observation_2$};
+    \node[obs, right=of o2] (oT) {$\observation_\horizon$};
+    
+    \node[latent, below=of o1] (s1) {$\state_1$};
+    \node[latent, right=of s1] (s2) {$\state_2$};
+    \node[latent, right=of s2] (sT) {$\state_\horizon$};
+
+    \node[obs, below=0.2cm of s1] (a1) {$\action_1$};
+    \node[obs, right=of a1] (aT) {$\action_{\horizon - 1}$};
+
+    \node[latent, below=0.2cm of a1] (F1) {$\dynmat_1, \dyncovar_1$};
+    \node[latent, below=0.2cm of aT] (FT) {$\dynmat_{\horizon - 1}, \dyncovar_{\horizon - 1}$};
+    
+    \edge{s1}{s2}
+    \edge[dashed]{s2}{sT}
+    \edge{s1}{o1}
+    \edge{s2}{o2}
+    \edge{sT}{oT}
+    \edge{F1}{s2}
+    \edge{FT}{sT}
+    \edge{a1}{s2}
+    \edge{aT}{sT}
+
+\end{tikzpicture}

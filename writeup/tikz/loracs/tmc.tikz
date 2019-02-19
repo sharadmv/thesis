@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+\tikzstyle{connect}=[-latex, thick]
+\tikzstyle{box}=[rectangle, draw=black!100]
+    
+    \node[obs](z_n){$z_n$};
+    \node[latent, above=of z_n](tau){$\tau$};
+    
+    \edge{tau}{z_n};
+
+    \path (z_n) edge [loop right] node {} (z_n);
+
+    \plate{plate1}{
+        (z_n)
+    } {$N$};
+    
+    
+\end{tikzpicture}

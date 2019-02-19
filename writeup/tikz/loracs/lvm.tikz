@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+
+  % Define nodes
+  \node[obs]                               (x_i) {$x_n$};
+  \node[latent, above=of x_i]            (z_i) {$z_n$};
+  \node[latent, right=of z_i]            (theta) {$\theta$};
+
+  % Connect the nodes
+  \edge {z_i} {x_i} ; %
+  \edge {theta} {z_i} ; %
+  \edge {theta} {x_i} ; %
+
+  % Plates
+  \plate {yx} {(x_i)(z_i)} {$N$} ;
+
+\end{tikzpicture}

@@ -19,7 +19,7 @@
 \renewcommand*{\k}{k}
 
 \renewcommand*{\t}{t}
-\newcommand*{\state}{s}
+\newcommand{\state}{\mathbf{s}}
 \newcommand*{\T}{T}
 \newcommand*{\sequence}{\{\state_1, \ldots, \state_{\T}\}}
 \newcommand*{\sequencen}{\{\state_1^{(\idx)}, \ldots, \state_{\T}^{(\n)}\}_{\n = 1}^{\numdata}}
@@ -40,9 +40,10 @@
 \newcommand{\coparents}{\bm{\nu}}
 \newcommand{\hidden}{\bm{H}}
 \newcommand{\visible}{\bm{V}}
-\newcommand{\KL}{\text{KL}}
 
 \newcommand{\globals}{\theta}
 \newcommand{\locals}{\bm{z}}
 \newcommand{\observed}{\bm{x}}
 \renewcommand{\L}{L}
+\newcommand{\KL}[2]{\mathrm{KL}\left(#1\|#2\right)}
+\newcommand{\iid}[1]{\stackrel{\mathrm{iid}}{#1}}

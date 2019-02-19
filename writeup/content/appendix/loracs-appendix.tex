@@ -1,0 +1,477 @@
+\section{Additional visualizations}
+
+\begin{figure}[h]
+\begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/mnist/tsne/mnist2-tsne-normal.png}
+    \caption{Normal prior}
+\end{subfigure}
+\begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/mnist/tsne/mnist2-tsne-noprior.png}
+    \caption{No prior}
+\end{subfigure}
+\begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/mnist/tsne/mnist2-tsne-vamp.png}
+    \caption{Vamp(500) prior}
+\end{subfigure}
+~
+\begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/mnist/tsne/mnist2-tsne-maf.png}
+    \caption{MAF prior}
+\end{subfigure}
+\begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/mnist/tsne/mnist2-tsne-tmc.png}
+    \caption{\acronym(200) prior}
+\end{subfigure}
+\caption{TSNE visualizations of the latent space of the MNIST test set with various prior distributions, color-coded according to class.}
+\label{fig:tsne}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/loracs/mnist/tsne/mnist2-tsne-tmc-tree.png}
+    \caption{A TSNE visualization of the latent space for the TMC(200) model with inducing points and one sample from $q(\tau; s_{1:M})$ plotted. Internal nodes are visualized by computing their expected posterior values, and branches are plotted in 2-d space.}
+    \label{fig:mnist-tsne-tree}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/loracs/mnist/mnist-vamp-inputs.png}
+\caption{MNIST VampPrior learned pseudo-inputs.}
+\label{fig:mnist-vamp-inducing}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/loracs/mnist/mnist-vamp-outputs.png}
+\caption{MNIST VampPrior reconstructed pseudo-inputs obtained by
+deterministically encoding and decoding each pseudo-input.}
+\label{fig:mnist-vamp-inducing-outputs}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{img/loracs/omniglot/inducing-points.png}
+\caption{Omniglot learned inducing points.}
+\label{fig:omniglot-inducing-points}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{img/loracs/celeba/inducing-points.png}
+\caption{CelebA learned inducing points.}
+\label{fig:celeba-inducing-points}
+\end{figure}
+
+\begin{landscape}
+\section{Empirical results}
+\thispagestyle{empty}
+
+\begin{table}
+\scriptsize
+\centering
+\setlength{\tabcolsep}{2pt}
+\input{results/loracs/cf-mnist.tex}
+\caption{MNIST few-shot classification results.}
+\label{tab:semisupervised-mnist}
+\end{table}
+
+\begin{table}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\centering
+\input{results/loracs/cf-omniglot.tex}
+\caption{Omniglot few-shot classification results.}
+\label{tab:semisupervised-omniglot}
+\end{table}
+\begin{table}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{r|cc}
+\toprule
+     \# of inducing points &  200 & 500\\
+\midrule
+        & 0.9428 & 0.9474\\
+\bottomrule
+\end{tabular}
+\centering
+\caption{MNIST few-shot classification with labeled inducing points.}
+\label{tab:inducing-point-labels}
+\end{table}
+\end{landscape}
+
+\begin{figure}
+\centering
+\begin{subfigure}[h]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/mnist/ir-mnist-joint.png}
+    \caption{MNIST}
+\end{subfigure}
+\begin{subfigure}[h]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loracs/omniglot/ir-omniglot-joint.png}
+    \caption{Omniglot}
+\end{subfigure}
+\caption{Averaged precision-recall curves over test datasets.}
+\label{fig:prec-rec}
+\end{figure}
+
+\section{Algorithm details}
+\label{sec:algorithm-details}
+
+\subsection{Stick breaking process}
+\label{sec:stick-breaking}
+Consider inserting a node $N + 1$ into the tree in between vertices $u$ and $v$
+such that $t_v > t_u$,
+creating branch $e_{N + 1}$.
+The inserted node has time $t_{N + 1}$ with probability according to the stick breaking process, i.e.
+\begin{equation}
+\textstyle r(t_{N+1}\given e_{N+1}, V, E) =
+\mathrm{Beta}\left(\frac{t_v - t_{N + 1}}{1 - t_{N + 1}}; a, b\right)\mathrm{Beta}\left(\frac{t_{N + 1} - t_u}{1 - t_u}; a, b\right).
+\end{equation}
+
+\subsection{Belief propagation in TMCs}
+
+The TMC is at the core of the \acronym\;
+prior.
+Recall that the TMC is
+a prior over phylogenies $\tau$,
+and after attaching a Gaussian random walk (GRW),
+we obtain a distribution over $N$ vectors in $\mathbb{R}^d$,
+corresponding to the leaves, $r(z_{1:N} \given \tau)$.
+However, the GRW samples
+latent vectors at internal nodes $z_{V_{\text{int}}}$.
+Rather than explicitly representing these values,
+in this work we marginalize them out, i.e.
+\begin{equation}
+    r(z_{1:N} \given \tau) = \int r(z_{1:N} \given z_{V_{\text{int}}}, \tau)p(z_{V_{\text{int}}} \given \tau) dz_{V_{\text{int}}}
+\end{equation}
+This marginalization process can be done efficiently, because our graphical model
+is tree-shaped and all nodes have Gaussian likelihoods. Belief propagation is a message-passing
+framework for marginalization and we utilize message-passing
+for several TMC inference queries. The main queries we are interested in are:
+\begin{enumerate}
+    \item $r(z_{1:N}, \tau)$ - for the purposes of MCMC, we are interested in computing the joint likelihood of a set of observed
+    leaf values and a phylogeny.
+    \item $r(z_n \given z_{\backslash n}, \tau)$ - this query computes the posterior density over one leaf given all the others;
+    we use this distribution when computing the posterior predictive density of a TMC.
+    \item $\nabla_{z_{\backslash n}} r(z_n \given z_{\backslash n}, \tau)$ - this query is the gradient of the predictive density 
+    of a single leaf with respect to the values at all other leaves. This query is used
+    when computing gradients of the ELBO w.r.t $s_{1:M}$ in the \acronym\;prior.
+\end{enumerate}
+
+\paragraph{Message passing} Message
+passing treats the tree as an undirected graph. 
+We first pick start node $v_{\text{start}}$
+and request messages from each of $v_{\text{start}}$'s neighbors.
+
+Message passing is thereafter defined recursively. 
+When a node $v$ has requested messages from a source node $s$,
+it thereafter requests messages from all its neighbors but $s$.
+The base case for this recursion is a leaf node $v_n$,
+which returns a message with the following contents:
+\begin{equation}
+    \nu_n = \bm{0};\quad \mu_n = z_n;\quad \log Z_n = 0;\quad \nabla_{\nu_n}(\nu) = \bm{1};\quad \nabla_{\nu_n}(\mu) = \bm{0};\quad \nabla_{\mu_n}(\mu) = \bm{1}
+\end{equation}
+where bold numbers $\bm{0}\triangleq (0,\ldots,0)^\top$ and $\bm{1}\triangleq (1,\ldots,1)^\top$ denote vectors obtained by repeating a scalar $d$ times.
+
+In the recursive case, consider being at a node $i$ and receiving a set of messages from its neighbors $M$.
+\begin{equation}
+\begin{split}
+    \nu_i = \frac{1}{\sum_{m \in M}\frac{1}{\nu_m + e_{im}}} ;\quad \mu_i = v_i \sum_{m \in M} \frac{\mu_m}{\nu_m + e_{im}}\\
+\end{split}
+\end{equation}
+where $e_{im}$ is the length of the edge between nodes $i$ and $m$.
+These messages are identical to those used in \cite{boyles2012time}.
+
+Additionally, our messages include gradients w.r.t. \emph{every} leaf node
+downstream of the message.
+We update each of these gradients when computing the new message
+and pass them along to the source node.
+Gradients with respect to one of these nodes $j$ are calculated as
+\begin{equation}
+\begin{split}
+    \nabla_{\nu_j}(\nu) &= \nabla_{\nu_j} \nu_i\\
+    \nabla_{\nu_j}(\mu) &= \nabla_{\nu_j} \mu_i\\
+    \nabla_{\mu_j}(\mu) &= \nabla_{\mu_j} \mu_i\\
+\end{split}
+\end{equation}
+The most complicated message is the $\log Z_i$ message, which depends
+on the number of incoming messages. $v_{\text{start}}$ gets
+three incoming messages,
+all other nodes get only two. Consider
+two messages from nodes $v_k$ and $v_l$:
+\begin{equation}
+\begin{split}
+    \Sigma_i &\triangleq (\nu_k + e_{ik} + \nu_l + e_{il})I \\
+    \log Z_i &= -\frac{1}{2}\|\mu_k - \mu_l\|^2_{\Sigma_i} - \frac{1}{2}\left(\log|\Sigma_i| _ d\log2\pi\right)
+\end{split}
+\end{equation}
+For three messages from nodes
+$v_k$, $v_l$, and $v_m$:
+\begin{equation}
+\begin{split}
+    \Sigma_i &\triangleq \left((\nu_k + e_{ik})(\nu_l + e_{il}) + (\nu_l + e_{il})(\nu_m + e_{im}) + (\nu_m + e_{im})(\nu_k + e_{ik})\right)I \\
+    \log Z_i &= -\frac{1}{2}\left((\nu_m + e_{im})\|\mu_k - \mu_l\|^2_{\Sigma_i} + (\nu_k + e_{ik})\|\mu_l - \mu_m\|^2_{\Sigma_i} + (\nu_l + e_{il})\|\mu_m - \mu_k\|^2_{\Sigma_i}\right) - \frac{1}{2}\log|\Sigma_i| - \log2\pi
+\end{split}
+\end{equation}
+
+With these messages, we can answer all the aforementioned inference queries.
+\begin{enumerate}
+    \item We can begin message passing at any internal node and compute: $\log r(z_{1:N}, \tau) = \sum_{v \in V} \log Z_v$
+    \item We start message passing at $v_n$. $r(z_n \given z_{\backslash n}, \tau)$ is a Gaussian with mean $\mu_n$ and variance $\nu_n$.
+    \item $\nabla_{z_{\backslash n}} r(z_n \given z_{\backslash n}, \tau)$ is $\nabla_{z_{\backslash n}} \N(z_n \given \mu_n, \nu_n I)$,
+    which in turn utilizes gradients sent via message passing.
+\end{enumerate}
+
+\paragraph{Implementation} We chose
+to implement the TMC and message
+passing in Cython because we found raw Python to be
+too slow due to function call and type-checking
+overhead. Furthermore, we used diagonal rather than
+scalar variances in the message passing implementation
+to later support diagonal variances handed 
+from the variational posterior over $z_n$.
+
+\subsection{Variational inference for the \acronym\;prior}
+\label{sec:inference-details}
+
+The \acronym\; prior involves first sampling a tree
+from the posterior distribution over TMCs
+with $s_{1:M}$ as leaves.
+We then sample a branch and time
+for each data $z_n$ according
+to the posterior predictive
+distribution described in \autoref{sec:bnhc}.
+We then sample a $z_n$ from
+the distribution induced by the GRW likelihood model.
+Finally, we pass the sampled $z_n$
+through the decoder.
+\begin{equation}
+    \begin{split}
+        \tau &\sim p(\tau ; s_{1:M}) \\
+        e_n, t_n &\sim p(e_n, t_n | \tau) \\
+        z_n | e_n, t_n, \tau &\sim p(z_n | e_n, t_n, \tau; s_{1:M}) \triangleq r(s_{M + 1} = z_n | e_n, t_n, \tau) \\
+        x_n | z_n &\sim p_\theta(x_n | z_n)
+    \end{split}
+\end{equation}
+
+Consider sampling the optimal $q^*(\tau; s_{1:M})$.
+
+\begin{equation}
+\begin{split}
+    q^*(\tau; s_{1:M}) 
+    &\propto \exp{\E_q\left[\log p(\tau, z_{1:N}, x_{1:N})\right]} \\
+    &\propto \exp{\log p(\tau ; s_{1:M}) + \sum_n \E_q\left[p(z_n | e_n, t_n, \tau)\right]} \\
+    &\propto \exp{\log \mathrm{TMC}_N(\tau; a, b) + \sum_{m = 1}^M \log r(s_m | s_{1:m - 1}, \tau) \\&+ \sum_n \E_q\left[\log p(z_n | e_n, t_n, \tau)\right]} \\
+\end{split}
+\end{equation}
+We  set $q(\tau; s_{1:M}) = r(\tau \given s_{1:M})$.
+We use additional variational factors
+$q(e_n)$,
+$q_{\xi}(t_n | e_n, z_n; s_{1:M})$,
+and
+$q_\phi(z_n | x_n)$.
+$q_{\xi}(t_n | e_n, z_n; s_{1:M})$ is a
+recognition network that outputs
+the attach time for a particular branch.
+Since the $q(\tau; s_{1:M})$ and $p(\tau; s_{1:M})$ terms
+cancel out, we obtain the following ELBO.
+\begin{equation}
+    \begin{split}
+    \L[q] &\triangleq \E_q \left[\log \frac{\prod_n p(e_n, t_n | \tau) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right] \\
+    \end{split}
+\end{equation}
+
+\paragraph{Inference procedure}
+In general, $q(\tau; s_{1:M})$ can
+be sampled using vanilla SPR Metropolis-Hastings,
+so samples from this distribution are readily available. 
+
+For each data in the minibatch $x_n$, we pass it
+through the encoder to obtain $q(z_n | x_n)$.
+We then compute
+\begin{equation}
+    q^*(e_n) = \exp{\E_q\left[\log p(e_n | t_n, z_n, \tau; s_{1:M})\right]}
+\end{equation}
+This quantity is computed by looping
+over every branch $b$ of 
+a sample from $q(\tau)$,
+storing incoming messages at each node,
+passing the $\mu$ and $\nu$
+and a sample from $q(z_n | x_n)$
+into $q_\xi(t_n | e_n, s_{1:M}, z_n)$,
+outputting a logistic-normal distribution
+over times for that branch. We sample that
+logistic normal to obtain a time $t$
+to go with branch $b$. We can then compute
+the log-likelihood of $z_n$ if it were
+to attach to $b$ and $t$, using TMC
+inference query \#2.
+This log-likelihood is added to the TMC prior log-probability
+of the branch being selected to obtain
+a joint probability $\E_q\left[\log p(e_n)p(t_n)p(z_n | e_n, t_n, \tau; s_{1:M})\right]$ over the branch.
+After doing this for every branch, we normalize
+the joint likelihoods to obtain
+the optimal categorical distribution over every branch
+for $z_n$, $q^*(e_n)$. We then sample this
+distribution to obtain an attach location and time
+$e_n, t_n$ for each data in the minibatch.
+
+The next stage is to compute gradients w.r.t. to the
+learnable parameters of the model ($\theta$, $s_{1:M}$, $\phi$, and $\xi$).
+In the process of calculating $q^*(e_n)$,
+we have obtained samples from its corresponding 
+$q_\xi(t_n | e_n, z_n, \tau; s_{1:M})$ and $q(z_n | x_n)$.
+We plug these into the ELBO and can compute
+gradients via automatic differentiation w.r.t. $\phi$,
+$\theta$, and $\xi$. Computing gradients w.r.t.
+$s_{1:M}$ is more tricky. We first examine the ELBO.
+
+\begin{equation}
+    \L[q] = \E_q \left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]
+\end{equation}
+
+Consider the gradient of the ELBO with respect to $s_{1:M}$.
+
+\begin{equation}
+    \begin{split}
+    \nabla_{s_{1:M}}\L[q] &=
+    \nabla_{s_{1:M}}\E_q \left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right] \\
+    &= \nabla_{s_{1:M}}\sum_{\tau} q(\tau; s_{1:M})\E_q \left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\\
+    &= \sum_\tau q(\tau; s_{1:M})\nabla_{s_{1:M}}\E_q\left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\\
+    &+ \sum_\tau \left(\nabla_{s_{1:M}} q(\tau; s_{1:M})\right)\E_q \left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\\
+    &= \sum_\tau q(\tau; s_{1:M})\nabla_{s_{1:M}}\E_q\left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\\
+    &+ \sum_\tau \left(q(\tau;s_{1:M})\nabla_{s_{1:M}} \log q(\tau; s_{1:M})\right)\E_q \left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\\
+    &= \E_{q(\tau)}\left[\nabla_{s_{1:M}}\E_q\left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\right.\\
+    &+ \left.\nabla_{s_{1:M}} \log q(\tau; s_{1:M})\E_q \left[\log \frac{\prod_n p(e_n|\tau) p(t_n) p(z_n | e_n, t_n, \tau; s_{1:M})p_\theta(x_n | z_n)}{\prod_n q(e_n)q_{\xi}(t_n | e_n, z_n; s_{1:M})q_\phi(z_n | x_n)}\right]\right]\\
+    &= \E_{q}\left[
+        \nabla_{s_{1:M}}\left(-\log q(e_n) - \log q(t_n \given z_n, e_n, \tau; s_{1:M}) + \log p(z_n \given e_n, t_n, \tau; s_{1:M})\right)
+    \right] \\
+    &+ \E_q\left[\nabla_{s_{1:M}}\left(\log q(\tau) + \log q(e_n)\right)\log\frac{p(e_n | \tau)}{q(e_n)}\frac{p(z_n \given z_n, e_n, t_n, \tau; s_{1:M})}{q(t_n \given z_n, e_n, \tau; s_{1:M})}\right]
+    \end{split}
+\end{equation}
+
+In the last step, we expand out expectation over $e_n$ and
+then pass the derivative through like we did for $\tau$.
+The gradients w.r.t. $q(e_n)$ are zero, since $q^*(e_n)$ is
+a partial optimum of the ELBO and we are left with:.
+\begin{equation}
+    \begin{split}
+        \nabla_{s_{1:M}}\L[q] &= \E_q\left[\nabla_{s_{1:M}}\log p(z_N | e_n, t_n, \tau; s_{1:M})\right] - \E_q\left[\log q(t_n \given z_n, e_n, \tau; s_{1:M})\right] \\
+        &+ \E_q\left[\nabla_{s_{1:M}} \log q(\tau; s_{1:M})\log\frac{p(e_n | \tau)}{q(e_n)}\frac{p(z_n \given z_n, e_n, t_n, \tau; s_{1:M})}{q(t_n \given z_n, e_n, \tau; s_{1:M})}\right]
+    \end{split}
+\end{equation}
+The first term of the gradient is the expected gradient
+of the posterior predictive density w.r.t $s_{1:M}$.
+This can be calculated by using TMC inference query \#3
+using samples from $q(e_n)$ and $q(t_n \given z_n, e_n, \tau; s_{1:M})$. The second term also uses the same gradients, by means
+of the chain rule to differentiate through the time-amortization network.
+The third term of this gradient is a score function gradient,
+which we decide to not use due to the high-variance nature of score function gradients. We found that we were able to obtain strong results even with biased gradients.
+
+\section{Details of experiments}
+\label{sec:implementation-details}
+
+We implemented the \acronym\;prior in Tensorflow
+and Cython. 
+For MNIST and Omniglot, our architectures are in \autoref{tab:mnist-arch} and CelebA is in \autoref{tab:celeba-arch}.
+
+\begin{table}
+\centering
+\begin{subfigure}[h]{0.4\textwidth}
+\begin{tabular}{lll}
+\toprule
+Layer type & Shape \\
+\midrule
+Conv + ReLU & [3, 3, 64], stride 2 \\
+Conv + ReLU & [3, 3, 32], stride 1 \\
+Conv + ReLU & [3, 3, 16], stride 2 \\
+FC + ReLU & 512 \\
+Gaussian & 40 \\
+\bottomrule
+\end{tabular}
+\caption{Encoder}
+\end{subfigure}
+\begin{subfigure}[h]{0.4\textwidth}
+\begin{tabular}{lll}
+\toprule
+Layer type & Shape \\
+\midrule
+FC + ReLU & 3136 \\
+Deconv + ReLU & [3, 3, 32], stride 2 \\
+Deconv + ReLU & [3, 3, 32], stride 1 \\
+Deconv + ReLU & [3, 3, 1], stride 2 \\
+Bernoulli & \\
+\bottomrule
+\end{tabular}
+\caption{Decoder}
+\end{subfigure}
+\caption{Network architectures for MNIST and Omniglot}
+\label{tab:mnist-arch}
+\end{table}
+
+\begin{table}
+\centering
+\begin{subfigure}[h]{0.4\textwidth}
+\begin{tabular}{lll}
+\toprule
+Layer type & Shape \\
+\midrule
+Conv + ReLU & [3, 3, 64], stride 2 \\
+Conv + ReLU & [3, 3, 32], stride 1 \\
+Conv + ReLU & [3, 3, 16], stride 2 \\
+FC + ReLU & 512 \\
+Gaussian & 40 \\
+\bottomrule
+\end{tabular}
+\caption{Encoder}
+\end{subfigure}
+\begin{subfigure}[h]{0.4\textwidth}
+\begin{tabular}{lll}
+\toprule
+Layer type & Shape \\
+\midrule
+FC + ReLU & 4096 \\
+Deconv + ReLU & [3, 3, 32], stride 2 \\
+Deconv + ReLU & [3, 3, 32], stride 1 \\
+Deconv + ReLU & [3, 3, 3], stride 2 \\
+Bernoulli & \\
+\bottomrule
+\end{tabular}
+\caption{Decoder}
+\end{subfigure}
+\caption{Network architectures for CelebA}
+\label{tab:celeba-arch}
+\end{table}
+
+In general, we trained the model interleaving
+one gradient step with 100 sampling steps for $q(\tau; s_{1:M})$.
+We also found that experimenting with values of $a$ and $b$
+in the TMC prior did not impact results significantly.
+We initialized the networks with weights
+from a VAE trained for 100 epochs and inducing points
+were initialized using k-means. All parameters
+were trained using Adam \citep{kingma2015adam} with a $10^{-3}$ learning rate
+for an 100 epochs with learning rate decay to $10^{-5}$ for the last 20 epochs. 
+Finally, we initialized trees with all node times close to 0,
+to emulate a VAE prior.
+
+\subsection{Baseline details}
+All baselines were trained with the default architecture.
+They were trained for 400 epochs,
+with KL warmup ($\beta$ started at $10^{-2}$, and ramped up to $\beta = 1$
+linearly over 50 epochs). They were trained using Adam with a
+learning rate of $10^{-3}$, with a learning rate of $10^{-5}$ for
+the last 80 epochs.
+
+DVAE\# was trained using the default implementation from
+\url{https://github.com/QuadrantAI/dvae}, which is hierarchical
+VAE consisting of two Bernoulli latent variables, 200-dimensional each.
+Each is learned via a feed-forward neural network 4-layers deep.
+The default DVAE\# implementation also uses statically binarized MNIST
+where we use dynamically binarized.

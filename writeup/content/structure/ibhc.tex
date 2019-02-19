@@ -1,6 +1,3 @@
-%\chapter{Adding interaction to Bayesian nonparametric hierarchical clustering}
-
-\section{Motivation}
 Clustering is a basic tool of exploratory data analysis. There are a variety of efficient algorithms---including $k$-means, EM for Gaussian mixtures, and hierarchical agglomerative schemes---that are widely used for discovering ``natural'' groups in data. Unfortunately, they don't always find a grouping that suits the user's needs.
 
 This is inevitable. In any moderately complex data set, there are many different plausible grouping criteria. Should a collection of rocks be grouped according to value, or shininess, or geological properties? Should animal pictures be grouped according to the Linnaean taxonomy, or cuteness? Different users have different priorities, and an unsupervised algorithm has no way to magically guess these.
@@ -50,7 +47,7 @@ Querying based on uncertainty sounds promising, but is dangerous because it is h
 Finally, we present a series of experiments that illustrate how a little interaction leads to significantly better hierarchical clusterings.
 
 
-\subsection{Other related work}
+\subsection*{Other related work}
 
 A related problem that has been studied in more detail~\citep{Zoller2000,Eriksson2011,Krishnamurthy2012} is that of building a hierarchical clustering where the only information available is pairwise similarities between points, but these are initially hidden and must be individually queried.
 
@@ -92,7 +89,7 @@ Refinement can be characterized in terms of triplets.
 Tree $\tree$ is a refinement of tree $\tree'$ if and only if $\Delta(\tree') \subseteq \Delta(\tree)$.
 \end{restatable}
 \begin{proof}
-See supplement.
+See \autoref{chap:ibhc-appendix}.
 \end{proof}
 In particular, {\it any triplet-querying scheme that converges to the full set of triplets of the target tree $\tree^*$ is also guaranteed to produce trees that converge to a refinement of $\tree^*$.}
 
@@ -389,7 +386,7 @@ $s$ for pruning
 and can regraft it to form $\tree_1$ with a non-zero
 probability since
 $\tree_1$ satisfies the same constraint set as $C$.
-For a full proof, please refer to the supplement.
+For a full proof, please refer to \autoref{chap:ibhc-appendix}.
 \end{proof}
 
 \begin{figure*}
@@ -677,7 +674,7 @@ we measured the triplet distance of the vanilla DDT
 and the average linkage tree.
 Finally, results were averaged over four runs of each sampler.
 The triplet distances for Fisher Iris and MNIST can be seen in \autoref{fig:main-results}. Results for the other datasets
-can be found in the supplement.
+can be found in \autoref{chap:ibhc-appendix}.
 Although unrealistic due to the size of the tree shown to the user, 
 the smart query performed the best, achieving minimum error
 with the least amount of queries. Interleaved followed next,
