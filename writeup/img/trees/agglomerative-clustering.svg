@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg14289"
+   version="1.1"
+   inkscape:version="0.91 r"
+   sodipodi:docname="agglomerative-clustering.svg"
+   inkscape:export-filename="/home/sharad/workspace/research/research-exam/img/agglomerative-clustering-3.png"
+   inkscape:export-xdpi="360.10153"
+   inkscape:export-ydpi="360.10153">
+  <defs
+     id="defs14291" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="30.809445"
+     inkscape:cy="831.22196"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1337"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata14294">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="opacity:1;fill:#23373b;fill-opacity:1;fill-rule:evenodd;stroke:#23373b;stroke-width:2.58215117;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3336"
+       cx="53.196423"
+       cy="57.505058"
+       r="11.208924" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="48.446423"
+       y="64.130058"
+       id="text4233"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4235"
+         x="48.446423"
+         y="64.130058"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:20px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans Light';fill:#ffffff;fill-opacity:1">1</tspan></text>
+    <g
+       id="g4462"
+       transform="translate(-5.0892993,-161.64287)">
+      <circle
+         r="11.208924"
+         cy="259.86221"
+         cx="89"
+         id="path3336-2"
+         style="opacity:1;fill:#23373b;fill-opacity:1;fill-rule:evenodd;stroke:#23373b;stroke-width:2.58215117;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4233-7"
+         y="266.11221"
+         x="84.375"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:20px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans Light';fill:#ffffff;fill-opacity:1"
+           y="266.11221"
+           x="84.375"
+           id="tspan4235-0"
+           sodipodi:role="line">2</tspan></text>
+    </g>
+    <circle
+       style="opacity:1;fill:#23373b;fill-opacity:1;fill-rule:evenodd;stroke:#23373b;stroke-width:2.58215117;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3336-7"
+       cx="210.37498"
+       cy="49.647919"
+       r="11.208924" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="205.62498"
+       y="56.272919"
+       id="text4233-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4235-4"
+         x="205.62498"
+         y="56.272919"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:20px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans Light';fill:#ffffff;fill-opacity:1">3</tspan></text>
+    <g
+       id="g4462-4"
+       transform="translate(102.08927,-146.64287)">
+      <circle
+         r="11.208924"
+         cy="259.86221"
+         cx="89"
+         id="path3336-2-4"
+         style="opacity:1;fill:#23373b;fill-opacity:1;fill-rule:evenodd;stroke:#23373b;stroke-width:2.58215117;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4233-7-5"
+         y="266.11221"
+         x="84.375"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:20px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans Light';fill:#ffffff;fill-opacity:1"
+           y="266.11221"
+           x="84.375"
+           id="tspan4235-0-8"
+           sodipodi:role="line">4</tspan></text>
+    </g>
+  </g>
+</svg>
