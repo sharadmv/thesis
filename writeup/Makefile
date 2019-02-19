@@ -21,8 +21,8 @@ clean:
 
 
 $(FILE).pdf: *.tex *.bib content/**/*.tex *.bst
-	pdflatex -shell-escape $(FILE).tex
-	pdflatex -shell-escape $(FILE).tex
+	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
+	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
 	bibtex $(FILE)
-	pdflatex -shell-escape $(FILE).tex
-	pdflatex -shell-escape $(FILE).tex
+	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
+	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
