@@ -1,0 +1,41 @@
+\newcommand{\MDP}{M}
+\newcommand{\Observations}{\mathcal{O}}
+\newcommand{\States}{\mathcal{S}}
+\newcommand{\Actions}{\mathcal{A}}
+\newcommand{\cost}{C}
+\newcommand{\initstatedist}{\rho}
+\newcommand{\discount}{\gamma}
+\newcommand{\numsamp}{N}
+\newcommand{\horizon}{T}
+\newcommand{\dynamics}{p}
+\newcommand{\policyparams}{\theta}
+\newcommand{\policy}{\pi}
+\newcommand{\action}{\mathbf{a}}
+\newcommand{\costsample}{c}
+\newcommand{\policyobj}{\eta}
+\newcommand{\dynmodel}{\hat{\dynamics}}
+\newcommand{\costmodel}{\hat{\cost}}
+\newcommand{\isdmodel}{\hat{\rho}}
+\newcommand{\costmat}{\mathbf{C}}
+\newcommand{\costvec}{\mathbf{c}}
+\newcommand{\K}{\mathbf{K}}
+\renewcommand{\k}{\mathbf{k}}
+\newcommand{\polcovar}{\mathbf{S}}
+\newcommand{\polstepsize}{\epsilon}
+\newcommand{\observation}{\mathbf{o}}
+\newcommand{\encoder}{e}
+\newcommand{\decoder}{f}
+\newcommand{\traj}{\tau}
+\newcommand{\model}{\mathcal{M}}
+\newcommand{\colvec}[2][1]{%
+  \scalebox{#1}{%
+    \renewcommand{\arraystretch}{#1}%
+    $\begin{bmatrix}#2\end{bmatrix}$%
+  }
+}
+\newcommand{\stateaction}{\tilde{\state}}
+
+\newcommand{\trajectory}{\left[\observation_0,\action_0,\costsample_0,\ldots,\observation_{\horizon},\action_{\horizon},\costsample_{\horizon}\right]}
+
+\newcommand{\methodname}{stochastic optimal control with latent representations}
+\newcommand{\metabbr}{SOLAR}
