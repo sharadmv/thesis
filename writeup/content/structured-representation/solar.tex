@@ -27,7 +27,7 @@ Any deterministic policy operating in an environment with smooth dynamics can be
 \end{align*}
 We describe how to compute the parameters $\K_t$, $\k_t$, and $\polcovar_t$ in \autoref{sec:supp-lqr}. Due to modeling bias, the policy computed through LQR likely will not perform well in the real environment. This is because the model will not be globally correct but rather only valid close to the distribution of the data-collecting policy. One approach to addressing this issue is to use LQR with fitted linear models \mbox{(LQR-FLM)} \citep{mfcgps}, a method which imposes a KL-divergence constraint on the policy update such that the shift in the trajectory distributions before and after the update, which we denote as $\bar{p}(\traj)$ and $\p(\traj)$, respectively, is bounded by a step size $\polstepsize$. This leads to the constrained optimization
 \begin{align}
-    \max_\policy~\hat{\policyobj}[\policy]\text{\ \ \ s.t.\ \ \ }D_\KL(\p(\traj)\|\bar{p}(\traj))\leq\polstepsize\,.\label{eq:lqrflm}
+  \max_\policy~\hat{\policyobj}[\policy]\text{\ \ \ s.t.\ \ \ }\KL{\p(\traj)}{\bar{p}(\traj)}\leq\polstepsize\,.\label{eq:lqrflm}
 \end{align}
 As shown in \citet{mfcgps}, this constrained optimization can be solved by augmenting the cost function to penalize the deviation from the previous policy $\bar{\policy}$, i.e., $\tilde{\cost}(\state_t,\action_t)=\frac{1}{\lambda}\costmodel(\state_t,\action_t)-\log\bar{\policy}(\action_t|\state_t)$. Note that this augmented cost function is still quadratic, since the policy is linear-Gaussian, and thus we can still compute the optimal policy for this cost function in closed form using the LQR procedure. $\lambda$ is a dual variable that trades off between optimizing the original cost and staying close in distribution to the previous policy, and the weight of this term can be determined through a dual gradient descent procedure.
 
@@ -55,7 +55,7 @@ As we discuss in \autoref{sec:gen-model}, in order to make the local model fitti
 In our problem setting, we have access to trajectories of the form $\trajectory$ sampled from the system using our current policy. We assume this observed data is generated as follows: there is a latent state $\state$ that evolves according to linear-Gaussian dynamics, where the dynamics parameters themselves are stochastic and distributed according to a global prior. At each time step $t$, the latent state $\state_t$ is used to generate an image observation $\observation_t$, and the state and action generate the cost observation $\costsample_t$. The prior on the dynamics parameters increases the expressivity of the model by removing the assumption that the underlying dynamics are globally linear, since different trajectories may be explained by different samples from the prior. Furthermore, we approximate the observation function with a convolutional neural network, which makes the overall model non-linear. We formalize this generative model as
 \begin{align}
     \state_1&\sim\N\left(0,\mathbf{I}\right)\,,\label{eq:gm-start}\\
-    \dynmat,\dyncovar&\sim\MNIW\left(\Psi,\nu,\mathbf{M}_0,\mathbf{V}\right)\,,\label{eq:dyn}\\
+    \dynmat,\dyncovar&\sim\MNIW\left(\Psi,\nu,\dynmat_0,\mathbf{V}\right)\,,\label{eq:dyn}\\
     \state_{t+1}~|~\state_t,\action_t,\dynmat,\dyncovar&\sim\N\left(\dynmat\colvec{\state_t\\\action_t},\dyncovar\right)\,,\label{eq:dyn2}\\
     \observation_t~|~\state_t&\sim\decoder_\gamma\left(\state_t\right)\,,\\
     \costsample_t~|~\state_t,\action_t&\sim\N\left(\costmodel(\state_t,\action_t),1\right)\,.\label{eq:gm-end}
@@ -77,7 +77,7 @@ We are interested in inferring two distributions of interest, both conditioned o
 \vspace{-.5em}
 The subscript $1:\horizon$ denotes an entire trajectory. Both of these distributions are intractable due to the neural network observation model. We instead turn to variational inference which optimizes, with respect to KL-divergence, a variational distribution $q$ in order to approximate a distribution of interest $p$. Specifically, we introduce the variational factors
 \begin{align*}
-    q(\dynmat,\dyncovar)&=\MNIW(\Psi',\nu',\bm{M}_0',\bm{V}')\,\\,
+    q(\dynmat,\dyncovar)&=\MNIW(\Psi',\nu',\dynmat_0',\bm{V}')\,\\,
     q\left(\state_{1:\horizon}~\big|~\dynmat,\dyncovar;\observation_{1:\horizon},\action_{1:\horizon}\right)&\propto
     \p(\state_1)\prod_{t=1}^{\horizon-1}p\left(\state_{t+1}~\big|~\state_t,\action_t,\dynmat,\dyncovar\right)\prod_{t=1}^{\horizon}\psi(\state_t;\observation_t,\phi)\,.
 \end{align*}
@@ -87,9 +87,8 @@ To learn the variational parameters, we optimize the evidence lower bound (ELBO)
 \begin{align*}
     \L&=\mathbb{E}_q\left[\log\frac{p\left(\dynmat,\dyncovar,\state_{1:\horizon},\observation_{1:\horizon},\costsample_{1:\horizon}~\big|~\action_{1:\horizon}\right)}{q\left(\dynmat,\dyncovar,\state_{1:\horizon};\observation_{1:\horizon},\action_{1:\horizon}\right)}\right]\\
     &=\mathbb{E}_q\left[\sum_{t=1}^{\horizon}\log{p}(\observation_t|\state_t)\right]+\mathbb{E}_q\left[\sum_{t=1}^{\horizon}\log{p}(\costsample_t|\state_t,\action_t)\right]\\
-    &\hspace{1em}-D_\KL\left(q\left(\dynmat,\dyncovar\right)\|p\left(\dynmat,\dyncovar\right)\right)\\
-    &\hspace{1em}-\mathbb{E}_q\left[D_\KL\left(q\left(\state_{1:\horizon}~\big|~\dynmat,\dyncovar;\observation_{1:\horizon},\action_{1:\horizon}\right)\|\right.\right.\\
-    &\hspace{6em}\left.\left.p\left(\state_{1:\horizon}~\big|~\action_{1:\horizon},\dynmat,\dyncovar\right)\right)\right]\,.
+    &\hspace{1em}-\KL{q\left(\dynmat,\dyncovar\right)}{p\left(\dynmat,\dyncovar\right)}\\
+    &\hspace{1em}-\mathbb{E}_q\left[\KL{q\left(\state_{1:\horizon}~\big|~\dynmat,\dyncovar;\observation_{1:\horizon},\action_{1:\horizon}\right)}{\right.\right.\left.\left.p\left(\state_{1:\horizon}~\big|~\action_{1:\horizon},\dynmat,\dyncovar\right)}\right]\,.
 \end{align*}
 
 \citet{svae} derived an algorithm for optimizing hybrid models with both deep neural networks and probabilistic graphical model (PGM) structure. In fact, our model bears strong resemblance to the LDS SVAE model from their work, though our ultimate goal is to fit local models for model-based policy learning rather than focusing on global models as in their work. We explain the relevant details of the SVAE learning procedure, which we use to learn the neural network parameters $\gamma$ and $\phi$ along with the global dynamics and cost models, in \autoref{sec:supp-svae}.

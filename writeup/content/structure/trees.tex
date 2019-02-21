@@ -488,7 +488,7 @@ lineages have coalesced.
 $\pi(-\infty) = \{\{1, 2, \ldots, N\}\}$
 is the partition of all
 individuals into a single group,
-when they all share a common ancestor \citep{Teh2009}.
+when they all share a common ancestor \citep{Teh2008}.
 
 Kingman's coalescent
 is a probability distribution
@@ -515,7 +515,7 @@ $\pi(-\infty) = \{\{1, 2, \ldots, N\}\}$.
   represents the common ancestor for data subset $C$. 
   The axis represents time, and each $\delta_i$ represents elapsed time between
   coalesce events. Finally, $\pi(t)$ is
-  the genealogy function. Image taken from \citet{Teh2009}.}
+  the genealogy function. Image taken from \citet{Teh2008}.}
 \label{fig:coalescent}
 \end{figure}
 
@@ -577,7 +577,7 @@ is an ordered cladogram with times associated with every internal node.
 The ordering comes from the order in which
 internal nodes were created in the jump process.
 The induced distribution over just ordered trees
-is in fact uniform \citep{Teh2009}.
+is in fact uniform \citep{Teh2008}.
 However, we often don't need order information
 in hierarchical clustering.
 \citet{Boyles2012} computes the induced distribution over
@@ -659,7 +659,7 @@ beginning at the origin.
 
 \begin{align}
   x_1(0) &= 0 \\
-  x_1(t + dt) &= x_1(t) + \mathcal{N}(0, \sigma^2Idt)
+  x_1(t + dt) &= x_1(t) + \N(0, \sigma^2Idt)
 \end{align}
 
 The path for the second data point $x_2(t)$
@@ -989,15 +989,15 @@ which accomodate different data types and tree structures.
     $n$ in the tree. Let $u$ be an internal node
     and $v$ one of its children and
     let $\delta_{uv}$ be the elapsed time between $u$ and $v$.
-    We sample $\theta_v \sim \mathcal{N}(\theta_u, \Sigma\delta_{uv})$,
+    We sample $\theta_v \sim \N(\theta_u, \Sigma\delta_{uv})$,
     where $\Sigma$ is a positive definite covariance matrix.
     The root node value is assigned a prior
-    $\mathcal{N}(\mu_0, \Sigma_0)$.
+    $\N(\mu_0, \Sigma_0)$.
     In the case where there are no times associated with each node,
     we can assume elapsed time between nodes is always 1,
     and the hyperparameters in the model would be
     $\Sigma$, $\mu_0$, and $\Sigma_0$.
-    This approach is used in \citet{Neal2003}, \citet{Teh2009}, \citet{Knowles2015},
+    This approach is used in \citet{Neal2003}, \citet{Teh2008}, \citet{Knowles2015},
     \citet{Adams2010}, \citet{Boyles2012} and \citet{Hu2013}.
     \item \textbf{Multinomial diffusion.} If our data
     consists of several categorical variables, 
@@ -1006,7 +1006,7 @@ which accomodate different data types and tree structures.
     be the row in $\tree$ for feature $c$.
     Let $\delta_{uv}$ be the elapsed time between parent $u$ and child $v$.
     As suggested by
-    \citet{Teh2009},
+    \citet{Teh2008},
     $T_{c} = e^{-\lambda_{c}\delta_{uv}}I + (1 -  e^{-\lambda_{c}\delta_{uv}})q_{c}^T\bm{1}$
     where $\lambda_{c}$ is a hyperparameter for the evolution rate for feature 
     $c$, $q_{c}$ is a hyperparameter for the equilibrium
@@ -1165,10 +1165,10 @@ simplest method to sample a general
 BNHC model. However, alternative methods
 have been proposed,
 such as using slice sampling in \citet{Adams2010},
-sequential Monte Carlo in \citet{Teh2009} and \citet{Hu2013},
+sequential Monte Carlo in \citet{Teh2008} and \citet{Hu2013},
 Gibbs sampling in \citet{Blei2010},
 and variational inference in \citet{Paisley2014}.
 Furthermore, there are greedy algorithms
 to approximate a MAP estimate
 to the posterior distribution
-of trees given data \citep{Teh2009, Hu2013}.
+of trees given data \citep{Teh2008, Hu2013}.

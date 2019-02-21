@@ -208,11 +208,14 @@
 \part{Combining Structure and Representation}
 \import{content/structured-representation/}{init.tex}
 
+\bookmarksetup{startatroot}% this is it
+\addtocontents{toc}{\bigskip}% perhaps as well
 %% APPENDIX
 \appendix
 \import{content/appendix/}{init.tex}
 
 %% END MATTER
+
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{bibstyle}
 \bibliography{thesis} 
