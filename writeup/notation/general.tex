@@ -3,7 +3,22 @@
 \DeclarePairedDelimiter\lr{\{}{\}}
 
 \newcommand*{\R}{\mathbb{R}}
-\renewcommand*{\d}{d}
+\renewcommand*{\d}{D}
+\newcommand*{\numcluster}{K}
+\renewcommand*{\l}{K}
+\newcommand*{\idx}{n}
+\newcommand*{\n}{\idx}
+\newcommand*{\numdata}{N}
+\newcommand*{\datum}{x}
+\newcommand*{\latent}{z}
+\newcommand*{\x}{\datum}
+\newcommand*{\z}{\latent}
+\newcommand*{\data}{\mathbf{\datum}_{1:\numdata}}
+\newcommand*{\latentdata}{\mathbf{\latent}_{1:\numdata}}
+\newcommand*{\dataset}{\data}
+\newcommand*{\latentdataset}{\latentdata}
+\newcommand*{\given}{\,|\,}
+
 
 \let\oldexp\exp
 \renewcommand{\exp}[1]{\oldexp\lr{#1}}

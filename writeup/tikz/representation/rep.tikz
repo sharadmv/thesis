@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+
+  % Define nodes
+  \node[obs]                               (x_i) {$\x_\n$};
+  \node[latent, above=of x_i]            (z_i) {$\z_\n$};
+  \node[const, right=of z_i]            (gamma) {$\genparam$};
+
+  % Connect the nodes
+  \edge {z_i} {x_i} ; %
+  \edge {gamma} {x_i} ; %
+
+  % Plates
+  \plate {yx} {(x_i)(z_i)} {$N$} ;
+
+\end{tikzpicture}

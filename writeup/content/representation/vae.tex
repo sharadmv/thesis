@@ -1,3 +1,144 @@
-\chapter{Bayesian Representation Learning}
+\chapter{Representation Learning}
 
-Modern datasets 
+Two of the failure modes of structure learning
+algorithms are
+characteristic
+of modern datasets.
+The first is that structure learning
+algorithms often struggle to 
+model high-dimensional data.
+Consider applying
+fitting a Gaussian mixture
+model (GMM) to an image dataset.
+The likelihood model in a GMM
+assumes data are sampled
+from the multivariate Gaussian
+distribution, which is
+often too simple of a likelihood
+to model high-dimensional distributions.
+In fact, one can construct
+distributions that require an
+exponential number of components
+to model successfully \cite{TODO}.
+The second problem
+is that of computation.
+Fitting a Gaussian mixture model
+to millions of high-dimensional data
+will require inverting
+large matrices, which will
+easily be the bottleneck in a
+learning algorithm.
+However, the era of deep-learning has
+been defined by success in supervised learning
+tasks on
+complex datasets
+like ImageNet (\citep{Deng2009}) and CIFAR (\citep{CIFAR}).
+Using deep neural networks for
+unsupervised learning offers
+new solutions and
+new challenges.
+
+In this chapter, we discuss the problem
+of representation learning.
+Consider the problems that arise 
+with structure learning in high dimensions.
+If we were able to instead embed 
+high-dimensional data into a lower-dimensional space
+that retains most, if not all,
+of its semantic information,
+why not work with the embeddings instead?
+This question encompasses the goal
+of representation learning, namely
+learning \emph{useful} representations
+for downstream tasks.
+Such downstream tasks may
+be structure learning, classification,
+or even reinforcement learning.
+In this chapter, we
+discuss methods for representation learning
+leading up to the variational autoencoder (VAE),
+which is the necessary component
+for discussing what we call Bayesian structured representation learning.
+
+\section{PCA and autoencoders}
+Two of the simplest and most intuitive
+representation learning algorithms
+are principle component analysis (PCA)
+and autoencoding.
+PCA takes a $\d$-dimensional dataset 
+$\dataset \in \R^{\numdata \times \d}$ and
+reduces it to a $\l$-dimensional
+dataset $\latentdataset \in \R^{\numdata \times \l}$
+where usually $\l \ll \d$.
+PCA finds a $\l$-dimensional
+linear subspace,
+in contrast with autoencoders,
+which learn a nonlinear subspace.
+Autoencoders
+minimize reconstruction loss
+through an encoder
+and decoder deep neural network.
+Specifically, we construct
+an encoder network $f_\recparam(x)$
+and a decoder network $g_\genparam(z)$
+minimize reconstruction error, i.e.
+\begin{align*}
+\min_{\genparam, \recparam} \sum _{\n = 1}^\numdata \L(\x_\n, g_\genparam(f_\recparam(\x_\n)))
+\end{align*}
+This strategy lets representation
+learning scale to large amounts of data
+via learning the weights $\recparam, \genparam$
+via stochastic gradient descent.
+The learned representations for a dataset
+$\latentdataset$ are just the dataset
+passed through the encoder network.
+
+\section{Deep generative modeling}
+Deep generative modeling is a strategy
+where in the representation learning problem
+is formalized probabilistically
+and learning a representation
+is equivalent to fitting a posterior
+distribution.
+We construct
+a graphical model
+with prior over 
+latent representations $\p(\latentdataset)$
+and parametrized likelihood function $\gen(\x_\n \given \z_\n)$,
+where each $\x_\n$ is sampled i.i.d.
+This generative model is visualized in
+\autoref{fig:graphical-model-rep}.
+Learning representation amounts
+computing the posterior distribution 
+$\p(\latentdataset \given \dataset)$.
+%\begin{align*}
+  %\genparam^*, \latentdataset^* = \argmax_{\genparam, \latentdataset} \prod_{\n = 1}^\numdata \gen(\x_\n \given \z_\n)
+%\end{align*}
+
+Perhaps the simplest representation learning
+model is linear Gaussian, also
+called probabilistic PCA (PPCA). Specifically,
+we assume
+\begin{align*}
+    \z_\n &\sim \N(0, I) \\
+    \x_\n \given \z_\n &\sim \N(\dynmat \z_\n, \variance I)
+\end{align*}
+PPCA generalizes PCA in that the two models
+are equivalent as $\variance \rightarrow 0$.
+and is useful
+in how it contextualizes
+PCA as a generative model.
+In a similar fashion, we
+can formalize autoencoders
+probabilistically.
+
+\begin{figure}[htp!]
+    \centering
+    \includegraphics{tikz/representation/rep}
+    \caption{The graphical model for traditional representation learning}
+    \label{fig:graphical-model-rep}
+\end{figure}
+
+\section{The variational autoencoder}
+
+\section{Extensions and related approaches}
