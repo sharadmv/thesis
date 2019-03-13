@@ -252,7 +252,15 @@ ELBO,
 For fixed $q_\phi(z_n \given x_n)$, we can
 sample the optimal $q^*(\tau)$,
 \begin{equation}
-    q^*(\tau) \propto \exp\{\E_q\left[\log p(\tau, z_{1:N}, x_{1:N})\right]\}
+    \begin{split}
+    q^*(\tau) &\propto \exp{\E_q\left[\log p(\tau, z_{1:N}, x_{1:N})\right]} \\
+              &\propto \exp{\E_q\left[\log p(\tau)p(z_{1:N}|\tau)\right]} \\
+              &\propto \exp{\log p(\tau) + \E_q\left[\log p(\latentdata|\tau)\right]}
+    \end{split}
+\end{equation}
+\begin{equation}
+    \begin{split}
+    \end{split}
 \end{equation}
 Because $p(z_{1:N} \given \tau)$ is jointly Gaussian (factorizing
 according to tree structure) and $q_\phi(z_n \given x_n)$ is Gaussian, 
