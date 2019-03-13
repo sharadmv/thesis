@@ -1,0 +1,726 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120056581-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-120056581-1');
+	</script>
+
+	<title>open.epic :: My Apps</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+	<link href="/Content/Site.css?version=R33394" rel="stylesheet" type="text/css" />
+	
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>   
+	<script src="/Controls/CheckButton.js" type="text/javascript"></script>
+	<script src="/Controls/Popup.js" type="text/javascript"></script>
+	<script src="/Controls/_Shared.js" type="text/javascript"></script>
+	
+
+	<script type="text/javascript" src="/Scripts/jquery.scrollTo-1.4.3.1.js"></script>
+	<script src="/Scripts/jquery-ui-1.11.2.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/Scripts/appsubmit.js"></script>
+	<script type="text/javascript" src="/Controls/MultiSelect.js"></script>
+	<script src="/Scripts/AppSubmitDetail.js?version=R35433.1" type="text/javascript"></script>
+
+
+
+
+</head>
+<body>
+
+
+   
+	   <div class="page">
+	<div id="msgBox"><div id="msgTitle"></div><div id="msgBody"></div></div>
+		
+	<a class="homelink" href="/">
+		<img src="/Content/Images/logo.png" />
+	</a>
+
+	<div id="menucontainer">
+		<ul id="menu">
+			<li><a href="/Home/Explore">Explore</a> 
+				<div class="hovermenu">
+					<div style="float:left;padding:5px;">
+						<div class="menuSubHeader">Category</div>
+						<ul>
+							<li><a href="/Identity">Registration</a></li>
+							<li><a href="/Scheduling">Scheduling</a></li>
+							<li><a href="/Financial">Financial</a></li>
+							<li><a href="/Clinical">Clinical</a></li>
+							<li><a href="/Ancillary">Ancillaries</a></li>
+							<li><a href="/PublicHealth">Public Health</a></li>
+							<li><a href="/Operational">Operations</a></li>
+                            <li><a href="/International">International</a></li>
+						</ul>
+					</div>
+					<div style="float:right;padding:5px;">
+						<div class="menuSubHeader">Standard</div>
+						<ul>
+							<li><a href="/Interface/HL7v2">HL7v2</a></li>
+                            <li><a href="/Interface/HL7v3">HL7v3</a></li>
+							<li><a href="/Interface/IHE">IHE Profiles</a></li>
+							<li><a href="/Interface/FHIR">FHIR</a></li>
+							<li><a href="/Interface/WebServices">Web services</a></li>
+							<li><a href="/Interface/DICOM">DICOM</a></li>
+							<li><a href="/Interface/NCPDP">NCPDP</a></li>
+							<li><a href="/Interface/X12">ASC X12</a></li>
+							
+							<li><a href="/Interface/Other">Even more ...</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>.
+			<li><a href="/Home/Interoperate">Interoperate</a> </li>.
+            <li><a href="/MyApps">My Apps</a>
+                <div class="hovermenu">
+                        <ul>
+                            <li><a href="/MyApps">Create App</a></li>
+                            <li><a href="/MyApps/Endpoints">FHIR Endpoints</a></li>
+                            <li><a href="/AppExchange/Sandbox">Sandbox</a></li>
+                            <li><a href="/Launchpad/OAuth2Sso">LaunchPad</a></li>
+                            <li><a href="/Tutorial/OAuth">OAuth 2.0 Tutorial</a></li>
+                            <li><a href="/Tutorial">FHIR Tutorial</a></li>
+                        </ul>
+                </div>
+            </li>.
+	
+			<li><a href="/Home/Contact">Contact</a> </li>
+                    <li><a href="/Account/LogOut">Hi, Sharad Vikram (Log Out)</a></li>
+
+
+		</ul>
+	</div>
+		<div class="content">
+
+			<div id="main">
+				
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	<symbol id="very-important" viewBox="0 0 160 160">
+		<path d="M83.1,0h-9.2L0,73.9v14L72.1,160H85l75-75v-8.1L83.1,0z M58.9,123.8c-4.8,0-8.7-3.8-8.7-8.4s3.9-8.4,8.7-8.4
+	c4.8,0,8.7,3.8,8.7,8.4S63.7,123.8,58.9,123.8z M73,61.1l-14.4,40.1L44.2,61.1v-4.5c0-9.8,6.5-17.8,14.4-17.8S73,46.7,73,56.6V61.1z
+	 M99.8,123.8c-4.8,0-8.7-3.8-8.7-8.4s3.9-8.4,8.7-8.4s8.7,3.8,8.7,8.4S104.6,123.8,99.8,123.8z M113.9,61.1l-14.4,40.1L85.2,61.1
+	v-4.5c0-9.8,6.5-17.8,14.4-17.8s14.4,8,14.4,17.8V61.1z"></path>
+	</symbol>
+</svg>
+<link href="/Content/css/MyApps.css?version=R33394.01" rel="stylesheet" type="text/css" />
+
+<h1>Ready?</h1>
+<br /><br />
+<a href="/MyApps/Endpoints">Get a list of endpoints to connect to</a>
+<br /><br />
+<div>
+	Here's the list of applications you're currently working on.
+</div>
+<br /><br />
+
+<input id="schemewhitelist" name="schemewhitelist" type="hidden" value="https" />
+
+
+<div class="appCard appCardColor" id="appCard--1" data-which="-1">
+
+		<div class="edit new" data-which="-1" data-url="/MyApps/AppDetail?index=-1" title="Create a new app for sandbox testing or submission">&nbsp;</div>
+		<div class="viewApp" id="View--1">
+			<div class="name" style="color:#449434;">Create a New App</div>
+		</div>
+
+	<div class="editApp" id="Edit--1">
+<form action="/MyApps" method="post" onsubmit="formatUris()"><input data-val="true" data-val-required="The IsNewApp field is required." id="IsNewApp" name="IsNewApp" type="hidden" value="True" /><input data-val="true" data-val-number="The field Index must be a number." data-val-required="The Index field is required." id="Index" name="Index" type="hidden" value="-1" /><input data-val="true" data-val-required="The Client ID field is required." id="ClientID" name="ClientID" type="hidden" value="fac6359c-52e8-4f73-bf6f-7a1e32a31dae" /><input data-val="true" data-val-required="The Nonprod Client ID field is required." id="NonprodClientID" name="NonprodClientID" type="hidden" value="b96b2038-c88f-409f-962c-a004dedef71b" /><input data-val="true" data-val-required="The Production Readiness field is required." id="IsProductionReady" name="IsProductionReady" type="hidden" value="False" /><input data-val="true" data-val-required="The HasBeenSubmitted field is required." id="HasBeenSubmitted" name="HasBeenSubmitted" type="hidden" value="False" />			<fieldset style="margin-bottom:0px;padding-bottom:0px;">
+				<div class="row compact">
+					
+					<div class="editor-input" title="How you and others refer to this application">
+						<div class="editor-field">
+							<input class="required" data-val="true" data-val-length="Can you shorten that?" data-val-length-max="100" data-val-required="Surely you call your app something?" id="ApplicationName" maxlength="500" name="ApplicationName" placeholder="Your App Name" size="500" style="width: 550px" type="text" value="" />
+						</div>
+						<div class="editor-label">
+							<label for="ApplicationName">Application Name<span style="color:red">*</span></label> <span class="field-validation-valid" data-valmsg-for="ApplicationName" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+					
+					<div class="editor-input" title="A unique string that identifies this released iteration of the application">
+						<div class="editor-field">
+							<input data-val="true" data-val-length="A number will do" data-val-length-max="10" id="Version" maxlength="10" name="Version" size="10" style="width: 100px" type="text" value="" />
+						</div>
+						<div class="editor-label">
+							<label for="Version">Version</label> <span class="field-validation-valid" data-valmsg-for="Version" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				<div class="row compact">
+					
+					<div class="editor-input" title="Enter the entity which owns the rights to this application">
+						<div class="editor-field">
+							<input data-val="true" data-val-length="Could you abbreviate that?" data-val-length-max="100" id="SellerName" maxlength="500" name="SellerName" size="500" style="width: 290px;" type="text" value="UCSD" />
+						</div>
+						<div class="editor-label">
+							<label for="SellerName">Your Company</label> <span class="field-validation-valid" data-valmsg-for="SellerName" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+					
+					<div class="editor-input" title="Provide a URL where more details can be found about you and/or your organization">
+						<div class="editor-field">
+							<input class="urlentry" data-val="true" data-val-length="That&#39;s long. Maybe we should google you instead" data-val-length-max="2083" id="ApplicationWebsite" maxlength="500" name="ApplicationWebsite" size="500" style="width: 360px;" type="text" value="http://ucsd.edu" />
+						</div>
+						<div class="editor-label">
+							<label for="ApplicationWebsite">Application Website</label> <br />
+							<span class="field-validation-valid" data-valmsg-for="ApplicationWebsite" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				<br />
+				
+				<div class="row compact">
+					<div class="editor-input" title="Provide a URL where Users and Health Systems can review how you comply with our Developer Guidelines and ONC Certification Criteria">
+						<div class="editor-field">
+							<input class="urlentry" data-val="true" data-val-length="That&#39;s long. Maybe try a URL shortener?" data-val-length-max="2083" data-val-required="Enter a URL where we can review your compliance with our &lt;a href=&#39;../Home/DeveloperTerms&#39;>developer guidelines&lt;/a>" id="CertificationAttestation" maxlength="500" name="CertificationAttestation" placeholder="URL where documentation exists for this app" size="500" style="width:70%;" type="text" value="" />
+						</div>
+						<div class="editor-label">
+							<label for="CertificationAttestation">Public Documentation<span style="color:red">*</span></label> <span class="field-validation-valid" data-valmsg-for="CertificationAttestation" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+
+				<br />
+
+				
+				<div class="editor-label group-label">
+					<label for="RedirectURLs">Redirect URLs</label>
+				</div>
+				<div class="-1 URL">
+						<div class="url-row 0">
+							<div class="editor-input">
+								<div class="editor-field">
+									<input class="secureurlentry" data-val="true" data-val-length="[That&#39;s long.  Do you have anything shorter?]" data-val-length-max="2083" data-val-required="We need to go somewhere..." id="RedirectURLs_0__aRedirectURL" maxlength="500" name="RedirectURLs[0].aRedirectURL" placeholder="https://your-oauth-redirect-url" size="500" style="width: 70%;" title="Provide the URL to which an end user should be redirected after your application authorizes with Epic" type="text" value="" />
+								</div>
+								<div class="editor-label">
+									<span class="field-validation-valid" data-valmsg-for="RedirectURLs[0].aRedirectURL" data-valmsg-replace="true"></span>
+								</div>
+							</div>
+						</div>
+				</div>
+				<div class="editor-label divUnsecureWarning">
+					<div style="" class="alert alert--very-important alert--inline" id="coded-col--very-important--border">
+						<header class="alert__header">
+							<h3 id="coded-col--very-important--title" class="alert__header__text">
+								<svg><use xlink:href="#very-important"></use></svg>
+								Your application should use a recognized, secure transport protocol in its redirect URIs to be compliant with the OAuth 2.0 and SMART on FHIR standards. Unsecured URIs will only work in the Open.Epic Sandbox.
+							</h3>
+							<div class="divAllUnsecureWarning">
+								<br />
+								<h3 id="coded-col--very-important--title" class="alert__header__text">
+									You must have at least one URI using a secure transport protocol in order to be production ready.
+								</h3>
+							</div>
+						</header>
+					</div>
+				</div>
+				<div class="editor-label">
+					<span class="field-validation-valid" data-valmsg-for="RedirectURLs" data-valmsg-replace="true"></span>
+				</div>
+				<button type="button" class="add-RedirectURL secondary" id="add-RedirectURL" style="margin-top: 10px;" onclick="Epic$OpenEpic$AppEditDetail$AddRedirectURL('-1')">
+					Add another redirect URL
+				</button>
+
+
+
+				<div class="Contacts -1">
+					<div class="editor-label group-label">
+						<label for="SalesContacts">Contacts</label>
+					</div>
+					<div class="row compact">
+						
+						<div class="editor-input">
+							<div class="editor-label">
+								<label for="SalesContacts_0__Name" style="width: 250px; display:inline-block; margin-right:11px;">Name<span style="color:red">*</span></label>
+								<label for="SalesContacts_0__Email" style="width: 160px; display:inline-block; margin-right:11px;">Email<span style="color:red">*</span></label>
+								<label for="SalesContacts_0__Phone" style="width: 130px; display:inline-block; margin-right:11px;">Phone<span style="color:red">*</span></label>
+								<label for="SalesContacts_0__Role" style="width: 130px; display:inline-block; margin-right:11px;">Role</label>
+							</div>
+						</div>
+							<div class="ContactRow 0">
+								<div class="editor-input">
+									<div class="editor-field" style="margin-top:5px;">
+										<input data-val="true" data-val-length="[How about a nickname?]" data-val-length-max="128" data-val-required="[Surely you&#39;re called something?]" id="SalesContacts_0__Name" maxlength="128" name="SalesContacts[0].Name" placeholder="Kitten" size="128" style="width: 230px;" title="The full name of a person who can serve as a reference for any questions" type="text" value="Sharad Vikram" />
+										<input data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-length="[Do you have a shorter one?]" data-val-length-max="256" data-val-required="[Where should we send you email?]" id="SalesContacts_0__Email" maxlength="256" name="SalesContacts[0].Email" size="256" style="width: 140px; " title="An email address at which this contact person may be reached" type="text" value="svikram@eng.ucsd.edu" />
+										<input data-val="true" data-val-length="[That&#39;s a phone number?]" data-val-length-max="64" data-val-phone="[That doesn&#39;t look like a phone number]" data-val-required="[Where should we call to contact you urgently?]" id="SalesContacts_0__Phone" maxlength="64" name="SalesContacts[0].Phone" size="64" style="width: 110px; " title="A phone number at which this contact person may be reached" type="text" value="8583868298" />
+										<input data-val="true" data-val-length="[Briefly, please]" data-val-length-max="50" id="SalesContacts_0__Role" maxlength="50" name="SalesContacts[0].Role" size="50" style="width: 110px; " title="The function this contact person serves within the group developing this application" type="text" value="" />
+									</div>
+								</div>
+							</div>
+
+					</div>
+				</div>
+				<button type="button" class="add-Contact secondary" id="add-Contact" onclick="Epic$OpenEpic$AppEditDetail$AddContact('-1', 'Kitten')">
+					Add another contact
+				</button>
+				<br />
+				<br />
+				<br />
+				<div class="row" style="height:inherit">
+					
+					<div class="editor-input" style="display:inline;">
+						<div class="editor-label group-label" style="display:inline;">
+<label for="WebServices" style="text-transform: none;">FHIR API Scope<span style="color:red">*</span></label>								<div class="multiselect-editList" data-for="webServices--1" title="Select the FHIR APIs your application uses">&nbsp;</div>
+						</div>
+						<div class="editor-field" style="display:inline;">
+							<select class="multiselect-hidden" data-val="true" data-val-required="The FHIR API Scope field is required." id="webServices--1" multiple="multiple" name="WebServices"><optgroup label="FHIR APIs:">
+<option value="ALLERGYINTOLERANCE.READ">ALLERGYINTOLERANCE.READ</option>
+<option value="ALLERGYINTOLERANCE.SEARCH">ALLERGYINTOLERANCE.SEARCH</option>
+<option value="BINARY.READ">BINARY.READ</option>
+<option value="CAREPLAN.READ">CAREPLAN.READ</option>
+<option value="CAREPLAN.SEARCH">CAREPLAN.SEARCH</option>
+<option value="CONDITION.READ">CONDITION.READ</option>
+<option value="CONDITION.SEARCH">CONDITION.SEARCH</option>
+<option value="DEVICE.READ">DEVICE.READ</option>
+<option value="DEVICE.SEARCH">DEVICE.SEARCH</option>
+<option value="DIAGNOSTICREPORT.READ">DIAGNOSTICREPORT.READ</option>
+<option value="DIAGNOSTICREPORT.SEARCH">DIAGNOSTICREPORT.SEARCH</option>
+<option value="DOCUMENTREFERENCE.READ">DOCUMENTREFERENCE.READ</option>
+<option value="DOCUMENTREFERENCE.SEARCH">DOCUMENTREFERENCE.SEARCH</option>
+<option value="GOAL.READ">GOAL.READ</option>
+<option value="GOAL.SEARCH">GOAL.SEARCH</option>
+<option value="IMMUNIZATION.READ">IMMUNIZATION.READ</option>
+<option value="IMMUNIZATION.SEARCH">IMMUNIZATION.SEARCH</option>
+<option value="MEDICATION.READ">MEDICATION.READ</option>
+<option value="MEDICATION.SEARCH">MEDICATION.SEARCH</option>
+<option value="MEDICATIONORDER.READ">MEDICATIONORDER.READ</option>
+<option value="MEDICATIONORDER.SEARCH">MEDICATIONORDER.SEARCH</option>
+<option value="MEDICATIONSTATEMENT.READ">MEDICATIONSTATEMENT.READ</option>
+<option value="MEDICATIONSTATEMENT.SEARCH">MEDICATIONSTATEMENT.SEARCH</option>
+<option value="OBSERVATION.READ">OBSERVATION.READ</option>
+<option value="OBSERVATION.SEARCH">OBSERVATION.SEARCH</option>
+<option value="PATIENT.READ">PATIENT.READ</option>
+<option value="PATIENT.SEARCH">PATIENT.SEARCH</option>
+<option value="PRACTITIONER.READ">PRACTITIONER.READ</option>
+<option value="PRACTITIONER.SEARCH">PRACTITIONER.SEARCH</option>
+<option value="PROCEDURE.READ">PROCEDURE.READ</option>
+<option value="PROCEDURE.SEARCH">PROCEDURE.SEARCH</option>
+</optgroup>
+</select>
+							<div class="multiselect-view" data-for="webServices--1"></div>
+							<div class="popupParent" data-for="webServices--1" id="webServices--1-popup" title="Choose your FHIR APIs"></div>
+						</div>
+					</div>
+					<span class="field-validation-valid" data-valmsg-for="WebServices" data-valmsg-replace="true"></span>
+				</div>
+				<div class="clear"></div> 
+
+				
+				<div class="editor-input" title="Secure URL displaying terms and conditions for use of your application">
+					<div class="editor-field">
+						<br />
+						<input data-val="true" data-val-required="Enter a secure URL where users can review your terms and conditions prior to authorizing access to their data" id="AppTerms" maxlength="500" name="AppTerms" placeholder="https://appTerms.yourSite.com" size="500" style="width: 550px" type="text" value="" />
+					</div>
+					<div class="editor-label">
+						<label for="AppTerms">Terms and Conditions secure URL<span style="color:red">*</span></label> <span class="field-validation-valid" data-valmsg-for="AppTerms" data-valmsg-replace="true"></span>
+					</div>
+				</div>
+
+				
+				<div class="disclosuresPanel">
+					<div class="row" style="height:inherit">
+						<div class="editor-input" style="display:inline;">
+							<div class="editor-label group-label" style="display:inline;">
+								<br />
+								<br />
+									<a data-which="disclosuresDetail">
+										Terms and Conditions Disclosures
+									</a>
+							</div>
+						</div>
+					</div>
+					<div class="disclosuresDetail">
+						<div class="row" style="height:inherit">
+							<br />
+							<div class="OAuth2QuestionExplanation">
+								<p>The following questions identify key aspects of your app’s Terms of Use that might be of interest to patients as they connect your app to their health data. Some of the data collected below will be displayed to patients in their OAuth 2.0 approval workflow.</p>
+								<p>Per open.epic’s Terms of Use, you are required to provide accurate and truthful information. False answers to these questions—such as claiming to have a business associate agreement (BAA) with a healthcare organization and the healthcare organization denying such an agreement—can result in suspension of your applications and restrictions on your future use of open.epic materials.</p>
+											<p>Once you submit to production, these questions will no longer be editable.</p>
+								<br />
+							</div>
+
+							<div class="WhoOfferApp">
+								<div class="OAuth2QuestionTitle">
+									Which option best describes the company offering the app to users/patients? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="WhoOfferApp_AnswerCategory" name="WhoOfferApp.AnswerCategory" style="text-transform: none;" type="radio" value="32001" /> The users’ healthcare provider, who is a HIPAA-covered entity <br />
+										</label>
+										<label>
+											<input id="WhoOfferApp_AnswerCategory" name="WhoOfferApp.AnswerCategory" style="text-transform: none;" type="radio" value="32002" /> Another healthcare provider, who is a HIPAA-covered entity <br />
+										</label>
+										<label>
+											<input id="WhoOfferApp_AnswerCategory" name="WhoOfferApp.AnswerCategory" style="text-transform: none;" type="radio" value="32003" /> Government agency <br />
+										</label>
+										<label>
+											<input id="WhoOfferApp_AnswerCategory" name="WhoOfferApp.AnswerCategory" style="text-transform: none;" type="radio" value="32004" /> Non-profit organization <br />
+										</label>
+										<label>
+											<input id="WhoOfferApp_AnswerCategory" name="WhoOfferApp.AnswerCategory" style="text-transform: none;" type="radio" value="32005" /> For-profit organization <br />
+										</label>
+										<label>
+											<input id="WhoOfferApp_AnswerCategory" name="WhoOfferApp.AnswerCategory" style="text-transform: none;" type="radio" value="32006" /> An individual or independent developer <br />
+										</label>
+									<br />
+								</div>
+							</div>
+
+							<div class="HaveBusinessAgreement">
+								<div class="OAuth2QuestionTitle">
+									Do you have a <a href=https://www.hhs.gov/hipaa/for-professionals/covered-entities/sample-business-associate-agreement-provisions/index.html>business associate agreement</a> with each covered entity your app will connect to? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="HaveBusinessAgreement_AnswerCategory" name="HaveBusinessAgreement.AnswerCategory" style="text-transform: none;" type="radio" value="32008" /> No <br />
+										</label>
+										<label>
+											<input id="HaveBusinessAgreement_AnswerCategory" name="HaveBusinessAgreement.AnswerCategory" style="text-transform: none;" type="radio" value="32007" /> Yes, with: <br />
+										</label>
+									<div class="OAuth2QuestionTextBox">
+										<input id="HaveBusinessAgreement_FreeTextAnswer" maxlength="500" name="HaveBusinessAgreement.FreeTextAnswer" placeholder="Baptist Middle-Earth, Children&#39;s Hospital of Neverland, ..." size="500" style="width: 550px" type="text" value="" />
+									</div>
+									<br />
+								</div>
+							</div>
+
+							<div class="HowAppFunded">
+								<div class="OAuth2QuestionTitle">
+									How is this app funded? (Select all that apply.) <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_0_" name="HowAppFunded.CheckBoxAnswers[0]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[0]" type="hidden" value="false" /> This app is funded by the user’s healthcare provider <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_1_" name="HowAppFunded.CheckBoxAnswers[1]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[1]" type="hidden" value="false" /> This app is funded by another healthcare provider <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_2_" name="HowAppFunded.CheckBoxAnswers[2]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[2]" type="hidden" value="false" /> This app is funded by purchases, subscriptions, or donations <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_3_" name="HowAppFunded.CheckBoxAnswers[3]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[3]" type="hidden" value="false" /> This app is funded by advertisements <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_4_" name="HowAppFunded.CheckBoxAnswers[4]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[4]" type="hidden" value="false" /> This app is funded by the sale of data or data access to other organizations <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_5_" name="HowAppFunded.CheckBoxAnswers[5]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[5]" type="hidden" value="false" /> This app is funded by your other business ventures <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_6_" name="HowAppFunded.CheckBoxAnswers[6]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[6]" type="hidden" value="false" /> This app is funded by debt or venture capital in a startup company <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_7_" name="HowAppFunded.CheckBoxAnswers[7]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[7]" type="hidden" value="false" /> This app is produced by volunteers or is available in the open source community <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="HowAppFunded_CheckBoxAnswers_8_" name="HowAppFunded.CheckBoxAnswers[8]" style="text-transform: none;" type="checkbox" value="true" /><input name="HowAppFunded.CheckBoxAnswers[8]" type="hidden" value="false" /> This app is funded by grants from: <br />
+										</label>
+									<div class="OAuth2QuestionTextBox">
+										<input id="HowAppFunded_FreeTextAnswer" maxlength="500" name="HowAppFunded.FreeTextAnswer" placeholder="the Institute of Helpful Raccoons, Torchwood Institute, ..." size="500" style="width: 550px" type="text" value="" />
+									</div>
+									<br />
+								</div>
+							</div>
+
+							<div class="WhereStoreData">
+								<div class="OAuth2QuestionTitle">
+									Where does this app store user data? (Select all that apply.) <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhereStoreData_CheckBoxAnswers_0_" name="WhereStoreData.CheckBoxAnswers[0]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhereStoreData.CheckBoxAnswers[0]" type="hidden" value="false" /> This app can store your data locally on the user&#39;s device <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhereStoreData_CheckBoxAnswers_1_" name="WhereStoreData.CheckBoxAnswers[1]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhereStoreData.CheckBoxAnswers[1]" type="hidden" value="false" /> This app can store your data on servers in the United States <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhereStoreData_CheckBoxAnswers_2_" name="WhereStoreData.CheckBoxAnswers[2]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhereStoreData.CheckBoxAnswers[2]" type="hidden" value="false" /> The app can perform core services without storing data on servers, and the app stores user data on servers in the US only if the user opts in <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhereStoreData_CheckBoxAnswers_3_" name="WhereStoreData.CheckBoxAnswers[3]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhereStoreData.CheckBoxAnswers[3]" type="hidden" value="false" /> This app can store your data on servers outside of the United States <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhereStoreData_CheckBoxAnswers_4_" name="WhereStoreData.CheckBoxAnswers[4]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhereStoreData.CheckBoxAnswers[4]" type="hidden" value="false" /> The app can perform core services without storing data on servers, and the app stores user data on servers outside the US only if the user opts in <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhereStoreData_CheckBoxAnswers_5_" name="WhereStoreData.CheckBoxAnswers[5]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhereStoreData.CheckBoxAnswers[5]" type="hidden" value="false" /> This app does not store user data <br />
+										</label>
+									<span class="field-validation-valid" data-valmsg-for="WhereStoreData" data-valmsg-replace="true"></span>
+									<br />
+								</div>
+							</div>
+
+							<div class="HowLongStoreData">
+								<div class="OAuth2QuestionTitle">
+									For how long does this app store user data? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="HowLongStoreData_AnswerCategory" name="HowLongStoreData.AnswerCategory" style="text-transform: none;" type="radio" value="32045" /> This app does not store user data <br />
+										</label>
+										<label>
+											<input id="HowLongStoreData_AnswerCategory" name="HowLongStoreData.AnswerCategory" style="text-transform: none;" type="radio" value="32047" /> This app stores your data indefinitely <br />
+										</label>
+										<label>
+											<input id="HowLongStoreData_AnswerCategory" name="HowLongStoreData.AnswerCategory" style="text-transform: none;" type="radio" value="32046" /> This app stores user data for: <br />
+										</label>
+									<div class="OAuth2QuestionTextBox">
+										<input id="HowLongStoreData_FreeTextAnswer" maxlength="500" name="HowLongStoreData.FreeTextAnswer" placeholder="17 microfortnights after the user logs out" size="500" style="width: 550px" type="text" value="" />
+									</div>
+									<br />
+								</div>
+							</div>
+
+							<div class="DeleteData">
+								<div class="OAuth2QuestionTitle">
+									Does this app allow users to delete the data that have been stored about them? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="DeleteData_AnswerCategory" name="DeleteData.AnswerCategory" style="text-transform: none;" type="radio" value="32051" /> This app allows users to delete all of the data that have been stored about them <br />
+										</label>
+										<label>
+											<input id="DeleteData_AnswerCategory" name="DeleteData.AnswerCategory" style="text-transform: none;" type="radio" value="32052" /> This app allows users to delete some of the data that have been stored about them <br />
+										</label>
+										<label>
+											<input id="DeleteData_AnswerCategory" name="DeleteData.AnswerCategory" style="text-transform: none;" type="radio" value="32053" /> This app does not allow users to delete the data that have been stored about them <br />
+										</label>
+									<br />
+								</div>
+							</div>
+
+							<div class="HealthInfoRetainedAfterDelete">
+								<div class="OAuth2QuestionTitle">
+									Is user data retained after a user deletes the app and closes their account? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="HealthInfoRetainedAfterDelete_AnswerCategory" name="HealthInfoRetainedAfterDelete.AnswerCategory" style="text-transform: none;" type="radio" value="32036" /> Yes <br />
+										</label>
+										<label>
+											<input id="HealthInfoRetainedAfterDelete_AnswerCategory" name="HealthInfoRetainedAfterDelete.AnswerCategory" style="text-transform: none;" type="radio" value="32037" /> No <br />
+										</label>
+									<br />
+								</div>
+							</div>
+
+							<div class="WhoAccessData">
+								<div class="OAuth2QuestionTitle">
+									Other than the user, who has access to user data? (Select all that apply.) <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_0_" name="WhoAccessData.CheckBoxAnswers[0]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[0]" type="hidden" value="false" /> No one; data never leaves the user&#39;s device <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_1_" name="WhoAccessData.CheckBoxAnswers[1]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[1]" type="hidden" value="false" /> Your staff <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_2_" name="WhoAccessData.CheckBoxAnswers[2]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[2]" type="hidden" value="false" /> People and groups users authorize <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_3_" name="WhoAccessData.CheckBoxAnswers[3]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[3]" type="hidden" value="false" /> Apps that users authorize <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_4_" name="WhoAccessData.CheckBoxAnswers[4]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[4]" type="hidden" value="false" /> The user&#39;s care team <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_5_" name="WhoAccessData.CheckBoxAnswers[5]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[5]" type="hidden" value="false" /> Researchers <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_6_" name="WhoAccessData.CheckBoxAnswers[6]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[6]" type="hidden" value="false" /> Your partners or affiliates <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_7_" name="WhoAccessData.CheckBoxAnswers[7]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[7]" type="hidden" value="false" /> Government employees or agencies <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="WhoAccessData_CheckBoxAnswers_8_" name="WhoAccessData.CheckBoxAnswers[8]" style="text-transform: none;" type="checkbox" value="true" /><input name="WhoAccessData.CheckBoxAnswers[8]" type="hidden" value="false" /> Others: <br />
+										</label>
+									<div class="OAuth2QuestionTextBox">
+										<input id="WhoAccessData_FreeTextAnswer" maxlength="500" name="WhoAccessData.FreeTextAnswer" placeholder="the user&#39;s mother, second cousin, and trained kitten" size="500" style="width: 550px" type="text" value="" />
+									</div>
+									<span class="field-validation-valid" data-valmsg-for="WhoAccessData" data-valmsg-replace="true"></span>
+									<br />
+								</div>
+							</div>
+
+							<div class="NotifyUserOnAccess">
+								<div class="OAuth2QuestionTitle">
+									For entities that can access user data, will the user specifically approve and be notified of each access to user&#39;s data, or is their authorization general and information shared without notification? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="NotifyUserOnAccess_AnswerCategory" name="NotifyUserOnAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32030" /> Users specifically approve each time their information is accessed or shared <br />
+										</label>
+										<label>
+											<input id="NotifyUserOnAccess_AnswerCategory" name="NotifyUserOnAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32031" /> Users are notified each time their information is accessed or shared <br />
+										</label>
+										<label>
+											<input id="NotifyUserOnAccess_AnswerCategory" name="NotifyUserOnAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32032" /> Users authorize access and sharing of their information generally and are not notified <br />
+										</label>
+										<label>
+											<input id="NotifyUserOnAccess_AnswerCategory" name="NotifyUserOnAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32055" /> Users authorize access and sharing of their information generally. Circumstances and their user preferences impact whether or not they will be notified <br />
+										</label>
+									<br />
+								</div>
+							</div>
+
+							<div class="ObtainRecordData">
+								<div class="OAuth2QuestionTitle">
+									Does the app developer allow users to obtain a record of the data that have been collected about them? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="ObtainRecordData_AnswerCategory" name="ObtainRecordData.AnswerCategory" style="text-transform: none;" type="radio" value="32033" /> The app developer allows users to obtain a complete record of the data that have been stored about them <br />
+										</label>
+										<label>
+											<input id="ObtainRecordData_AnswerCategory" name="ObtainRecordData.AnswerCategory" style="text-transform: none;" type="radio" value="32034" /> The app developer allows users to obtain a partial record of the data that have been stored about them <br />
+										</label>
+										<label>
+											<input id="ObtainRecordData_AnswerCategory" name="ObtainRecordData.AnswerCategory" style="text-transform: none;" type="radio" value="32035" /> The app developer does not allow users to obtain a record of the data that have been stored about them <br />
+										</label>
+									<br />
+								</div>
+							</div>
+
+							<div class="AppDataUse">
+								<div class="OAuth2QuestionTitle">
+									Other than providing direct service to the user, how does the app developer use data about the user? (Select all that apply.) <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_0_" name="AppDataUse.CheckBoxAnswers[0]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[0]" type="hidden" value="false" /> The app developer doesn&#39;t use data about users beyond providing direct services <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_1_" name="AppDataUse.CheckBoxAnswers[1]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[1]" type="hidden" value="false" /> The app developer may use data about users to improve its services in the future <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_2_" name="AppDataUse.CheckBoxAnswers[2]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[2]" type="hidden" value="false" /> The app developer may use data about users for research <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_3_" name="AppDataUse.CheckBoxAnswers[3]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[3]" type="hidden" value="false" /> The app developer may use data about users for advertising to users <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_4_" name="AppDataUse.CheckBoxAnswers[4]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[4]" type="hidden" value="false" /> The app developer may use data about users to allow third parties to advertise to users <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_5_" name="AppDataUse.CheckBoxAnswers[5]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[5]" type="hidden" value="false" /> The app developer may use data about users for advertising to others <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_6_" name="AppDataUse.CheckBoxAnswers[6]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[6]" type="hidden" value="false" /> The app developer may provide, distribute, or sell data about users to other parties or applications <br />
+										</label>
+										<label>
+											<input data-val="true" data-val-required="The Boolean field is required." id="AppDataUse_CheckBoxAnswers_7_" name="AppDataUse.CheckBoxAnswers[7]" style="text-transform: none;" type="checkbox" value="true" /><input name="AppDataUse.CheckBoxAnswers[7]" type="hidden" value="false" /> The app developer app may sell aggregate, generalized, or de-identified data to third parties <br />
+										</label>
+									<span class="field-validation-valid" data-valmsg-for="AppDataUse" data-valmsg-replace="true"></span>
+									<br />
+								</div>
+							</div>
+
+							<div class="ObtainRecordAccess">
+								<div class="OAuth2QuestionTitle">
+									Does this app allow users to obtain a record of who has accessed data about them? <br />
+								</div>
+								<div class="OAuth2QuestionAnswers">
+										<label>
+											<input data-val="true" data-val-number="The field AnswerCategory must be a number." data-val-required="The AnswerCategory field is required." id="ObtainRecordAccess_AnswerCategory" name="ObtainRecordAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32048" /> This app allows users to obtain a complete record of who has accessed data about them <br />
+										</label>
+										<label>
+											<input id="ObtainRecordAccess_AnswerCategory" name="ObtainRecordAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32049" /> This app allows users to obtain a partial record of who has accessed data about them <br />
+										</label>
+										<label>
+											<input id="ObtainRecordAccess_AnswerCategory" name="ObtainRecordAccess.AnswerCategory" style="text-transform: none;" type="radio" value="32050" /> This app does not allow users to obtain a record of who has accessed data about them <br />
+										</label>
+									<br />
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="editor-input" title="Optional secure URL to share additional information about how you manage user data">
+					<div class="editor-field">
+						<br />
+						<input id="AdditionalDisclosureInfo" maxlength="500" name="AdditionalDisclosureInfo" placeholder="https://moreInfo.yourSite.com" size="500" style="width: 550px" type="text" value="" />
+					</div>
+					<div class="editor-label">
+						<label for="AdditionalDisclosureInfo">Additional Information secure URL</label> <span class="field-validation-valid" data-valmsg-for="AdditionalDisclosureInfo" data-valmsg-replace="true"></span>
+					</div>
+				</div>
+
+
+				<div class="row compact">
+					<div class="editor-input">
+						<div class="editor-field">
+							<span>Submissions and updates publish to environments nightly.</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" style="height:inherit">
+					<div class="pushdown">
+								<input type="submit" name="save" value="Save without submitting" class="secondarybutton" style="margin-bottom:20px;" />
+							<div class="flatbutton">
+								<div class="flatbutton_go flatbutton-label"></div>
+								<input class="flatbutton-label" type="submit" value="Submit to Sandbox" />
+							</div>
+					</div>
+				</div>
+				<div class="row" style="height:inherit">
+					&nbsp; 
+				</div>
+			</fieldset>
+</form>	</div> 
+
+</div> 
+	<br /><br />
+	<div class="clear"></div>
+
+<script>
+	$(document).ready(function () {
+		var qString = location.search;
+		/* grab the value of app */
+		var app = "";
+		if (app) {
+			var $editButton = $("div[data-which='" + app + "']");
+			editClicked($editButton);
+		}
+	});
+
+</script>
+
+
+<br /><br />
+<div class="clear"></div>
+
+
+
+
+			</div>
+			<div id="footer">
+	   
+			</div>
+		</div>
+	</div>
+	<div id="copyright">
+	 <text>Copyright © 2019 Epic Systems Corporation. All rights reserved. <a href="https://www.epic.com/about/privacypolicies">Privacy Policy</a> <a href="/Home/TermsAndConditions">Terms and Conditions</a> (608) 271-9000</text>
+<br />
+<text>HL7, CDA, CCD, FHIR, and the FHIR [FLAME DESIGN] are the registered trademarks of Health Level Seven International. ONC CERTIFIED HIT® is a registered trademark of HHS.</text>
+<br />
+	</div>
+</body>
+</html>

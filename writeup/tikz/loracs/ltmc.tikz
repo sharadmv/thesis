@@ -6,10 +6,12 @@
     \node[obs](x_n){$x_n$};
     \node[latent, above=of x_n](z_n){$z_n$};
     \node[latent, above=of z_n](tau){$\tau$};
+    \node[const, right=of z_n](gamma){$\genparam$};
     
     \edge{tau}{z_n};
     \edge{z_n}{x_n};
     \edge{z_n}{x_n};
+    \edge{gamma}{x_n};
 
     \path (z_n) edge [loop right] node {} (z_n);
 

@@ -139,6 +139,55 @@ probabilistically.
     \label{fig:graphical-model-rep}
 \end{figure}
 
+\begin{align*}
+    \z_\n &\sim \N(0, I) \\
+    \x_\n \given \z_\n &\sim \p_\genparam(\x_\n \given \z_\n)
+\end{align*}
+
+\begin{align*}
+  q_\recparam(\z_\n \given \x_\n)
+\end{align*}
+
+\begin{align*}
+  \p(\z_\n \given \x_\n)
+\end{align*}
+
+\begin{align*}
+  \L[q] \triangleq \E_q\left[\log \frac{\p(\latentdata)\prod_\n \p_\genparam(\x_\n \given \z_\n)}{\prod_\n q_\recparam(\z_\n \given \x_\n)}\right]
+\end{align*}
+
+\begin{figure}
+    \includegraphics{tikz/loracs/ltmc}
+\end{figure}
+
+\begin{align*}
+    \structure &\sim \p(\structure) \\
+    \latentdata \given \structure &\sim \p(\latentdata \given \structure) \\
+    \x_\n \given \z_\n &\sim \p_\genparam(\x_\n \given \z_\n)
+\end{align*}
+
+\begin{align*}
+    t_{\textrm{root}} &= 0 \\
+    t_{\textrm{leaves}} &= 1 \\
+    \beta_{\textrm{child}} &\sim \textrm{Beta}(a, b)\\
+    t_{\textrm{child}} &= t_{\textrm{parent}} + \beta_{\textrm{child}} * (1 - t_{\textrm{parent}})
+\end{align*}
+
+\begin{align*}
+    z_{\textrm{root}} &\sim \N(0, I) \\
+    z_{\textrm{child}} &\sim \N(z_{\textrm{parent}}, (t_{\textrm{child}} - t_{\textrm{parent}}) I)
+\end{align*}
+
+\begin{align*}
+    \p(\tree \given \latentdata) \\
+    \p(\tree, \latentdata)
+\end{align*}
+
+\begin{align*}
+  \L[q] \triangleq \E_q\left[\log \frac{\p(\tree)p(\latentdata \given \tree)\prod_{n = 1}^N \p_\genparam(\x_\n \given \z_\n)}
+  {q(\tree)\prod_{\n = 1}^\numdata q_\recparam(\z_\n | \x_\n)}\right]
+\end{align*}
+    
 \section{The variational autoencoder}
 
 \section{Extensions and related approaches}
