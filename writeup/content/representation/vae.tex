@@ -28,15 +28,16 @@ will require inverting
 large matrices, which will
 easily be the bottleneck in a
 learning algorithm.
-However, the era of deep-learning has
-been defined by success in supervised learning
+However, the era of deep learning has
+been defined by success in machine learning
 tasks on
 complex datasets
-like ImageNet (\citep{Deng2009}) and CIFAR (\citep{CIFAR}).
-Using deep neural networks for
-unsupervised learning offers
-new solutions and
-new challenges.
+like ImageNet \citep{Deng2009} and CIFAR \citep{CIFAR}
+through the efficient use of deep neural networks.
+Adapting these bigger models
+to
+unsupervised learning has 
+introduced new challenges.
 
 In this chapter, we discuss the problem
 of representation learning.
@@ -60,7 +61,7 @@ leading up to the variational autoencoder (VAE),
 which is the necessary component
 for discussing what we call Bayesian structured representation learning.
 
-\section{PCA and autoencoders}
+\section{PCA and autoencoding}
 Two of the simplest and most intuitive
 representation learning algorithms
 are principle component analysis (PCA)
@@ -81,63 +82,308 @@ and decoder deep neural network.
 Specifically, we construct
 an encoder network $f_\recparam(x)$
 and a decoder network $g_\genparam(z)$
-minimize reconstruction error, i.e.
+and minimize reconstruction error
 \begin{align*}
-\min_{\genparam, \recparam} \sum _{\n = 1}^\numdata \L(\x_\n, g_\genparam(f_\recparam(\x_\n)))
+\recparam^*, \genparam^* = \argmin_{\genparam, \recparam} \sum _{\n = 1}^\numdata \L(\x_\n, g_\genparam(f_\recparam(\x_\n)))
 \end{align*}
-This strategy lets representation
-learning scale to large amounts of data
-via learning the weights $\recparam, \genparam$
-via stochastic gradient descent.
-The learned representations for a dataset
-$\latentdataset$ are just the dataset
+We can train autoencoders
+with minibatch stochastic gradient descent,
+enabling us to 
+minimize this loss function
+even with large amounts of data.
+The learned representations 
+$\latentdataset$ are just the dataset $\dataset$
 passed through the encoder network.
 
-\section{Deep generative modeling}
-Deep generative modeling is a strategy
-where in the representation learning problem
-is formalized probabilistically
-and learning a representation
-is equivalent to fitting a posterior
-distribution.
-We construct
-a graphical model
-with prior over 
-latent representations $\p(\latentdataset)$
-and parametrized likelihood function $\gen(\x_\n \given \z_\n)$,
-where each $\x_\n$ is sampled i.i.d.
+\section{The variational autoencoder}
+The variational autoencoder \citep[VAEs; ][]{Kingma2013, Rezende2014}
+formulates autoencoders probabilistically .
+Specifically, it
+assumes
+latent codes $\latentdataset$
+are sampled from a
+prior distribution $\p(\latentdataset)$.
+The latent codes
+are then independently passed through a stochastic decoder
+$\p(\x_\n \given \z_\n) \triangleq \p(\decoder_\genparam(\z))$,
+where $\decoder_\genparam(\z_\n)$ outputs
+the parameters of a distribution over $\x_\n$.
 This generative model is visualized in
 \autoref{fig:graphical-model-rep}.
-Learning representation amounts
+Representation learning in
+this probabilistic formulation amounts to
 computing the posterior distribution 
 $\p(\latentdataset \given \dataset)$.
-%\begin{align*}
-  %\genparam^*, \latentdataset^* = \argmax_{\genparam, \latentdataset} \prod_{\n = 1}^\numdata \gen(\x_\n \given \z_\n)
-%\end{align*}
 
-Perhaps the simplest representation learning
-model is linear Gaussian, also
-called probabilistic PCA (PPCA). Specifically,
-we assume
+The VAE uses
+neural network encoders and decoders,
+but the same formalization
+can be applied to PCA.
+Specifically, we
+use linear Gaussian decoder,
+i.e. $\decoder_\genparam(\z_\n) = (\dynmat \z_\n, \variance I)$
 \begin{align*}
     \z_\n &\sim \N(0, I) \\
-    \x_\n \given \z_\n &\sim \N(\dynmat \z_\n, \variance I)
+    \x_\n \given \z_\n &\sim \N(\decoder_\genparam(\z_\n)) \triangleq \N(\dynmat \z_\n, \variance I)
 \end{align*}
-PPCA generalizes PCA in that the two models
+This model, named probabilistic PCA (PPCA)
+generalizes PCA in that the two models
 are equivalent as $\variance \rightarrow 0$.
-and is useful
-in how it contextualizes
-PCA as a generative model.
-In a similar fashion, we
-can formalize autoencoders
-probabilistically.
+Formulating PCA probabilistically
+is helpful because it concretizes
+the assumptions that we
+put into our representations.
+Assuming an isotropic normal
+prior encourages $\latentdataset$
+to roughly be zero-centered and
+have independent dimensions.
+Similarly, the linear-Gaussian
+likelihood model means
+that our observed data
+should be Gaussian with
+a low-rank covariance matrix structure.
+PPCA, however, is often too simple
+of a model for complex data like images,
+especially if the task is generating
+realistic images. Neural networks, on
+the other hand, can capture complex
+dependencies in high-dimensional
+data and are a better fit
+for such data. 
+
+The VAE replaces the linear Gaussian
+decoder with a neural
+network decoder.
+The neural network decoder outputs
+the parameters of a Gaussian distribution,
+which is then sampled to observe $\x_\n$.
+\begin{align*}
+    \z_\n &\sim \N(0, I) \\
+    \x_\n \given \z_\n &\sim \N(\decoder_\genparam(\z_\n)) \triangleq \N(\mu_\gamma(\z_\n), \Sigma_(\z_\n))
+\end{align*}
+
+The VAE is a logical extension to PPCA,
+replacing simple linear-Gaussian
+likelihood model with a high capacity
+neural network. A large enough 
+neural network could plausibly
+generate realistic looking images
+, text, or other complex data
+given a low dimensional representation $\z_\n$.
+However, the simple intuition that comes
+with PPCA and linear models 
+is lost and we no longer
+have a tractable marginal distribution over data.
+However, the choice of prior
+distribution for the VAE has even more importance,
+due to its effect on the learned latent
+space.
+
+The VAE is a logical extension to PPCA, but
+introduces a challenge in posterior inference.
+A neural network decoder makes the posterior
+analytically intractable, but also
+introduces computational issues that make traditional
+variational inference and MCMC prohibitively slow.
+Cleverly, \cite{Kingma2013} use a
+neural network to approximate the posterior distribution
+$\p(\z_\n \given \x_\n)$. They introduce
+a recognition network $\encoder_\recparam$,
+which outputs the parameters of a distribution
+over $\z_\n$ (typically Gaussian). This
+approximate posterior distribution $\q_\recparam(\z_\n \given \x_\n) \triangleq \q(\encoder_\recparam(\x_\n))$ is then optimized to be 
+close to the true $\p(\z_\n \given \x_\n)$
+using a method called variational inference.
+
+\subsection{Variational inference}
+The term \emph{variational inference}
+encompasses algorithms
+that frame Bayesian inference
+as an optimization
+problem. In the case
+of latent variable models
+\footnote{We focus on
+single examples $\x$ and $\z$ for notational
+simplicity},
+we have a posterior distribution $\p(\z \given \x)$ we wish to
+infer, which is
+usually analytically intractable.
+We introduce a variational approximation
+$\q_\recparam(\z)$ where $\recparam$
+are free parameters to be optimized.
+Variational inference focuses on the 
+optimization problem 
+\begin{align*}
+\recparam^* = \argmin_\recparam \KL{\q_\recparam(\z)}{\p(\z \given \x)}
+\end{align*}
+
+Note that variational inference optimizes $\KL{q}{p}$
+rather than $\KL{p}{q}$, which is a different objective
+since KL-divergence is an asymmetric function.
+Since $\KL{q}{p}$ has an expectation with respect
+to $\q_\recparam(\z)$, KL
+is high when $q_\recparam(\z)$ is large and $\p(\z)$ is
+small, and is low when $q_\recparam(\z)$ is small
+regardless of $\p(\z)$. This means that
+variational inference encourages $\q(\z)$ to
+fit a mode of $\p(\z)$ rather than trying to 
+cover all of its support.
+
+Directly minimizing $\KL{q}{p}$ is typically
+also intractable, since it directly 
+includes the already intractable posterior
+$\p(\z \given x)$. However, we can 
+massage it into a form that is
+more amenable to optimization.
+
+\begin{align*}
+    \KL{\q_\recparam(\z)}{\p(\z \given \x)} &=  
+    -\E_\q \left[\log\frac{\p(\z \given \x)}{\q_\recparam(\z)}\right] \\
+    &= -\E_\q\left[\log \frac{\p(\x)\p(\z \given \x)}{\p(\x)\q_\recparam(\z)}\right] \\
+    &= -\E_\q\left[\log \frac{\p(\x, \z)}{\p(\x)\q_\recparam(\z)}\right] \\
+    &= \log \p(\x) -\E_\q\left[\log \frac{\p(\x, \z)}{\q_\recparam(\z)}\right] \\
+    &= \log \p(\x) - \L[\q_\recparam]
+\end{align*}
+
+The KL breaks down into two important terms.
+These first term, $\log \p(\x)$
+is the marginal data likelihood,
+and is intractable to compute directly
+since it involves integrating over all possible
+values of $\z$.
+The term on the right, however,
+is tractable to compute since 
+it is a KL divergence between known quantities,
+specifically the joint distribution $\p(\x, \z)$
+and the variational approximation $\q_\recparam(\z)$. 
+
+The left and right hand side are both lower bounded by zero,
+since $\KL{\q_\recparam(\z)}{\p(\z \given \x)} \geq 0$,
+and when
+it is zero,
+\begin{align*}
+    \KL{\q_\recparam(\z)}{\p(\z \given \x)} = 0 \iff \log \p(\x) &= \L[\q_\phi] \triangleq \E_\q\left[\log \frac{\p(\x, \z)}{\q_\recparam(\z)}\right] 
+\end{align*}
+$\L[\q_\recparam]$ is called the
+\emph{evidence lower bound} or ELBO for short.
+It is a lower bound on the marginal data
+likelihood $\log \p(\x)$, and is equal 
+to it when $\KL{\q_\recparam(\z)}{\p(\z \given \x)} = 0$.
+The goal of variational inference is to maximize the ELBO with respect to $\recparam$, or
+\begin{align*}
+\recparam^* = \argmax_\recparam \L[\q_\recparam] \triangleq \E_\q\left[\log \frac{\p(\x, \z)}{\q_\recparam(\z)}\right] 
+\end{align*}
+Unlike directly optimizing $\KL{\q_\recparam(\z)}{\p(\z \given \x)}$, optimizing the ELBO is usually tractable, but algorithms
+depend on the model and choice of variational posterior.
+For a more detailed explanation of variational inference,
+please refer to \citet{Blei2017}.
+
+\subsection{Inference in the VAE}
+The VAE uses the approximate posterior
+$\q_\recparam(\z_\n \given \x_\n) \triangleq \N(\encoder_\recparam(\x_\n))$.
+The free parameters in the VAE 
+variational posterior are the
+encoder weights $\recparam$ 
+and the likelihood term
+also includes decoder weights $\genparam$, resulting
+in the following optimization problem:
+\begin{align*}
+\recparam^*,\genparam^* = \argmax_{\genparam, \recparam} \L[\q_\recparam] &\triangleq \E_\q\left[\log \frac{\p(\z)\p_\genparam(\x \given \z)}{\q_\recparam(\z)}\right] \\
+&= \E_\q \left[ \log \p_\genparam(\x \given \z)\right] - \KL{\q_\genparam(\z \given \x)}{\p(\z)}
+\end{align*}
+When breaking down the ELBO in this way,
+we get an autoencoding-like objective function.
+The first is a log-likelihood term for data, measuring how well the observed data is reconstructed.
+$\E_\q \left[ \log \p_\genparam(\x \given \z)\right]$ is 
+the expected likelihood of a data point w.r.t.
+our variational posterior, but it cannot be computed directly
+since it involves integrating over
+$\z$. It can, however, 
+be approximated with Monte Carlo sampling, i.e. $\E_\q \left[ \log \p_\genparam(\x \given \z)\right] \approx \frac{1}{S}\sum_{l}^S \p_\genparam(\x \given \z^{(s)})$ where $\{\z^{(s)}\}_{s = 1}^S \sim \q(\z \given \x)$.
+In practice, we set $S = 1$, since the variance of gradients
+of the ELBO can also be lowered by larger minibatches.
+
+The second term of the ELBO is the KL divergence of the posterior distribution to the prior. This intuitively acts as
+a regularizer on the latent space. Consider
+an isotropic normal prior $\z \sim \N(0, I)$. The KL
+term encourages the posterior $\q_\recparam(\z \given \x)$
+to thus look like an isotropic normal, 
+at the very least preventing it from collapsing it to
+a point. 
+The VAE, at some level, acts as regularized autoencoder, though understanding theoretical properties of the ELBO
+is still an active area of research \citep{Burda2015, Hoffman2016, Alemi2017}.
 
 \begin{figure}[htp!]
     \centering
     \includegraphics{tikz/representation/rep}
-    \caption{The graphical model for traditional representation learning}
+    \caption{The graphical model for representation learning}
     \label{fig:graphical-model-rep}
 \end{figure}
+
+We can optimize the free parameters of the VAE ELBO
+using stochastic gradient descent
+using a Monte Carlo approximation of the likelihood term.
+\begin{align*}
+\L[\q_\recparam] &= \E_\q \left[ \log \p_\genparam(\x \given \z)\right] - \KL{\q_\genparam(\z \given \x)}{\p(\z)} \\
+                 &\approx \frac{1}{S}\sum_{s = 1}^S \log \p_\genparam(\x \given \z^{(s)}) - \KL{\q_\genparam(\z \given \x)}{\p(\z)}
+\end{align*}
+The KL term can usually be computed in closed form (if both $\q(\z \given \x)$ and $\p(\z)$ are Gaussian, for example), or can be approximated
+via Monte Carlo. We can compute gradients of the approximate
+ELBO w.r.t. $\genparam$ and $\recparam$, and use a
+first-order optimization to find local maximum. \citet{Kingma2013}
+popularized the \emph{reparametrization trick} for VAEs,
+where in samples $\{z^{(s)}\}_{s = 1}^S \sim \q(\z \given \x)$ are generated
+via a deterministic transformation of independent noise.
+For example, if $\q(\z \given \x)$ is a Gaussian distribution (parameterized
+by a neural network), samples can be generated
+by first sampling independent isotropic Gaussian noise $\epsilon^{(s)} \sim \N(0, I)$, then transforming the noise according to the parameters
+of $\q(\z \given \x) = \N(\mu, \Sigma)$
+\begin{align*}
+    \z^{(s)} = \mu + L\epsilon^{(s)}
+\end{align*}
+where $L = \chol{\Sigma}$. The reparameterization trick
+has empirically resulted in lower variance gradients
+when compared to alternatives
+like BBVI/REINFORCE/score function estimators \citep{Ranganath2014, Williams1992}.
+
+\subsection{Extensions and applications of the VAE}
+The simplicity and intuitiveness of the
+VAE has led to follow up research
+in several directions, of which we
+will discuss a few.
+
+\subsubsection{Autoregressive and recurrent decoders}
+One line of work has explored
+decoders that result have powerful
+likelihoods over images.
+In the vanilla VAE, an observed image
+is a sample 
+from a Gaussian 
+or Bernoulli distribution
+parameterized by a neural network.
+Pixels are sampled independently,
+though the parameters are coupled
+through the neural network.
+Recurrent models like 
+DRAW \citep{Gregor2015}
+sample the output image
+through a recurrent
+neural network that outputs
+the image conditionally.
+Autoregressive decoders
+like PixelVAE \citep{Gulrajani2016}
+generate an image with convolution
+operations.
+These decoders, although
+computationally more
+expensive than an independent likelihood,
+have demonstrated great improvement in
+generated image quality and 
+held-out log-likelihood scores.
+
+\TODO{MORE}
+
+\iffalse
 
 \begin{align*}
     \z_\n &\sim \N(0, I) \\
@@ -187,7 +433,18 @@ probabilistically.
   \L[q] \triangleq \E_q\left[\log \frac{\p(\tree)p(\latentdata \given \tree)\prod_{n = 1}^N \p_\genparam(\x_\n \given \z_\n)}
   {q(\tree)\prod_{\n = 1}^\numdata q_\recparam(\z_\n | \x_\n)}\right]
 \end{align*}
-    
-\section{The variational autoencoder}
 
-\section{Extensions and related approaches}
+\begin{align*}
+  \p(\latentdata \given \tree) \cancel{=} \prod_\n \p(\z_\n \given \tree)
+\end{align*}
+
+\begin{align*}
+    \p(\z_{\numdata + 1} \given \tau, \latentdata)
+\end{align*}
+
+\begin{align*}
+  \tau &\sim \p(\tree \given \textbf{s}_{1:M}) \\
+  \z_\n \given \tau &\sim \p(\z_\n = s_{M + 1} \given \tau, \textbf{s}_{1:M}) \\
+  \x_\n \given \z_\n &\sim \p_\genparam(\x_\n | \z_\n)
+\end{align*}
+\fi

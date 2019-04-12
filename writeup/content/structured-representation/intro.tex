@@ -1,0 +1,64 @@
+The goal of Bayesian structured
+representation learning (BSRL)
+is to combine the strengths of
+Bayesian structured learning
+and representation learning,
+and ameliorate their weaknesses.
+Bayesian structure learning
+infers complex latent structure
+in data but often suffers from
+computational and capacity issues
+when dealing with large amounts of
+complex, high-dimensional data.
+Representational learning can
+successfully learn low-dimensional
+embeddings of data, but
+it's hard to understand the
+latent space and understand the interpretation.
+Furthermore, incorporating
+domain knowledge into a VAE
+can be challenging.
+
+The strengths and weaknesses of 
+the methods are complementary
+and in this part of the thesis, we demonstrate
+some key models where we can
+achieve the best of both worlds:
+compressing complex, high dimensional
+data into low-dimensional spaces
+where data is organized in a useful way.
+We formulate the Bayesian structured
+representation learning problem
+as a generative model
+where a VAE is used
+with a Bayesian structure learning prior.
+This graphical model is pictured in 
+\autoref{fig:bsrl}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[]{tikz/loracs/ltmc}
+    \caption{The graphical model for
+    Bayesian structured representation learning}
+    \label{fig:bsrl}
+\end{figure}
+
+The remainder of the thesis
+consists of three
+contributions in the space of Bayesian
+structured representation learning.
+The first
+is an algorithm that details how
+we can do Bayesian inference in
+nonconjugate models
+such as those we see in BSRL.
+The second combines Bayesian nonparametric
+hierarchical clustering with
+the VAE for use in modeling
+clusterable data and for exploratory data analysis.
+The final chapter details a novel
+contribution in the space
+of reinforcement learning, where
+a latent linear dynamical system
+can be used as a model to learn
+policies on real robots.
