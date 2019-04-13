@@ -1,6 +1,6 @@
 The goal of Bayesian structured
 representation learning (BSRL)
-is to combine the complementary 
+is to combine the
 strengths of
 Bayesian structured learning
 and representation learning,
@@ -13,17 +13,12 @@ when dealing with large amounts of
 complex, high-dimensional data.
 Representational learning methods
 like VAEs can model high-dimensional
-data
-flexibly
-and learn low-dimensional
-embeddings of data.
-but it's hard to understand the
-latent space and understand the interpretation.
-Furthermore, incorporating
-domain knowledge into a VAE
-can be challenging.
+data flexibly and learn low-dimensional
+embeddings of data,
+but it's often hard to understand 
+and interpret
 
-The strengths and weaknesses of 
+The strengths and weaknesses of
 the methods are complementary
 and in this part of the thesis, we demonstrate
 some key models where we can
@@ -31,11 +26,30 @@ achieve the best of both worlds:
 compressing complex, high dimensional
 data into low-dimensional spaces
 where data is organized in a useful way.
-We formulate the Bayesian structured
-representation learning problem
-as a generative model
-where a VAE is used
-with a Bayesian structure learning prior.
+Bayesian structure learning
+involves incorporating an a priori
+idea of how data is organized
+into a structure class and
+prior distribution.
+When combining this idea with representation
+learning, we are now inserting
+the structure into the embedding space.
+The VAE is a nice choice
+for representation learning strategy
+with BSL in mind. The VAE includes
+a prior distribution over the latent space
+and this is the ideal place to
+insert an opinion about
+how data is organized.
+
+Specifically, we put a Bayesian structured prior
+on the latent space of the codes $\latentdataset$,
+a process described by the following model:
+\begin{align*}
+    \structure &\sim \p(\structure) \\
+    \latentdataset \given \structure &\sim \p(\latentdataset \given \structure) \\
+    \x_\n &\sim \p_\genparam(\x_\n \given \z_\n)
+\end{align*}
 This graphical model is pictured in 
 \autoref{fig:bsrl}.
 
@@ -47,22 +61,66 @@ This graphical model is pictured in
     \label{fig:bsrl}
 \end{figure}
 
-The remainder of the thesis
-consists of three
-contributions in the space of Bayesian
-structured representation learning.
-The first
-is an algorithm that details how
-we can do Bayesian inference in
-nonconjugate models
-such as those we see in BSRL.
-The second combines Bayesian nonparametric
-hierarchical clustering with
-the VAE for use in modeling
-clusterable data and for exploratory data analysis.
+The design space of BSRL problems
+is that of BSL, namely
+picking a structure class
+and prior distribution
+but with the added ability
+to model data
+with complicated likelihoods.
+This strategy may appear to
+achieve the best of both worlds,
+but it comes
+with its own challenges.
+One challenge is that inference in BSRL models
+can be far challenging
+more than in isolated BSL or representation
+learning models. Consider Bayesian
+nonparametric hierarchical clustering,
+which uses MCMC, and the VAE,
+which uses gradient-based variational
+inference. The combined model
+is easy to write down and understand,
+but it is not immediately clear
+what an inference procedure that combines
+MCMC and variational inference
+will look like. Another challenge 
+is that of scaling structure learning
+algorithms to large datasets. Although
+representation learning methods help
+with the problem of high-dimensional
+complex data, structure learning methods
+like Bayesian nonparametric hierarchical clustering
+will struggle with large amounts of data.
+Finally, what can we do with a BSRL model
+that couldn't be done with a regular BSL or representation
+learning model?
+
+The remainder of this thesis
+consists of contributions that
+explore these challenges.
+The next chapter deals with algorithmic
+hurdles that come with Bayesian
+inference in BSRL. Specifically,
+we present \emph{neural variational message
+passing}, an extension of \citet{Johnson2016}
+that performs non-conjugate variational inference 
+using recognition networks.
+The following chapter introduces
+the \emph{LORACs prior}, which
+bridges the gap between
+Bayesian nonparametric
+hierarchical clustering and the VAE.
+We address the challenge of scaling
+Bayesian nonparametrics to large datasets
+and also explore how BNHC can help improve
+the quality of representations learned
+by a VAE.
 The final chapter details a novel
 contribution in the space
-of reinforcement learning, where
-a latent linear dynamical system
-can be used as a model to learn
-policies on real robots.
+of model-based reinforcement learning, where
+the task is controlling a robot from raw images.
+The contribution is \emph{SOLAR}, an algorithm
+that applies linear control
+in the latent space of a BSRL model,
+which we apply successfully to real robots.
