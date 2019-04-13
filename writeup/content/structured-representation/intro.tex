@@ -16,12 +16,14 @@ like VAEs can model high-dimensional
 data flexibly and learn low-dimensional
 embeddings of data,
 but it's often hard to understand 
-and interpret the resulting embeddings.
+and interpret the resulting embeddings,
+and guide the representations
+with some downstream task in mind.
 
 The strengths and weaknesses of
 the methods are complementary
 and in this part of the thesis, we demonstrate
-some key models where we can
+explore some key models where we can
 achieve the best of both worlds:
 compressing complex, high dimensional
 data into low-dimensional spaces
@@ -38,19 +40,24 @@ The VAE is a logical choice
 for representation learning strategy
 with BSL in mind, as it includes
 a prior distribution over the latent space
-This prior distribution
+and this prior distribution
 offers an opportunity to specify
 how data is organized.
 
-Specifically, we put a Bayesian structured prior
-on the latent space of the codes $\latentdataset$,
+In BSRL, we put a Bayesian structured prior
+on the latent space of the codes $\latentdataset$
+of a VAE,
 a process described by the following model:
 \begin{align*}
     \structure &\sim \p(\structure) \\
     \latentdataset \given \structure &\sim \p(\latentdataset \given \structure) \\
     \x_\n \given \z_\n &\sim \p_\genparam(\x_\n \given \z_\n)
 \end{align*}
-This graphical model is pictured in 
+This process is just the concatenation
+of the two generative process we have discussed earlier,
+except the structure influences
+the latent space rather than the data directly.
+This graphical model is pictured in
 \autoref{fig:bsrl}.
 
 \begin{figure}[H]
@@ -68,6 +75,14 @@ and prior distribution
 but with the added ability
 to model data
 with complicated likelihoods.
+The encoder and decoder architectures
+in the VAE are important
+choices when performing inference,
+but in this thesis, we focus on
+the choice of prior distribution.
+The hope is to pick a structured
+prior that influences the representations
+learned by a VAE.
 This strategy may appear to
 achieve the best of both worlds,
 but it comes
@@ -97,17 +112,16 @@ that couldn't be done with a regular BSL or representation
 learning model?
 
 The remainder of this thesis
-consists of contributions that
-explore these challenges.
+explores these challenges.
 The next chapter deals with algorithmic
 hurdles that come with Bayesian
 inference in BSRL. Specifically,
-we present \emph{neural variational message
-passing}, an extension of \citet{Johnson2016}
+we present neural variational message
+passing (NVMP), an extension of \citet{Johnson2016}
 that performs non-conjugate variational inference 
 using recognition networks.
 The following chapter introduces
-the \emph{LORACs prior}, which
+the LORACs prior, which
 bridges the gap between
 Bayesian nonparametric
 hierarchical clustering and the VAE.
@@ -120,7 +134,7 @@ The final chapter details a novel
 contribution in the space
 of model-based reinforcement learning, where
 the task is controlling a robot from raw images.
-The contribution is \emph{SOLAR}, an algorithm
+The contribution is SOLAR, an algorithm
 that applies linear control
 in the latent space of a BSRL model,
 which we apply successfully to real robots.

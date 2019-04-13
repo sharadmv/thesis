@@ -222,11 +222,11 @@ rather than $\KL{p}{q}$, which is a different objective
 since KL-divergence is an asymmetric function.
 Since $\KL{q}{p}$ has an expectation with respect
 to $\q_\recparam(\z)$, KL
-is high when $q_\recparam(\z)$ is large and $\p(\z)$ is
+is high when $q_\recparam(\z)$ is large and $\p(\z \given \x)$ is
 small, and is low when $q_\recparam(\z)$ is small
-regardless of $\p(\z)$. This means that
+regardless of $\p(\z \given \x)$. This means that
 variational inference encourages $\q(\z)$ to
-fit a mode of $\p(\z)$ rather than trying to 
+fit a mode of $\p(\z \given \x)$ rather than trying to 
 cover all of its support.
 
 Directly minimizing $\KL{q}{p}$ is typically
@@ -248,21 +248,20 @@ more amenable to optimization.
 The KL breaks down into two important terms.
 These first term, $\log \p(\x)$
 is the marginal data likelihood,
-and is intractable to compute directly
+and is usually intractable to compute directly
 since it involves integrating over all possible
 values of $\z$.
 The term on the right, however,
 is tractable to compute since 
-it is a KL divergence between known quantities,
+it is a expectation of known quantities,
 specifically the joint distribution $\p(\x, \z)$
 and the variational approximation $\q_\recparam(\z)$. 
-
 The left and right hand side are both lower bounded by zero,
 since $\KL{\q_\recparam(\z)}{\p(\z \given \x)} \geq 0$,
 and when
 it is zero,
 \begin{align*}
-    \KL{\q_\recparam(\z)}{\p(\z \given \x)} = 0 \iff \log \p(\x) &= \L[\q_\phi] \triangleq \E_\q\left[\log \frac{\p(\x, \z)}{\q_\recparam(\z)}\right] 
+    \KL{\q_\recparam(\z)}{\p(\z \given \x)} = 0 \iff \log \p(\x) &= \L[\q_\phi]
 \end{align*}
 $\L[\q_\recparam]$ is called the
 \emph{evidence lower bound} or ELBO for short.
@@ -279,8 +278,14 @@ For a more detailed explanation of variational inference,
 please refer to \citet{Blei2017}.
 
 \subsection{Inference in the VAE}
-The VAE uses the approximate posterior
-$\q_\recparam(\z_\n \given \x_\n) \triangleq \N(\encoder_\recparam(\x_\n))$.
+The VAE uses an approximate posterior
+parameterized by a neural network.
+Specifically, it uses conditional 
+posterior distribution where the
+parameters are the output of $\x_\n$
+passed through a neural network,
+or
+$\q_\recparam(\z \given \x) \triangleq \N(\encoder_\recparam(\x))$.\footnote{We use the normal distribution for the encoding distribution for the entirety of this thesis.}
 The free parameters in the VAE 
 variational posterior are the
 encoder weights $\recparam$ 
@@ -288,8 +293,8 @@ and the likelihood term
 also includes decoder weights $\genparam$, resulting
 in the following optimization problem:
 \begin{align*}
-\recparam^*,\genparam^* = \argmax_{\genparam, \recparam} \L[\q_\recparam] &\triangleq \E_\q\left[\log \frac{\p(\z)\p_\genparam(\x \given \z)}{\q_\recparam(\z)}\right] \\
-&= \E_\q \left[ \log \p_\genparam(\x \given \z)\right] - \KL{\q_\genparam(\z \given \x)}{\p(\z)}
+\recparam^*,\genparam^* = \argmax_{\genparam, \recparam} \L[\q_\recparam] &\triangleq \E_\q\left[\log \frac{\p(\z)\p_\genparam(\x \given \z)}{\q_\recparam(\z \given \x)}\right] \\
+&= \E_\q \left[ \log \p_\genparam(\x \given \z)\right] - \KL{\q_\recparam(\z \given \x)}{\p(\z)}
 \end{align*}
 When breaking down the ELBO in this way,
 we get an autoencoding-like objective function.
@@ -299,7 +304,7 @@ the expected likelihood of a data point w.r.t.
 our variational posterior, but it cannot be computed directly
 since it involves integrating over
 $\z$. It can, however, 
-be approximated with Monte Carlo sampling, i.e. $\E_\q \left[ \log \p_\genparam(\x \given \z)\right] \approx \frac{1}{S}\sum_{l}^S \p_\genparam(\x \given \z^{(s)})$ where $\{\z^{(s)}\}_{s = 1}^S \sim \q(\z \given \x)$.
+be approximated with Monte Carlo sampling, i.e. $\E_\q \left[ \log \p_\genparam(\x \given \z)\right] \approx \frac{1}{S}\sum_{s=1}^S \log \p_\genparam(\x \given \z^{(s)})$ where $\{\z^{(s)}\}_{s = 1}^S \sim \q(\z \given \x)$.
 In practice, we set $S = 1$, since the variance of gradients
 of the ELBO can also be lowered by larger minibatches.
 
@@ -330,7 +335,7 @@ using a Monte Carlo approximation of the likelihood term.
 The KL term can usually be computed in closed form (if both $\q(\z \given \x)$ and $\p(\z)$ are Gaussian, for example), or can be approximated
 via Monte Carlo. We can compute gradients of the approximate
 ELBO w.r.t. $\genparam$ and $\recparam$, and use a
-first-order optimization to find local maximum. \citet{Kingma2013}
+first-order optimization to find local maximum. \citet{Kingma2014} and \citet{Rezende2014}
 popularized the \emph{reparametrization trick} for VAEs,
 where in samples $\{z^{(s)}\}_{s = 1}^S \sim \q(\z \given \x)$ are generated
 via a deterministic transformation of independent noise.

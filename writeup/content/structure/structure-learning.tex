@@ -3,14 +3,18 @@ In this chapter we define the Bayesian structure learning problem and cover rele
 
 \section{What is structure learning?}
 Learning structure is a broad problem; we define it as an unsupervised learning problem wherein a user has data
-and a priori assumes some unobserved, or \emph{latent}, organization of the data. Example organizations of the data might include a flat clustering, i.e. the data can be partitioned into some $\k$ distinct groups. A logical extension of a flat clustering organization is a mixed-membership model, where data can be organized into $\k$ groups but each datum may belong to many groups simultaneously. 
+and a priori assumes some unobserved, or \emph{latent}, organization of the data. Example organizations of the data might include a flat clustering, i.e. the data can be partitioned into some $\numcluster$ distinct groups. A logical extension of a flat clustering organization is a mixed-membership model, 
+where data can be organized into $\numcluster$ groups but each datum may belong to many groups simultaneously. 
 In this thesis, we are particularly interested in hierarchical clustering, where data are organized into a tree structure, with data closer on the tree being logically or semantically similar and in
 linear dynamical systems, wherein time-series data
 evolve according to a linear transition function.
 
 A structure learning problem first begins with data, and an assumption of a structure class. It then recovers a plausible structure and returns it to the user. Formally, we assume a structure class $\structures$ and return a candidate structure $\structure \in \structures$.
 %In a structure learning problem, corresponding algorithms exist which have various properties and trade-offs. 
-Perhaps the most famous is the $\k$-means problem, which assumes $\k$ discrete clusters to which the data belong. The corresponding algorithm recovers a $\k$-partition of the data.  Analogously in mixed-membership modeling, latent Dirichlet allocation (LDA) recovers a topic model structure for text data.
+Perhaps the most famous is the $\numcluster$-means problem, which assumes $\numcluster$ 
+discrete clusters to which the data belong. 
+The corresponding algorithm recovers a $\numcluster$-partition of the data.  
+Analogously in mixed-membership modeling, latent Dirichlet allocation \citep[LDA; ][]{Blei2003} recovers a topic model structure for text data.
 
 We formalize structure learning probabilistically. We will later cover the Bayesian variant, but in vanilla structure learning,
 there exists some latent structure $\structure$
@@ -21,7 +25,7 @@ maximizing likelihood, i.e.
     \structure^* = \argmax_{\structure} \p(\dataset \given \structure)
 \end{align*}
 We now outline two structure learning problems
-which are particularly relevant to this thesis. We first introduce the structure classes and present a potential likelihood function. We then discuss the relevant
+which are running examples in this thesis. We first introduce the structure classes and present a candidate likelihood function. We then discuss the relevant
 algorithms that actually perform
 the maximum likelihood optimization.
 
@@ -61,7 +65,7 @@ where the structure class is trees. Specifically,
 given a dataset $\dataset$,
 we are interested in rooted trees with $\numdata$ leaves
 with each leaf corresponding to a data point.
-Such a tree tree encodes relationships between data: 
+Such a tree encodes relationships between data: 
 if data points $a$ and $b$ are close in data space, we'd hope
 the leaves corresponding to $a$ and $b$ appear closer
 together in a tree that captures the data's structure.
@@ -70,7 +74,7 @@ Algorithms for hierarchical clustering can be broadly
 divided into two categories: divisive and agglomerative.
 Divisive, or top-down, clustering algorithms recover a tree by recursively
 partitioning data until just leaves remain. Examples
-include spectral clustering \citep{} and recursive $\k$-means.
+include spectral clustering \citep{} and recursive $\numcluster$-means.
 Agglomerative, or bottom-up, clustering algorithms
 initialize clusters as leaves, and recursively
 merge clusters until a full binary tree is formed.
@@ -127,14 +131,14 @@ cannot disambiguate between equally valid clusterings or indicate to a user that
     \label{fig:ambiguous-structure}
 \end{figure*}
 
-Bayesian structure learning puts a prior on the structure class $\p(\structure)$, and rather than
+Bayesian structure learning (BSL) puts a prior on the structure class $\p(\structure)$, and rather than
 returning a candidate structure $\structure^*$,
-it returns a posterior distribution over candidate
+it returns a posterior distribution over all
 structures $\p(\structure \given \dataset)$. It generalizes 
 vanilla structure learning, as $\p(\structure \given \dataset)$ could,
 in principle,
 be a delta distribution for a single candidate structure.
-In practice, however, the Bayesian structure learning
+In practice, however, the BSL
 formulation enables algorithms that capture
 uncertainty and ambiguity in how data is organized.
 In \autoref{fig:ambiguous-structure-probability},
@@ -157,7 +161,7 @@ along with the intuitively correct distribution over possible clusterings.
     \label{fig:ambiguous-structure-probability}
 \end{figure*}
 
-Bayesian structure learning can be formalized
+BSL can be formalized
 as a latent variable model,
 where we assume a prior over structures $\p(\structure)$,
 and a likelihood model $p(\dataset \given \structure)$.
