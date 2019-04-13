@@ -34,12 +34,12 @@ prior distribution.
 When combining this idea with representation
 learning, we are now inserting
 the structure into the embedding space.
-The VAE is a nice choice
+The VAE is a logical choice
 for representation learning strategy
-with BSL in mind. The VAE includes
+with BSL in mind, as it includes
 a prior distribution over the latent space
-and this is the ideal place to
-insert an opinion about
+This prior distribution
+offers an opportunity to specify
 how data is organized.
 
 Specifically, we put a Bayesian structured prior
@@ -48,7 +48,7 @@ a process described by the following model:
 \begin{align*}
     \structure &\sim \p(\structure) \\
     \latentdataset \given \structure &\sim \p(\latentdataset \given \structure) \\
-    \x_\n &\sim \p_\genparam(\x_\n \given \z_\n)
+    \x_\n \given \z_\n &\sim \p_\genparam(\x_\n \given \z_\n)
 \end{align*}
 This graphical model is pictured in 
 \autoref{fig:bsrl}.
