@@ -595,13 +595,13 @@ local optima.
 
 \begin{figure}
     \centering
-    \begin{subfigure}[]{0.7\textwidth}
+    \begin{subfigure}[]{0.6\textwidth}
         \centering
         \includegraphics[width=\textwidth]{img/ibhc/Fisher-Iris-result.png} \caption{Fisher Iris}
         \label{fig:iris-result}
     \end{subfigure}
     \\
-    \begin{subfigure}[]{0.7\textwidth}
+    \begin{subfigure}[]{0.6\textwidth}
         \centering
         \includegraphics[width=\textwidth]{img/ibhc/MNIST-result.png}
         \caption{MNIST}
@@ -642,18 +642,18 @@ and if no such triplet existed, recursing on a child.
 %and an active query.
 %\end{enumerate}
 Each scheme was evaluated on four different datasets.
-The first dataset, MNIST \citep{MNIST}, is an 10-way image classification
+The first dataset, MNIST \citep{Lecun1998}, is an 10-way image classification
 dataset where the data are 28 x 28 images of digits.
 The target tree $\tree^*$ is simply the $K$-way classification 
 tree over the data.
 The second dataset is Fisher Iris, a 3-way flower
 classification problem, where each of 150 flowers has
 five features.
-The third dataset, Zoo ~\citep{Lichman2013}, is a set of 93 animals
+The third dataset, Zoo \citep{Lichman2013}, is a set of 93 animals
 and 15 binary morphological features for each of animals,
 the target tree being the induced binary tree 
-from the Open Tree of Life ~\citep{Hinchliff2015}.
-The fourth dataset is 20 Newsgroups ~\citep{Joachims1997}, a
+from the Open Tree of Life \citep{Hinchliff2015}.
+The fourth dataset is 20 Newsgroups \citep{Joachims1997}, a
 corpus of text articles on 20 different subjects. We use
 the first 10 principal components as features
 in this classification problem.
@@ -661,7 +661,7 @@ All datasets were modeled with DDT's with
 acquisition function $a(t) = 1/(1 - t)$
 and Brownian motion parameter $\sigma^2$ estimated from data.
 To better visualize the different convergence rates
-of the querying schemes, MNIST and  20 Newsgroups were subsampled
+of the querying schemes, MNIST and 20 Newsgroups were subsampled
 to 150 random points.
 
 For each dataset and querying scheme, we instantiated a SPR

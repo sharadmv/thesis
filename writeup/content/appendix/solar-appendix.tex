@@ -31,17 +31,17 @@ In general, in this work, we consider quadratic parameterizations of the cost mo
 \section{The SVAE Algorithm}
 \label{sec:supp-svae}
 
-\citet{svae} build off of \citet{svi} and \citet{vmp}, who show that, for conjugate exponential models, the variational model parameters can be updated using natural gradients of the form
+\citet{Johnson2016} builds off of \citet{Hoffman2013} and \citet{Winn2005}, who show that, for conjugate exponential models, the variational model parameters can be updated using natural gradients of the form
 \begin{equation}
     \tilde{\nabla}_{\omega}\mathcal{L}=\omega^0+B\mathbb{E}_q\left[t_{\dynmat,\dyncovar}(\dynmat,\dyncovar)\right]-\omega\,,
 \end{equation}
-Where $\omega$ denotes the MNIW parameters of the variational factors on $\dynmat,\dyncovar$, $B$ is the number of minibatches in the dataset, $\omega^0$ is the parameter for the prior distribution $p(\dynmat,\dyncovar)$, and $t_{\dynmat,\dyncovar}(\dynmat,\dyncovar)$ is the sufficient statistic function for $p(\dynmat,\dyncovar)$. Thus, we can use this equation to compute the natural gradient update for $\omega$, whereas for $\gamma$, $\phi$, and the parameters of the cost model, we use stochastic gradient updates on Monte Carlo estimates of the ELBO, specifically using the Adam optimizer \citep{adam}. This leads to two simultaneous optimizations, and their learning rates are treated as separate hyperparameters. We have found $10^{-4}$ and $10^{-3}$ to be good default settings for the natural gradient step size and stochastic gradient step size, respectively.
+Where $\omega$ denotes the MNIW parameters of the variational factors on $\dynmat,\dyncovar$, $B$ is the number of minibatches in the dataset, $\omega^0$ is the parameter for the prior distribution $p(\dynmat,\dyncovar)$, and $t_{\dynmat,\dyncovar}(\dynmat,\dyncovar)$ is the sufficient statistic function for $p(\dynmat,\dyncovar)$. Thus, we can use this equation to compute the natural gradient update for $\omega$, whereas for $\gamma$, $\phi$, and the parameters of the cost model, we use stochastic gradient updates on Monte Carlo estimates of the ELBO, specifically using the Adam optimizer \citep{Kingma2013}. This leads to two simultaneous optimizations, and their learning rates are treated as separate hyperparameters. We have found $10^{-4}$ and $10^{-3}$ to be good default settings for the natural gradient step size and stochastic gradient step size, respectively.
 
 
 \section{Fitting the Local Dynamics Model}
 \label{sec:supp-fit}
 
-In the pretraining phase described in \autoref{sec:modeling}, we are learning the following sets of parameters from observed trajectories:
+In the pretraining phase described in \autoref{sec:solar-modeling}, we are learning the following sets of parameters from observed trajectories:
 \vspace{-.5em}
 \begin{enumerate}
     \itemsep0em
@@ -67,8 +67,8 @@ Now suppose we have collected a set of trajectories of the form $\trajectory$ an
 \vspace{-.5em}
 The ELBO under these variational factors is:
 \begin{align*}
-    \mathcal{L} &= \mathbb{E}_q \big[\sum_t^\horizon \log p(\observation_t | \state_t)\\ &- \KL\left(q(\state_{1:\horizon})\|p(\state_{1:\horizon} | \action_{1:\horizon}, \dynmat_{1:\horizon}, \dyncovar_{1:\horizon})\right)\\
-    &- \sum_t^{\horizon - 1} \KL\left(q(\dynmat_t, \dyncovar_t)\|p(\dynmat_t, \dyncovar_t)\right)
+    \mathcal{L} &= \mathbb{E}_q \big[\sum_t^\horizon \log p(\observation_t | \state_t)\\ &- \mathrm{KL}\left(q(\state_{1:\horizon})\|p(\state_{1:\horizon} | \action_{1:\horizon}, \dynmat_{1:\horizon}, \dyncovar_{1:\horizon})\right)\\
+    &- \sum_t^{\horizon - 1} \mathrm{KL}\left(q(\dynmat_t, \dyncovar_t)\|p(\dynmat_t, \dyncovar_t)\right)
     \big]
 \end{align*}
 
@@ -80,7 +80,7 @@ We use variational EM to alternatively optimize $q(\state_{1:\horizon} | \dynmat
 
 {\bf 2D navigation.} Our recognition model architecture for the 2D navigation domain consists of two convolution layers with \mbox{2-by-2} filters and 32 channels each, with no pooling layers and ReLU non-linearities, followed by another convolution with \mbox{2-by-2} filters and 2 channels. The output of the last convolution layer is fed into a fully-connected layer which then outputs a Gaussian distribution with diagonal covariance. Our observation model consists of FC hidden layers with 256 ReLU activations, and the last layer outputs a categorical distribution over pixels. We initially collect 100 episodes which we use to train our model, and for every subsequent RL iteration we collect 10 episodes. The cost function we use is the sum of the $L^2$-norm squared of the distance to the target and the commanded action, with weights of 1 and 0.001, respectively.
 
-As discussed in \autoref{sec:experiments}, we modify the 2D navigation task from \citet{e2c} and \citet{rce} to randomize the location of the target every episode, and we set this location uniformly at random between $-2.8$ and $2.8$ for both the x and y coordinates, as coordinates outside of $[-3,3]$ are not visible in the image. We similarly randomize the initial position of the agent. In this setup, we use two \mbox{32-by-32} images as the observation, one with the location of the agent and the other with the location of the target, and in the fixed-target version of the task we only use one \mbox{32-by-32} image.
+As discussed in \autoref{sec:solar-experiments}, we modify the 2D navigation task from \citet{e2c} and \citet{rce} to randomize the location of the target every episode, and we set this location uniformly at random between $-2.8$ and $2.8$ for both the x and y coordinates, as coordinates outside of $[-3,3]$ are not visible in the image. We similarly randomize the initial position of the agent. In this setup, we use two \mbox{32-by-32} images as the observation, one with the location of the agent and the other with the location of the target, and in the fixed-target version of the task we only use one \mbox{32-by-32} image.
 
 {\bf Nonholonomic car.} The nonholonomic car domain consists of \mbox{64-by-64} image observations. Our recognition model is a convolutional neural network with four convolutional layers with \mbox{4-by-4} filters with 4 channels each, and the first two convolution layers are followed by a ReLU non-linearity. The output of the last convolutional layer is fed into three FC ReLU layers of width 2048, 512, and 128, respectively. Our final layer outputs a Gaussian distribution with dimension 8. Our observation model consists of four FC ReLU layers of width 256, 512, 1024, and 2048, respectively, followed by a Bernoulli distribution layer that models the image. For this domain, we collect 100 episodes initially to train our model, and then for RL we collect 100 episodes per iteration. The cost function we use is the sum of the $L^2$-norm squared of the distance from the center of the car to the target and the commanded action, with weights of 1 and 0.001, respectively.
 
@@ -106,9 +106,9 @@ During the RL phase, the human supervisor uses keyboard input to provide the spa
 
 {\bf RCE.} We use model learning code directly from the authors of RCE \citep{rce}, though this code is not publicly available and to our knowledge there are no open source implementations of RCE or E2C \citep{e2c} that are able to reproduce the results from the respective papers. In addition to LQR-based control, we also experiment with MPC with neural network dynamics and cost models in the learned latent representation. In our experiments, we report the best results using either of these control methods.
 
-{\bf VAE ablation.} In the VAE ablation, we replace our representation and global models with a standard VAE \citep{vae-kingma,vae-rezende}, which imposes a unit Gaussian prior on the latent representation. Because we cannot infer local dynamics as described in \autoref{sec:inference}, we instead use a GMM dynamics prior that is trained on all data as described by \citet{gps}. After fitting a local quadratic cost model, we again have a local LQS model that we can use in conjunction with an LQR-FLM policy update.
+{\bf VAE ablation.} In the VAE ablation, we replace our representation and global models with a standard VAE \citep{Kingma2013, Rezende2014}, which imposes a unit Gaussian prior on the latent representation. Because we cannot infer local dynamics as described in \autoref{sec:inference}, we instead use a GMM dynamics prior that is trained on all data as described by \citet{gps}. After fitting a local quadratic cost model, we again have a local LQS model that we can use in conjunction with an LQR-FLM policy update.
 
-{\bf MPC baseline.} (MPC) involves planning $H$ time steps ahead using a dynamics and cost model, executing an action based on this plan, and then re-planning after receiving the next observation \citep{mpc}. Recently, MPC has proven to be a successful control method when combined with neural network dynamics models, where many trajectories are sampled using the model and then the first action corresponding to the best imagined trajectory is executed \citep{nn-dyn,pets}. Similar to LQR-FLM, we can extend MPC to handle image-based domains by learning dynamics and cost models within a learned latent representation. As MPC does not require an LQS model, we can instead utilize neural network dynamics and cost models which are more expressive.
+{\bf MPC baseline.} MPC involves planning $H$ time steps ahead using a dynamics and cost model, executing an action based on this plan, and then re-planning after receiving the next observation \citep{mpc}. Recently, MPC has proven to be a successful control method when combined with neural network dynamics models, where many trajectories are sampled using the model and then the first action corresponding to the best imagined trajectory is executed \citep{nn-dyn,pets}. Similar to LQR-FLM, we can extend MPC to handle image-based domains by learning dynamics and cost models within a learned latent representation. As MPC does not require an LQS model, we can instead utilize neural network dynamics and cost models which are more expressive.
 
 
 \section{Additional Experiments}
@@ -123,7 +123,7 @@ During the RL phase, the human supervisor uses keyboard input to provide the spa
     \label{fig:pm-e2c}
 \end{figure}
 
-As mentioned in \autoref{sec:experiments}, RCE was unable to make progress for the 2D navigation task, though we were able to get more successful results by fixing the position of the goal to the bottom right as is done in the image-based 2D navigation task considered in E2C \citep{e2c} and RCE \citep{rce}. \autoref{fig:pm-e2c} details this experiment, which we ran for three random seeds and report the mean and standard deviation of the average final distance to the goal as a function of the number of training episodes. This indicates that RCE can indeed solve some tasks from image observations, though we were unable to use RCE succesfully on any of the tasks we consider.
+As mentioned in \autoref{sec:solar-experiments}, RCE was unable to make progress for the 2D navigation task, though we were able to get more successful results by fixing the position of the goal to the bottom right as is done in the image-based 2D navigation task considered in E2C \citep{e2c} and RCE \citep{rce}. \autoref{fig:pm-e2c} details this experiment, which we ran for three random seeds and report the mean and standard deviation of the average final distance to the goal as a function of the number of training episodes. This indicates that RCE can indeed solve some tasks from image observations, though we were unable to use RCE succesfully on any of the tasks we consider.
 
 \subsection{Full Learning Progress of PPO}
 

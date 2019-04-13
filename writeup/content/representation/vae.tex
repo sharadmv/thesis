@@ -19,7 +19,7 @@ to model high-dimensional distributions.
 In fact, one can construct
 distributions that require an
 exponential number of components
-to model successfully \cite{TODO}.
+to model successfully \TODO{CITE}.
 The second problem
 is that of computation.
 Fitting a Gaussian mixture model
@@ -32,7 +32,7 @@ However, the era of deep learning has
 been defined by success in machine learning
 tasks on
 complex datasets
-like ImageNet \citep{Deng2009} and CIFAR \citep{CIFAR}
+like ImageNet \citep{Deng2009} and CIFAR \citep{Krizhevsky2009}
 through the efficient use of deep neural networks.
 Adapting these bigger models
 to
@@ -80,11 +80,11 @@ minimize reconstruction loss
 through an encoder
 and decoder deep neural network.
 Specifically, we construct
-an encoder network $f_\recparam(x)$
-and a decoder network $g_\genparam(z)$
+an encoder network $\encoder_\recparam(\x)$
+and a decoder network $\decoder_\genparam(\z)$
 and minimize reconstruction error
 \begin{align*}
-\recparam^*, \genparam^* = \argmin_{\genparam, \recparam} \sum _{\n = 1}^\numdata \L(\x_\n, g_\genparam(f_\recparam(\x_\n)))
+\recparam^*, \genparam^* = \argmin_{\genparam, \recparam} \sum _{\n = 1}^\numdata \L(\x_\n, \decoder_\genparam(\encoder_\recparam(\x_\n)))
 \end{align*}
 We can train autoencoders
 with minibatch stochastic gradient descent,

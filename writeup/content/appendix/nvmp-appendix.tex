@@ -1,0 +1,114 @@
+\section{Proof of ELBO lower bound}
+\label{sec:nvmp-proof}
+
+\begin{proof}
+(This proof is very similar to that in \citet{Johnson2016}.)
+In each step of mean-field variational inference,
+we maximize the ELBO with respect to a single variational factor.
+Consider a latent variable $\z_\n$.
+Choosing a form for $\q(\z_\n)$
+that does not capture the optimal $\q^*(\z_\n)$
+will result
+in a lower maximum than the maximizing
+over all possible $\q(\z_\n)$ distributions.
+We express this as
+\begin{equation}
+    \max_{\q(\z_\n)}\L[\q] \ge\q  \L(\eta_{\z_\n}^*)
+\end{equation}
+where 
+\[
+\eta_{\z_\n}^* \triangle\q \argmax_{\eta_{\z_\n}} \L[\q]
+\]
+is the optimal parameter of some chosen form of $\q(\z_\n)$.
+
+In NVMP, we further modify this local optimization
+by modifying the ELBO to include recognition networks
+using the trick from \cite{Johnson2016}.
+This results in a surrogate objective $\hat{\L}_\recparam[\q]$,
+and maximizing this objective can do no better than maximizing the
+parameterized objective $\L[\q]$.
+\begin{equation}
+    \max_{\q(\z_\n)}\L[\q] \ge\q  \L(\eta_{\z_\n}^*) \ge\q
+    \L(\hat{\eta}_{\z_\n}^*)
+\end{equation}
+where 
+\[
+\hat{\eta}_{\z_\n}^* \triangleq \argmax_{\eta_{\z_\n}} \hat{\L}_\recparam[\q]
+\]
+
+As each local optimization lower-bounds the ELBO,
+the NVMP optimization holistically 
+lower-bounds the ELBO.
+
+This bound is tight in that
+if there exists a set of recognition
+network weights $\recparam$ such that
+\begin{equation}
+\log \p(c \given \z_\n, \parents_c \not{\z_\n}) = \psi(c, \z_\n, \parents_{c} \not{\z_\n}; \recparam) \\
+\end{equation}
+we have
+\begin{equation}
+    \max_{\q(\z_\n)}\L[\q] \geq  \L(\eta_{\z_\n}^*) = 
+    \L(\hat{\eta}_{\z_\n}^*)
+\end{equation}
+\end{proof}
+
+\section{Extension: stochastic variational inference}
+\label{sec:nvmpsvi}
+SVI \citep{Hoffman2013} treats local and global variational factors differently,
+first performing VMP to optimize local
+factors to completion. Note that these factors are only
+optimized over mini-batches of data.
+Global variational factors are then updated
+with natural gradients $\tilde{\nabla}_{\globals}\L$ of the ELBO, 
+which take a simple form in conjugate exponential models. Specifically,
+for the natural parameter for the global variables
+$\eta_{\globals}^\q$,
+the natural gradient update is
+\begin{equation}
+    \tilde{\nabla}_{\eta^\q_{\globals}} \L =  f_{\globals}\left(\{\vmpmessage{p}{\globals}\}_{p \in \pi_{\globals}}\right) + B \left(\sum_{c \in \children_{\globals}}\vmpmessage{c}{\globals}\right) - \eta^\q_{\globals}
+\end{equation}
+where $B$ is the number of minibatches in the dataset.
+
+Importantly,
+this natural gradient update natural gradient can be computed from VMP messages.
+Thus, integrating SVI into NVMP requires no extra steps, 
+as NVMP simply modifies the messages.
+NVMP can thus be treated as the inner-loop
+in stochastic VMP, where natural gradients are computed
+from NVMP messages when necessary. \footnote{This results in natural gradients computed over the NVMP surrogate objective.}
+
+\section{Extension: amortized inference}
+\label{sec:amortizeddetail}
+NVMP produces approximates previously messages. 
+Thus, the role
+of the recognition network is to assist in inference,
+rather than directly amortizing inference.
+This distinction is analogous to the difference
+between the VAE and SVAE. In the VAE,
+the recognition network directly outputs
+the model parameters of the latent variables,
+whereas in SVAE, the recognition network
+outputs a message. 
+This difference plays a part in practice, 
+when we may desire a network that directly acts as a variational posterior,
+avoiding the use of message passing in answering an inference query.
+
+NVMP can be modified to include
+recognition networks that directly output parameters.
+Previously, where the optimal natural parameter for a factor $\q(\z_\n)$
+was computed as a combination of messages
+\begin{equation}
+   \eta^\q_{\z_\n} = f_{\z_\n}\left(\{\vmpmessage{p}{\z_\n}\}_{p \in \parents_{\z_\n}}\right) + \sum_{c \in \children_{\z_\n}} \vmpmessage{c}{\z_\n}
+\end{equation}
+we replace the entire natural parameter with the output of a neural network
+that takes children and coparent samples as input
+\begin{equation}
+   \eta^{\text{amort.}}_{\z_\n} = r^{\z_\n}_\recparam(\left\{c'\sim \q(c)\right\}_{c \in \children_{\z_\n}}, \{v' \sim \q(v)\}_{v \in \parents_c\not{\z_\n}})
+\end{equation}
+This produces a VAE-style algorithm, where the recognition networks
+directly produce parameters and thus have utility outside of message passing.
+However, we do lose the coordinate-ascent style of the algorithm, as
+$\eta^{\text{amort.}}_{\z_\n}$ is not the optimal parameter
+of a surrogate objective, but the natural parameter of a variational
+distribution parameterized by $\recparam$.

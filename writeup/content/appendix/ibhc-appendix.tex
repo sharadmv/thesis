@@ -3,6 +3,8 @@
 
 \treerefinement*
 \begin{proof}
+\TODO{Change the T}
+
 Suppose, first, that $T$ is a refinement of $T'$. Pick any triplet $(\{a,b\},c) \in \Delta(T')$. Then there is a node in $T'$ whose descendants include $a,b$ but not $c$. By the definition of refinement, $T$ contains a node with the same descendants. Hence the constraint $(\{a,b\},c)$ holds for $T$ as well.
 
 Conversely, say $\Delta(T') \subseteq \Delta(T)$. Pick any cluster $S'$ of $T'$; it consists of the descendants of some node in $T'$. Consider the set of all triplet constraints consisting of two nodes of $S'$ and one node outside $S'$. Since these constraints also hold for $T$, it follows that the lowest common ancestor of $S'$ in $T$ must have exactly $S'$ as its set of descendants. Thus $S'$ is also a cluster of $T$.
