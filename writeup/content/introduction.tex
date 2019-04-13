@@ -16,15 +16,41 @@ ranging from speech recognition
 to robotics, while retaining
 the same core methodology.
 
-While neural networks
-are the de facto choice
-for many machine learning problems,
-they still have faults
-that are being addressed,
-by the community.
-Probabilistic modeling has been a staple
-component of machine learning,
-and the community
-is currently exploring
-incorporating ideas
-various statistics into deep learning.
+There has been interest
+in incorporating deep learning
+methods into existing
+statistical frameworks.
+Statistical methods in machine learning
+model uncertainty and provide
+principled ways of incorporating
+discrete structure and 
+domain knowledge.
+However, merging deep learning
+and statistical learning
+is challenging, as neural networks
+often make Bayesian inference
+intractable,
+though much
+work has gone into investigating
+what models are tractable
+and how to approximate
+intractable ones.
+One of the most prominent
+methods to emerge in unsupervised learning
+is the variational autoencoder \citep[VAE; ][]{Kingma2014, Rezende2014},
+which frames autoencoding
+as a latent variable model.
+The VAE models
+through a generative process
+where latent codes are sampled
+from a prior distribution,
+and are then passed through a
+neural network decoder. 
+The encoder is used for inference,
+approximating the posterior
+distribution of codes given data.
+
+The VAE is a stepping stone
+for incorporating
+neural networks into
+statistical learning.

@@ -20,7 +20,7 @@ clean:
 	rm -f ${FILE}.pdf
 
 
-$(FILE).pdf: *.tex *.bib content/**/*.tex *.bst tikz/**/*.tikz
+$(FILE).pdf: *.tex *.bib content/*.tex content/**/*.tex *.bst tikz/**/*.tikz
 	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
 	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
 	bibtex $(FILE)
