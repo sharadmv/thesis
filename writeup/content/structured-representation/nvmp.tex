@@ -16,7 +16,7 @@ general methods like black-box variational inference \citep{Ranganath2014}
 work in principle on any nonconjugate model,
 but are less efficient
 than specialized methods on certain models,
-such as the variational autoencoder \citep[VAE; ][]{Kingma2013, Rezende2014}. 
+such as the variational autoencoder \citep[VAE; ][]{Kingma2014, Rezende2014}. 
 Specialized
 methods have the ability to
 exploit structure in a model
@@ -133,7 +133,7 @@ and a nonlinear dynamical system.
 
 \subsection{Related Work}
 The relevant works that inform this chapter are
-\citet[VMP; ][]{Winn2005}, \citet[VAE; ][]{Kingma2013}, and \citet[SVAE; ][]{Johnson2016}. 
+\citet[VMP; ][]{Winn2005}, \citet[VAE; ][]{Kingma2014}, and \citet[SVAE; ][]{Johnson2016}. 
 VMP is a framework for variational inference
 in CE models, but does
 address nonconjugacy in some select situations,
@@ -566,7 +566,7 @@ taking gradients of
     \L[\q] \approx \frac{1}{L}\sum_{l = 1}^L \log \frac{\p(\observed, \locals^{(l)}, \globals^{(l)})}{\q(\locals^{(l)}, \globals^{(l)})}
 \end{equation}
 The reparametrization trick should be utilized whenever possible,
-to reduce the variance of the gradients \citep{Kingma2013}.
+to reduce the variance of the gradients \citep{Kingma2014}.
 Furthermore, the gradients with respect recognition networks
 and model parameters computed using optimal variational
 distributions, meaning we must backpropagate through
@@ -712,7 +712,7 @@ also results in an accuracy of 95.6\%.
 
 \iffalse
 \subsection{Variational autoencoder}
-The variational autoencoder \citep{Kingma2013, Rezende2014} generates data
+The variational autoencoder \citep{Kingma2014, Rezende2014} generates data
 by first sampling data from a simple Gaussian prior
 and then passing it through a neural network.
 

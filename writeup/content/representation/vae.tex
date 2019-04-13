@@ -15,11 +15,7 @@ assumes data are sampled
 from the multivariate Gaussian
 distribution, which is
 often too simple of a likelihood
-to model high-dimensional distributions.
-In fact, one can construct
-distributions that require an
-exponential number of components
-to model successfully \TODO{CITE}.
+to model complex, high-dimensional data like images.
 The second problem
 is that of computation.
 Fitting a Gaussian mixture model
@@ -58,8 +54,8 @@ or even reinforcement learning.
 In this chapter, we
 discuss methods for representation learning
 leading up to the variational autoencoder (VAE),
-which is the necessary component
-for discussing what we call Bayesian structured representation learning.
+which is the key preliminary
+for the remainder of the thesis.
 
 \section{PCA and autoencoding}
 Two of the simplest and most intuitive
@@ -96,8 +92,8 @@ $\latentdataset$ are just the dataset $\dataset$
 passed through the encoder network.
 
 \section{The variational autoencoder}
-The variational autoencoder \citep[VAEs; ][]{Kingma2013, Rezende2014}
-formulates autoencoders probabilistically .
+The variational autoencoder \citep[VAEs; ][]{Kingma2014, Rezende2014}
+formulates autoencoders probabilistically.
 Specifically, it
 assumes
 latent codes $\latentdataset$
@@ -168,16 +164,16 @@ likelihood model with a high capacity
 neural network. A large enough 
 neural network could plausibly
 generate realistic looking images
-, text, or other complex data
-given a low dimensional representation $\z_\n$.
+ text, or other complex data
+from a low dimensional representation $\z_\n$,
+given enough training data.
 However, the simple intuition that comes
 with PPCA and linear models 
 is lost and we no longer
 have a tractable marginal distribution over data.
-However, the choice of prior
-distribution for the VAE has even more importance,
-due to its effect on the learned latent
-space.
+Furthermore, the choice of prior
+distribution $\p(\latentdataset)$ has critical importance,
+due to its large influence on the learned latent space.
 
 The VAE is a logical extension to PPCA, but
 introduces a challenge in posterior inference.
@@ -185,13 +181,13 @@ A neural network decoder makes the posterior
 analytically intractable, but also
 introduces computational issues that make traditional
 variational inference and MCMC prohibitively slow.
-Cleverly, \cite{Kingma2013} use a
+Cleverly, \cite{Kingma2014} use a
 neural network to approximate the posterior distribution
 $\p(\z_\n \given \x_\n)$. They introduce
 a recognition network $\encoder_\recparam$,
 which outputs the parameters of a distribution
 over $\z_\n$ (typically Gaussian). This
-approximate posterior distribution $\q_\recparam(\z_\n \given \x_\n) \triangleq \q(\encoder_\recparam(\x_\n))$ is then optimized to be 
+approximate posterior distribution $\q_\recparam(\z_\n \given \x_\n) \triangleq \N(\encoder_\recparam(\x_\n))$ is then optimized to be 
 close to the true $\p(\z_\n \given \x_\n)$
 using a method called variational inference.
 

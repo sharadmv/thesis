@@ -214,7 +214,7 @@ by optimizing the evidence-lower bound (ELBO),
 The parameters of the model, $\genparam$ and $\recparam$,
 are learned via stochastic gradient ascent on
 the ELBO, using the reparametrization trick
-for lower variance gradients \citep{Kingma2013, Rezende2014}.
+for lower variance gradients \citep{Kingma2014, Rezende2014}.
 
 \section{The TMC-VAE}
 \label{sec:tmc-vae}
@@ -466,7 +466,7 @@ The detailed inference procedure can be found in \autoref{sec:algorithm-details}
 
 \section{Related work}
 As mentioned above, \acronym\;connects various ideas in the literature, including Bayesian nonparametrics \citep{Boyles2012}, inducing-point approximations \citep[e.g.; ][]{Snelson2006,Tomczak2017},
-and amortized inference \citep{Kingma2013, Rezende2014}.
+and amortized inference \citep{Kingma2014, Rezende2014}.
 
 Also relevant is a recent thread of efforts to endow VAEs with the interpretability of graphical models \citep[e.g.; ][]{Johnson2016,Lin2018}.
 In this vein, \citet{Goyal2017} propose using a different Bayesian nonparametric tree prior, the nested Chinese restaurant process (CRP) \citep{Blei2010}, in a VAE.
