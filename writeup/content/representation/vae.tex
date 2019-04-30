@@ -325,8 +325,8 @@ We can optimize the free parameters of the VAE ELBO
 using stochastic gradient descent
 using a Monte Carlo approximation of the likelihood term.
 \begin{align*}
-\L[\q_\recparam] &= \E_\q \left[ \log \p_\genparam(\x \given \z)\right] - \KL{\q_\genparam(\z \given \x)}{\p(\z)} \\
-                 &\approx \frac{1}{S}\sum_{s = 1}^S \log \p_\genparam(\x \given \z^{(s)}) - \KL{\q_\genparam(\z \given \x)}{\p(\z)}
+\L[\q_\recparam] &= \E_\q \left[ \log \p_\genparam(\x \given \z)\right] - \KL{\q_\recparam(\z \given \x)}{\p(\z)} \\
+                 &\approx \frac{1}{S}\sum_{s = 1}^S \log \p_\genparam(\x \given \z^{(s)}) - \KL{\q_\recparam(\z \given \x)}{\p(\z)}
 \end{align*}
 The KL term can usually be computed in closed form (if both $\q(\z \given \x)$ and $\p(\z)$ are Gaussian, for example), or can be approximated
 via Monte Carlo. We can compute gradients of the approximate
@@ -351,7 +351,7 @@ like BBVI/REINFORCE/score function estimators \citep{Ranganath2014, Williams1992
 The simplicity and intuitiveness of the
 VAE has led to follow up research
 in several directions, of which we
-will discuss a few.
+will discuss a couple.
 
 %\subsubsection{Autoregressive and recurrent decoders}
 One line of work has explored
@@ -371,9 +371,10 @@ sample the output image
 through a recurrent
 neural network that outputs
 the image conditionally.
-Autoregressive decoders
+Other autoregressive decoders
 like PixelVAE \citep{Gulrajani2016}
-generate an image with convolution
+generate an image with conditional
+convolution
 operations.
 These decoders, although
 computationally more
@@ -382,68 +383,26 @@ have demonstrated great improvement in
 generated image quality and 
 held-out log-likelihood scores.
 
-\iffalse
-
-\begin{align*}
-    \z_\n &\sim \N(0, I) \\
-    \x_\n \given \z_\n &\sim \p_\genparam(\x_\n \given \z_\n)
-\end{align*}
-
-\begin{align*}
-  q_\recparam(\z_\n \given \x_\n)
-\end{align*}
-
-\begin{align*}
-  \p(\z_\n \given \x_\n)
-\end{align*}
-
-\begin{align*}
-  \L[q] \triangleq \E_q\left[\log \frac{\p(\latentdata)\prod_\n \p_\genparam(\x_\n \given \z_\n)}{\prod_\n q_\recparam(\z_\n \given \x_\n)}\right]
-\end{align*}
-
-\begin{figure}
-    \includegraphics{tikz/loracs/ltmc}
-\end{figure}
-
-\begin{align*}
-    \structure &\sim \p(\structure) \\
-    \latentdata \given \structure &\sim \p(\latentdata \given \structure) \\
-    \x_\n \given \z_\n &\sim \p_\genparam(\x_\n \given \z_\n)
-\end{align*}
-
-\begin{align*}
-    t_{\textrm{root}} &= 0 \\
-    t_{\textrm{leaves}} &= 1 \\
-    \beta_{\textrm{child}} &\sim \textrm{Beta}(a, b)\\
-    t_{\textrm{child}} &= t_{\textrm{parent}} + \beta_{\textrm{child}} * (1 - t_{\textrm{parent}})
-\end{align*}
-
-\begin{align*}
-    z_{\textrm{root}} &\sim \N(0, I) \\
-    z_{\textrm{child}} &\sim \N(z_{\textrm{parent}}, (t_{\textrm{child}} - t_{\textrm{parent}}) I)
-\end{align*}
-
-\begin{align*}
-    \p(\tree \given \latentdata) \\
-    \p(\tree, \latentdata)
-\end{align*}
-
-\begin{align*}
-  \L[q] \triangleq \E_q\left[\log \frac{\p(\tree)p(\latentdata \given \tree)\prod_{n = 1}^N \p_\genparam(\x_\n \given \z_\n)}
-  {q(\tree)\prod_{\n = 1}^\numdata q_\recparam(\z_\n | \x_\n)}\right]
-\end{align*}
-
-\begin{align*}
-  \p(\latentdata \given \tree) \cancel{=} \prod_\n \p(\z_\n \given \tree)
-\end{align*}
-
-\begin{align*}
-    \p(\z_{\numdata + 1} \given \tau, \latentdata)
-\end{align*}
-
-\begin{align*}
-  \tau &\sim \p(\tree \given \textbf{s}_{1:M}) \\
-  \z_\n \given \tau &\sim \p(\z_\n = s_{M + 1} \given \tau, \textbf{s}_{1:M}) \\
-  \x_\n \given \z_\n &\sim \p_\genparam(\x_\n | \z_\n)
-\end{align*}
-\fi
+Another line of work
+has explored variations
+on the training objective
+for the VAE that result in
+either better representations
+or a better lower bound on the
+ELBO. The importance weighted autoencoder \citep{Burda2015}
+explores a tighter lower bound by means
+of importance sampling and also
+explores the problem of variational
+over-pruning, wherein
+dimensions of the latent space
+are set to match the prior distribution
+in order to minimize the KL term of the ELBO.
+\citet{Hoffman2017} mitigates
+this problem by training the generator
+with an MCMC objective, rather than the direct
+ELBO. Other works explore the trade-off
+between the terms in the ELBO. The $\beta$-VAE \citep{Higgins2017}
+introduces a scalar weight on the KL term of the ELBO,
+and \citet{Alemi2017} applies
+an information theoretic perspective to the tradeoff
+between the reconstruction KL term.

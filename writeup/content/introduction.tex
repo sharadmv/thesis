@@ -1,44 +1,92 @@
 \chapter{Introduction}
 
-Neural networks have emerged
+In machine learning problem
+settings, we 
+are often presented with data
+but additionally have
+information about how the
+data was collected or generated.
+Furthermore, we may be 
+knowledge or have access
+to domain expertise that 
+could inform a learning algorithm.
+Traditionally,
+one way of incorporating
+prior knowledge or domain
+expertise into machine
+learning algorithms
+is by formulating them as probabilistic
+graphical models, which
+offer flexible avenues for
+incorporating assumptions about data.
+Take, for example, if we are
+tasked with discovering
+clusters in a dataset, but have
+prior knowledge that
+the features of the data are
+disentangled or independent,
+we can incorporate that
+information into the
+prior distribution
+over cluster components.
+
+This strategy, however,
+has major downsides,
+namely that the types
+of assumptions that
+can be incorporated
+into probabilistic graphical
+models have been historically
+limited to generative models in which
+Bayesian inference is tractable.
+Thus, in scenarios where
+the data is high-dimensional
+and exhibits complex structure,
+we are forced to make
+restrictive assumptions
+that enable tractable inference,
+but limit the capacity
+of our model.
+
+On the other hand,
+neural networks have emerged
 as a dominant force
 in machine learning,
 thanks to their
 incredible
 ability to scale to large datasets
-and their empirical success on high dimensional
+and their empirical success on complex
 data like images and text.
-Furthermore, the modularity of deep learning 
-approaches has enabled the community
-to advance on many fronts in parallel.
-Innovations
-in one  have influenced
+Incorporating prior knowledge
+or domain expertise into
+deep learning approaches
+has often taken the form of
+custom neural network layers or
+architectures that are tailored
+to the task at hand,
+and although these strategies
+have seen empirical success,
+they are often ad-hoc
+solutions and do not
+leverage the explicit assumptions
+and modeling of uncertainty that
+probabilistic graphical models offer.
+Combining deep learning
+methods with probabilistic graphical
+models has thus been
+recent topic of interest
+with many open problems
+and challenges.
 
-
-Interest in
-in incorporating deep learning
-methods into existing
-statistical frameworks
-has expanded since.
-Statistical methods in machine learning
-model uncertainty and provide
-principled ways of incorporating
-discrete structure and 
-domain knowledge.
-However, merging deep learning
-and statistical learning
-is challenging, as neural networks
-often make Bayesian inference
-intractable.
 Much work has gone into investigating
-what models are tractable
+which models are tractable
 and how to approximate
 intractable ones.
 One of the most prominent
 methods to emerge in unsupervised learning
 is the variational autoencoder \citep[VAE; ][]{Kingma2014, Rezende2014},
 which frames autoencoding
-as a latent variable model.
+as a probabilistic latent variable model.
 The VAE models
 through a generative process
 where latent codes are sampled
@@ -54,18 +102,25 @@ for incorporating
 neural networks into
 statistical learning,
 but in its original form,
-uses very simple modeling assumptions.
+has very simple assumptions.
 The statistical learning literature,
 on the other hand, has
 explored a wide variety of
 models and structures for data.
-In this thesis, we discuss
-Bayesian structure learning methods,
-and how to merge them
-with the VAE, resulting
+In this thesis, we 
+motivate and discuss
+the use of Bayesian structured priors
+and the algorithmic challenges
+in incorporating them
+with deep generative models.
+The combination
+of a Bayesian structured
+prior with a VAE
+results
 in a class of models called
 Bayesian structured representation learning
 models.
+
 In Part I, we introduce the
 core ideas and foundations for Bayesian structure
 learning and present a contribution
