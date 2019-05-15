@@ -5,7 +5,7 @@ In this chapter we define the Bayesian structure learning problem and cover rele
 Learning structure is a broad problem; we define it as an unsupervised learning problem wherein a user has data
 and a priori assumes some unobserved, or \emph{latent}, organization of the data. Example organizations of the data might include a flat clustering, i.e. the data can be partitioned into some $\numcluster$ distinct groups. A logical extension of a flat clustering organization is a mixed-membership model, 
 where data can be organized into $\numcluster$ groups but each datum may belong to many groups simultaneously. 
-In this thesis, we are particularly interested in hierarchical clustering, where data are organized into a tree structure, with data closer on the tree being logically or semantically similar and in
+In this thesis, we are particularly interested in hierarchical clustering, where data are organized into a tree structure, with data closer on the tree being logically or semantically similar. We are also interested in
 linear dynamical systems, wherein time-series data
 evolve according to a linear transition function.
 
@@ -34,8 +34,11 @@ In a linear dynamical system (LDS),
 each observed data point is a sequence, 
 $\x = \sequence$, and our dataset
 is a collection of $\numdata$ such sequences, $\data = \sequencen$.
-The underlying structure class is
-a linear-Gaussian transition function $p(\state_{\t + 1} \given \state_t, \dynmat, \dyncovar) = \N(\dynmat \state_\t, \dyncovar)$ with learnable parameters $\dynmat, \dyncovar$.
+We focus on stochastic LDSs where
+the transition function is probabilistic.
+The underlying structure class for the
+transition function
+is linear-Gaussian $p(\state_{\t + 1} \given \state_t, \dynmat, \dyncovar) = \N(\dynmat \state_\t, \dyncovar)$ with learnable parameters $\dynmat, \dyncovar$.
 Although the underlying structure in this situation
 is not discrete, as in the case
 of flat or hierarchical clusterings, it is still
@@ -74,7 +77,7 @@ Algorithms for hierarchical clustering can be broadly
 divided into two categories: divisive and agglomerative.
 Divisive, or top-down, clustering algorithms recover a tree by recursively
 partitioning data until just leaves remain. Examples
-include spectral clustering \citep{} and recursive $\numcluster$-means.
+include spectral clustering \citep{Shi2000} and recursive $\numcluster$-means.
 Agglomerative, or bottom-up, clustering algorithms
 initialize clusters as leaves, and recursively
 merge clusters until a full binary tree is formed.
@@ -114,12 +117,12 @@ The graphical model for hierarchical clustering is pictured in \autoref{fig:grap
 
 \section{Bayesian structure learning}
 
-Structure learning is an useful generalization
+Structure learning is a useful generalization
 of several popular problems. However, it has some
 drawbacks in its presented formulation.
 Consider a dataset that has ambiguity in its
 latent structure. For example, in \autoref{fig:ambiguous-structure}, we picture two examples of ambiguous latent structure. In a hierarchical clustering problem, if data are positioned in particular ways, we could organize the data
-in several plausible ways. In one example, tare
+in several plausible ways. In one example, there are
 three equally valid hierarchical clusterings (using binary trees), and in the second example, there are two
 plausible clusterings. Structure learning as presented
 cannot disambiguate between equally valid clusterings or indicate to a user that there exist alternative candidates.
@@ -157,7 +160,7 @@ along with the intuitively correct distribution over possible clusterings.
         \includegraphics[width=0.7\textwidth]{img/structure/3-cluster-linear-distribution}
         \caption{}
     \end{subfigure}
-    \caption{Examples of how Bayesian structure learning could resolve ambiguity in latent structure. In (a), all three possible clusterings are given equal probability and in (b), the two most likely clusterings split the probability.}
+    \caption{Examples of how Bayesian structure learning could uncover ambiguity in latent structure. In (a), all three possible clusterings are given equal probability and in (b), the two most likely clusterings split the probability.}
     \label{fig:ambiguous-structure-probability}
 \end{figure*}
 
@@ -171,17 +174,19 @@ inference to obtain the posterior distribution $p(\structure \given \dataset)$. 
 \begin{figure}[htp!]
     \centering
     \includegraphics[]{tikz/lvm}
-    \caption{The graphical model for Bayesian structure learning}
+    \caption{The graphical model for Bayesian structure learning. Note the addition of a prior distribution over the structure.}
     \label{fig:graphical-model-bsl}
 \end{figure}
 
 The design space of Bayesian structure learning
 amounts to first deciding a structure class (hierarchical clusterings, flat clusterings, linear dynamical systems, etc.) and additionally choosing a
 particular prior distribution over the structures.
-Although computing the posterior distribution $\p(\structure \given \dataset)$ amounts to Bayesian inference,
-more often than not, this posterior distribution is analytically intractable and we must resort to
-approximate inference. Thus, in practice, we must
-also decide on an approximate inference algorithm (variational inference, MCMC, etc.).
+There is interest, however, in developing strategies for automatically
+inferring structure class through search \citep{Kemp2008, Grosse2012}.
+Once a structure class and prior are selected, computing the posterior distribution $\p(\structure \given \dataset)$ amounts to Bayesian inference,
+and more often than not this posterior distribution is analytically intractable and we must resort to
+approximate inference. Thus, in practice, we 
+also decide on an approximate inference strategy (variational inference, MCMC, etc.).
 
 \subsection{Bayesian linear dynamical system}
 
@@ -202,7 +207,7 @@ which is also visualized in \autoref{fig:graphical-model-blds}.
 \begin{figure}[htp!]
     \centering
     \includegraphics[]{tikz/blds}
-    \caption{The graphical model for a Bayesian linear dynamical system}
+    \caption{The graphical model for a Bayesian linear dynamical system. Note the addition of a prior over the dynamics parameters.}
     \label{fig:graphical-model-blds}
 \end{figure}
 

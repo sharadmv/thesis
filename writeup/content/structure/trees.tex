@@ -95,7 +95,7 @@ is a dataset, $\dataset$.
 The output is a $\tree$,
 a rooted tree with $\numdata$
 labeled leaves,
-each corresponding to one of the data.
+each corresponding to one of the data points.
 Typically, the tree is binary
 and internal nodes correspond
 to groupings of the leaves
@@ -115,7 +115,7 @@ dissimilarities between the points in each cluster.
 A popular linkage criterion is
 \emph{single linkage}, which defines
 cluster dissimilarity
-as that of
+as that
 of the closest points in 
 each cluster,
 i.e.
@@ -143,7 +143,7 @@ will be the leaves of our output hierarchy.
 Every iteration of the algorithm, 
 we find
 the two least dissimilar clusters $A$ and $B$
-according to the linkage criterion.
+according to the linkage criterion
 and merge them, producing a new cluster.
 After $N - 1$ iterations, we are left
 with a single cluster containing
@@ -342,7 +342,9 @@ For example:
   \item Times associated with each node.
     Nodes higher up in the tree will typically have
     earlier times, creating an evolutionary
-    interpretation to the hierarchy.
+    interpretation to the hierarchy. Cladograms
+    with times associated at each node
+    are also called \emph{phylogenies}.
 \end{enumerate}
 
 If we are only interested in tree structure,
@@ -443,7 +445,7 @@ of population genetics
 \citep{Kingman1982}.
 Coalescent models assume a
 continuous time process,
-where in individuals of a population
+wherein individuals of a population
 are traced backwards in time
 through their ancestry until
 they all share a single common ancestor.
@@ -678,7 +680,13 @@ paths, which form a binary tree
 with internal nodes corresponding to
 divergence events.
 $\x_n(t)$ initially follows the same
-path as the previous points.
+path as the previous points,
+picking branches to follow proportional
+to the number of points that followed
+the branch previously.
+This scheme is called \emph{path reinforcement}
+and encourages
+big subtrees to grow even bigger.
 If $\x_1(t)$ is traversing a path
 followed by $m$ previous paths,
 the probability that $\x_1(t)$ will
@@ -727,7 +735,9 @@ where $b$, $c$, and $d$ are constants.
 \end{figure}
 
 The DDT, as proposed in \citet{Neal2003}, 
-jointly models the tree prior and tree likelihood model.
+jointly models the tree prior and tree likelihood model,
+as in it jointly samples tree structure
+and real-valued data associated with the tree.
 However, we can consider the same
 path reinforcement model, without the Brownian motion
 to obtain a prior over ordered cladograms
