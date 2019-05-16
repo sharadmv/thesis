@@ -15,7 +15,7 @@ It can be shown (e.g., by \citet{synthesis}) that the action $\mathbf{a}_t$ that
 \]
 This action is a linear function of the state $\mathbf{s}_t$, thus we can construct an optimal linear policy by setting $\mathbf{K}_t=-Q_{\mathbf{aa},t}^{-1}Q_{\mathbf{as},t}$ and $\mathbf{k}_t=-Q_{\mathbf{aa},t}^{-1}Q_{\mathbf{a},t}$. We can also show that the maximum-entropy policy that minimizes the approximate Q-function is given by
 \[
-\pi^\star(\mathbf{a}_t|\mathbf{s}_t)=\mathcal{N}(\mathbf{K}_t\mathbf{s}_t+\mathbf{k}_t,Q_{\mathbf{aa},t}).
+\pi^\star(\mathbf{a}_t|\mathbf{s}_t)=\N(\mathbf{K}_t\mathbf{s}_t+\mathbf{k}_t,Q_{\mathbf{aa},t}).
 \]
 Furthermore, as in \citet{mfcgps}, we can impose a constraint on the total KL-divergence between the old and new trajectory distributions induced by the policies through an augmented cost function $\tilde{\cost}(\state_t,\action_t)=\frac{1}{\lambda}\costmodel(\state_t,\action_t)-\log\bar{\policy}(\action_t|\state_t)$, where solving for $\lambda$ via dual gradient descent can yield an exact solution to a KL-constrained LQR problem.
 
@@ -33,7 +33,7 @@ In general, in this work, we consider quadratic parameterizations of the cost mo
 
 \citet{Johnson2016} builds off of \citet{Hoffman2013} and \citet{Winn2005}, who show that, for conjugate exponential models, the variational model parameters can be updated using natural gradients of the form
 \begin{equation}
-    \tilde{\nabla}_{\omega}\mathcal{L}=\omega^0+B\mathbb{E}_q\left[t_{\dynmat,\dyncovar}(\dynmat,\dyncovar)\right]-\omega\,,
+    \tilde{\nabla}_{\omega}\L[\q]=\omega^0+B\mathbb{E}_\q\left[t_{\dynmat,\dyncovar}(\dynmat,\dyncovar)\right]-\omega\,,
 \end{equation}
 Where $\omega$ denotes the MNIW parameters of the variational factors on $\dynmat,\dyncovar$, $B$ is the number of minibatches in the dataset, $\omega^0$ is the parameter for the prior distribution $p(\dynmat,\dyncovar)$, and $t_{\dynmat,\dyncovar}(\dynmat,\dyncovar)$ is the sufficient statistic function for $p(\dynmat,\dyncovar)$. Thus, we can use this equation to compute the natural gradient update for $\omega$, whereas for $\gamma$, $\phi$, and the parameters of the cost model, we use stochastic gradient updates on Monte Carlo estimates of the ELBO, specifically using the Adam optimizer \citep{Kingma2014}. This leads to two simultaneous optimizations, and their learning rates are treated as separate hyperparameters. We have found $10^{-4}$ and $10^{-3}$ to be good default settings for the natural gradient step size and stochastic gradient step size, respectively.
 
@@ -67,7 +67,7 @@ Now suppose we have collected a set of trajectories of the form $\trajectory$ an
 \vspace{-.5em}
 The ELBO under these variational factors is:
 \begin{align*}
-    \mathcal{L} &= \mathbb{E}_q \big[\sum_t^\horizon \log p(\observation_t | \state_t)\\ &- \mathrm{KL}\left(q(\state_{1:\horizon})\|p(\state_{1:\horizon} | \action_{1:\horizon}, \dynmat_{1:\horizon}, \dyncovar_{1:\horizon})\right)\\
+    \L[\q] &= \mathbb{E}_\q \big[\sum_t^\horizon \log p(\observation_t | \state_t)\\ &- \mathrm{KL}\left(q(\state_{1:\horizon})\|p(\state_{1:\horizon} | \action_{1:\horizon}, \dynmat_{1:\horizon}, \dyncovar_{1:\horizon})\right)\\
     &- \sum_t^{\horizon - 1} \mathrm{KL}\left(q(\dynmat_t, \dyncovar_t)\|p(\dynmat_t, \dyncovar_t)\right)
     \big]
 \end{align*}
