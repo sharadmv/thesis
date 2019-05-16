@@ -436,9 +436,8 @@ is invariant to permutations of the variables.
 Exchangeability often enables computationally efficient
 inference algorithms.
 
-\subsubsection*{Coalescent models}
-
-Coalescent modeling was developed
+\textbf{Coalescent models:} 
+coalescent modeling was developed
 in the early 1980s by John Kingman,
 and achieved success in the field
 of population genetics
@@ -513,11 +512,11 @@ $\pi(-\infty) = \{\{1, 2, \ldots, N\}\}$.
   \centering
   \includegraphics[width=\textwidth]{img/trees/coalescent}
   \caption{A sample from Kingman's coalescent. $\z$ is
-  the common ancestor for data $\x_1, \x_2, \x_3, \x_4$. Each $y_C$
+    the common ancestor for data $\x_{1:4}$. Each $y_C$
   represents the common ancestor for data subset $C$. 
-  The axis represents time, and each $\delta_i$ represents elapsed time between
-  coalesce events. Finally, $\pi(t)$ is
-  the genealogy function. Image taken from \citet{Teh2008}.}
+  The axis represents time, and each $\delta_i$ represents elapsed time. 
+  $\pi(t)$ is
+  the genealogy function. Image from \citet{Teh2008}.}
 \label{fig:coalescent}
 \end{figure}
 
@@ -568,7 +567,7 @@ seen in \autoref{fig:coalescent}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{img/trees/balanced}
+  \includegraphics[width=0.8\textwidth]{img/trees/balanced}
   \caption{For the balanced tree on the left, there are two
   possible orderings in which clusters were merged, whereas there is only one possible ordering for the unbalanced tree on the right. Image taken from \citet{Boyles2012}.}
 \label{fig:balanced}
@@ -624,8 +623,8 @@ results in the aptly named beta-coalescent \citep{Hu2013}.
 A description of such coalescent rate functions
 can be seen in \citet{Aldous1999}.
 
-\subsubsection*{Diffusion models}
-Diffusion models adopt a different paradigm for generation.
+\textbf{Diffusion models:}
+diffusion models adopt a different paradigm for generation.
 In diffusion models, we begin with a
 trivial tree over just one data point. We then
 grow the tree by iteratively attaching new data
@@ -723,12 +722,9 @@ where $b$, $c$, and $d$ are constants.
         \includegraphics[width=\textwidth]{img/trees/pydt}
     \end{subfigure}
     \caption{
-      On the left is a sample from a Dirichlet diffusion tree with 4 points.
+      On the left is a sample Dirichlet diffusion tree.
       Black dots correspond to nodes in the tree. The image is taken from \citet{Vikram2016}.
       On the right is a sample from a Pitman-Yor diffusion tree with 4 points.
-      Black dots correspond to nodes in the tree. Notice
-      that the first internal node has a branching factor of 4,
-      whereas the rest have a branching factor of 2.
       The image is taken from \citet{Knowles2015}.
     }
     \label{fig:ddt-vis}

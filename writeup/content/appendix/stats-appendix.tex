@@ -17,7 +17,7 @@ and is parametrized by a $K$-simplex vector $\pi$.
 \begin{align*}
     p(z | \pi) = \pi^Tz
 \end{align*}
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 \begin{align*}
     \eta(\pi) &= \log \pi \\
     t(z) &= z \\
@@ -34,7 +34,7 @@ and is parametrized by a vector $\alpha$.
     p(\pi | \alpha) = \frac{\Gamma\left(\sum_k \alpha_k\right)}{\prod_k\Gamma(\alpha_k)}\prod_{k = 1}^K \pi_k^{\alpha_k - 1}
 \end{align*}
 
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 \begin{align*}
     \eta(\alpha) &= \alpha - 1\\
     t(\pi) &= \log \pi \\
@@ -52,7 +52,7 @@ and is parametrized by mean $\mu$ and covariance $\Sigma$.
         p(x | \mu, \Sigma) = \frac{1}{(2\pi)^{\frac{d}{2}}|\Sigma|^{\frac{1}{2}}} \exp{(x - \mu)^T\Sigma^{-1}(x - \mu)}
 \end{align}
 
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 
 \begin{align*}
     \eta(\mu, \Sigma) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1} \\ \Sigma^{-1}\mu\end{bmatrix} \\
@@ -71,7 +71,7 @@ and is parametrized by scale matrix $\Psi$ and degrees of freedom $\nu$.
         p(\Sigma | \Psi, \nu) = \frac{|\Psi|^{\frac{\nu}{2}}}{2^{\frac{\nu d}{2}}\Gamma_d(\frac{\nu}{2})}|\Sigma|^{\frac{-(\nu + d + 1)}{2}} \exp{-\frac{1}{2}\tr(\Psi\Sigma^{-1})}
 \end{align}
 
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 
 \begin{align*}
     \eta(\Psi, \nu) &= \begin{bmatrix}\Psi \\ \nu + d + 1\end{bmatrix} \\
@@ -95,7 +95,7 @@ and degrees of freedom $\nu$.
         p(\mu, \Sigma | \Psi, \mu_0, \kappa, \nu) &= \IW(\Sigma|\Psi,\nu)\N(\mu|\mu_0,\frac{1}{\kappa}\Sigma) \\
 \end{align}
 
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 \begin{align*}
     \eta(\Psi, \mu_0, \kappa, \nu) &= \begin{bmatrix}\Psi + \kappa\mu_0\mu_0^T\\\kappa \mu_0\\\kappa\\\nu + d + 1\end{bmatrix} \\
     t(\mu, \Sigma) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1}\\\Sigma^{-1}\mu\\-\frac{1}{2}\mu^T\Sigma^{-1}\mu\\-\frac{1}{2}\log|\Sigma|\end{bmatrix} \\
@@ -117,7 +117,7 @@ and column covariance $V \in \R^{n \times n}$ .
         p(M | M_0, S, V) &= \frac{1}{(2\pi)^{\frac{mn}{2}}|S|^{\frac{n}{2}}|V|^{\frac{m}{2}}} \exp{-\frac{1}{2}\tr\left(V^{-1}(M - M_0)^TS^{-1}(M - M_0)\right)}
 \end{align}
 
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 \begin{align*}
     \eta(M_0, S, V) &= \begin{bmatrix}-\frac{1}{2}(V \otimes S)^{-1}\\(V \otimes S)^{-1}\vec(M_0)\end{bmatrix} \\
     t(M) &= \begin{bmatrix}\vec(M)\vec(M)^T\\\vec(M)\end{bmatrix} \\
@@ -142,7 +142,7 @@ and degrees of freedom $\nu$.
         &\times \frac{1}{(2\pi)^{\frac{mn}{2}}|\Sigma|^{\frac{n}{2}}|V|^{\frac{m}{2}}} \exp{-\frac{1}{2}\tr\left(V^{-1}(M - M_0)^T\Sigma^{-1}(M - M_0)\right)}
 \end{align}
 
-\subsubsection*{Exponential family parametrization}
+\subsection{Exponential family parametrization}
 \begin{align*}
     \eta(\Psi, M_0, V, \nu) &= \begin{bmatrix}\Psi + M_0V^{-1}M_0^T\\M_0V^{-1}\\V^{-1}\\\nu + m + n + 1\end{bmatrix} \\
     t(\Sigma, M) &= \begin{bmatrix}-\frac{1}{2}\Sigma^{-1}\\\Sigma^{-1}M\\-\frac{1}{2}M^T\Sigma^{-1}M\\-\frac{1}{2}\log|\Sigma|\end{bmatrix} \\

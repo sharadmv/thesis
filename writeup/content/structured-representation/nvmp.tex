@@ -381,18 +381,20 @@ to further pass in the expectation.
 This decomposition leads to a message passing algorithm, where
 the natural parameter $\eta^\q_{\z_\n}$
 can be computed as the sum of messages from the children and parents.
-\paragraph{Parent message:}
+
+\textbf{Parent message:}
 The message from a parent $p$ to $\z_\n$ is
 \begin{equation} \label{eq:parentmessage}
     \vmpmessage{p}{\z_\n} = \E_{\q(p)}\left[t_p(p)\right]
 \end{equation}
 
-\paragraph{Child message:}
+\textbf{Child message:}
 The message from child $c$ to $\z_\n$ is
 
 \begin{equation} \label{eq:childmessage}
     \vmpmessage{c}{\z_\n} = \nabla_{t_{\z_\n}(\z_\n)} \E_{\q(c, \parents_{c} \not{\z_\n})}\left[\log \p(c | \z_\n, \parents_{c} \not{\z_\n})\right]
 \end{equation}
+
 Computing the gradient in the child message involves
 computing messages from the coparents of $\z_\n$ with respect to $c$ in order to evaluate the expectation.
 After all relevant messages
@@ -452,7 +454,7 @@ nonconjugacy, they are replaced with NVMP messages,
 $m^{\text{NVMP}}_{p \rightarrow \z},m^{\text{NVMP}}_{c \rightarrow \z}$.
 We now derive the form of these modified messages.
 
-\paragraph{Parent message:}
+\textbf{Parent message:}
 Consider \autoref{prop:multilinear}:
 if $f_{\z_\n}$ is not multilinear in the sufficient statistics of one of
 its parents
@@ -470,7 +472,7 @@ approximation.}
     m^{\text{NVMP}}_{p \rightarrow z} = p^\prime
 \end{equation}
 
-\paragraph{Child message:}
+\textbf{Child message:}
 Nonconjugate models result in intractable child messages.
 The entire strategy of re-arranging
 the log-likelihood
@@ -484,7 +486,6 @@ we are able to rewrite
 \log \p(c | \z_\n, \parents_c \not{\z_\n}) \propto \left\langle t_{\z_\n}(\z_\n), \eta_{\z_\n}^c(c, \parents_c \not{\z_\n})\right\rangle 
 \end{equation}
 and $\E_{\q(\backslash \z_\n)}\left[\eta_{\z_\n}^c(c, \parents_c \not{\z_\n})\right]$
-
 would be the corresponding message $\vmpmessage{c}{\z_\n}$.
 If we are unable to arrange $\log \p(c | \z_\n, \parents_c \not{\z_\n})$ in this way, we approximate this log-likelihood with a factor $\psi(c, \z_\n, \parents_{c} \not{\z_\n}; \recparam)$, as done in \citet{Johnson2016}.
 \begin{equation}
@@ -675,7 +676,7 @@ the VMP messages $\vmpmessage{\x_\n}{y_\n}, \vmpmessage{y_\n}{w}, \vmpmessage{w}
 but otherwise we use NVMP messages $\nvmpmessage{w}{\sigma_w^2}, \nvmpmessage{\sigma_w^2}{w}$. We require one recognition
 network $r_{\recparam}^{w \rightarrow \sigma^2_w}(w)$, which produces the message $\nvmpmessage{w}{\sigma_w^2}$.
 
-\paragraph{Experiment} We performed NVMP with this model on the
+\textbf{Experiment} We performed NVMP with this model on the
 Boston housing regression dataset \citep{Lichman2013}.
 We utilized a 2-layer 500-wide feedforward network with Tanh activations
 as $r_{\recparam}^{w \rightarrow \sigma^2_w}(w)$.
@@ -701,7 +702,7 @@ of data and labels $\{\x_\n, y_\n\}_{i = 1}^N$.
 
 The approximated messages are $\nvmpmessage{\x_\n}{y_\n}, \nvmpmessage{w}{y_\n}, \nvmpmessage{y_\n}{w}$ with recognition network $r_{\recparam}^{y_\n \rightarrow w}(\x_\n, y_\n)$.
 
-\paragraph{Experiment} We ran a simple experiment, performing
+\textbf{Experiment} We ran a simple experiment, performing
 NVMP with this model on MNIST restricted to the 3 and 8 digit.
 We utilized a 2-layer 500-wide feedforward network with Tanh activations
 as $r_{\recparam}^{y_\n \rightarrow w}(\x_\n, y_\n)$.
@@ -779,7 +780,7 @@ In this model, we require NVMP messages $\nvmpmessage{x_{t + 1}}{x_t}, \nvmpmess
     \label{fig:nlds}
 \end{figure}
 
-\paragraph{Experiment} We simulated a nonlinear dynamical system
+\textbf{Experiment} We simulated a nonlinear dynamical system
 with 2-dimensional data and a transition function
 that moves points along a circle centered at the origin.
 We utilized 2-layer 500-wide feedforward networks with Tanh activations

@@ -69,8 +69,7 @@ Our contributions are:
     \reflectbox{\includegraphics[frame, width=\textwidth]{img/loracs/tmc/tmc-big-1-cropped}}
 \end{subfigure}
 \caption{Independent samples from a time-marginalized coalescent (TMC) prior and two-dimensional Gaussian random walk likelihood model (10 and 300 leaves respectively). 
-Contours in the plots correspond to posterior predictive density $r(\z_{\numdata + 1} \given \dataset, \tree)$.
-As the number of leaves grow, the predictive density grows more complex.}
+Contours in the plots correspond to posterior predictive density $r(\z_{\numdata + 1} \given \dataset, \tree)$.}
 \label{fig:tmc-samples}
 \end{figure*}
 
@@ -111,7 +110,7 @@ coalescent \citep[TMC; ][]{Boyles2012}, which decouples the
 distribution over tree structure and branch length,
 a property that helps simplify inference down the line.
 
-\subsubsection{Time-marginalized coalescent (TMC)}
+\textbf{Time-marginalized coalescent (TMC):}
 The time-marginalized coalescent defines a prior distribution over phylogenies.
 A phylogeny $\tree = (V, E, T)$ is a directed rooted full binary tree, with vertex set $V$ and edges $E$, together with time labels $T: V \to [0, \, 1]$ where we denote $t_v = T(v)$.
 The vertex set $V$ is partitioned into $\numdata$ leaf vertices $V_\text{leaf}$ and $\numdata-1$ internal vertices $V_\text{int}$, so that $V = V_\text{int} \cup V_\text{leaf}$, and we take $V_\text{leaf} = \{1, 2, \ldots, \numdata\}$ to simplify notation for identifying leaves with $\numdata$ data points.
@@ -145,7 +144,7 @@ The final overall density is written as
 For further details and derivations related to the TMC,
 please refer to \citet{Boyles2012}.
 
-\subsubsection{TMC posterior predictive density}
+\textbf{TMC posterior predictive density:}
 The TMC with $\numdata$ leaves and a GRW likelihood model can be a prior on a set of $\numdata$ hierarchically-structured data, i.e. data that correspond to nodes with small tree distance should have similar location values.
 In addition, it also acts as a density from which we can sample new data.
 The posterior predictive density $r(\z_{\numdata + 1} \given \latentdataset, \tree)$ is easy to sample thanks to the exchangeability of the TMC.
@@ -161,8 +160,7 @@ the Gaussian distribution that comes out of the GRW likelihood model.
 Pictured in \autoref{fig:tmc-samples} are samples from a TMC prior and GRW likelihood, where contours correspond to $r(\z_{\numdata + 1} \given \latentdataset, \tree)$.
 In addition to modeling hierarchical structure, the TMC is a flexible nonparametric density estimator.
 
-\subsubsection{TMC inference}
-
+\textbf{TMC inference:}
 The posterior distribution $r(\tree \given \latentdataset)$
 is analytically intractable due to the normalization constant
 $r(\latentdataset)$ involving a sum over all tree structures,
@@ -480,7 +478,8 @@ analyze properties of the
 focusing on
 qualitative aspects, like exploratory data analysis and interpretability,
 and quantitative aspects, like few-shot classification and information retrieval.
-\paragraph{Experimental setup} We evaluated
+
+\textbf{Experimental setup} We evaluated
 the \acronym\;prior on three separate
 datasets: dynamically binarized MNIST \citep{Lecun1998}, Omniglot \citep{Lake2015},
 and CelebA \citep{Liu2015}. 
@@ -507,7 +506,7 @@ especially when the data are images.
 Here are some methods for users to obtain
 useful data summaries and explore a dataset.
 
-\paragraph{Visualizing inducing points}
+\textbf{Visualizing inducing points}
 We first inspect the learned inducing points $\inducingpoints$
 by passing them through the decoder.
 Visualized in \autoref{fig:mnist-inducing}
@@ -530,7 +529,7 @@ in Omniglot and CelebA (see
 \label{fig:mnist-inducing}
 \end{figure}
 
-\paragraph{Hierarchical clustering}
+\textbf{Hierarchical clustering}
 We can sample
 $\q(\tree ; \inducingpoints)$ to obtain
 phylogenies
@@ -610,7 +609,7 @@ at each of the sliced branches.}
 \label{fig:celeba-evolution}
 \end{figure}
 
-\paragraph{Generating samples} 
+\textbf{Generating samples} 
 Having fit a generative model to our data,
 we can visualize samples from the model.
 Although we do not expect the samples
@@ -710,7 +709,8 @@ the following prior distributions over $z$:
 \vspace{-0.5cm}
 \label{fig:fewshot}
 \end{figure}
-\paragraph{Few-shot classification}
+
+\textbf{Few-shot classification}
 In this task,
 we train a
 classifier with
@@ -773,7 +773,7 @@ separated, concentrated clusters.}
 \label{fig:tsne-tmc-normal}
 \end{figure}
 
-\paragraph{Information retrieval}
+\textbf{Information retrieval}
 We evaluated the meaningfulness of Euclidean distances
 in the learned latent space
 % Information retrieval can
@@ -809,7 +809,7 @@ We thus suspect distances in a \acronym\;prior
 latent space to be more informative
 and better for information retrieval.
 
-\paragraph{Held-out log-likelihood}
+\textbf{Held-out log-likelihood}
 % Held-out log-likelihood estimates
 % the capacity of a generative model.
 We estimate held-out log-likelihoods for the four VAEs we
@@ -827,13 +827,14 @@ This result is consistent with the findings of \citet{Chang2009} that held-out l
 
 \begin{table}
 \centering
-\input{results/loracs/ir.tex}
 \caption{Averaged precision-recall AUC on MNIST/Omniglot test datasets}
+\input{results/loracs/ir.tex}
 \label{tab:auc}
 \end{table}
 
 \begin{table}
 \centering
+\caption{MNIST/Omniglot test log-likelihoods}
 \begin{tabular}{r|cc}
 \toprule
 Prior & MNIST & Omniglot\\ \midrule
@@ -844,7 +845,6 @@ Vamp & -83.0135 & -87.604\\
 \acronym & -83.401 & -87.105\\
 \bottomrule
 \end{tabular}
-\caption{MNIST/Omniglot test log-likelihoods}
 \label{tab:holl}
 \end{table}
 

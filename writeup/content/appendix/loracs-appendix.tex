@@ -67,28 +67,29 @@ deterministically encoding and decoding each pseudo-input.}
 \label{fig:celeba-inducing-points}
 \end{figure}
 
-\begin{landscape}
 \section{Empirical results}
-\thispagestyle{empty}
 
-\begin{table}
+\begin{sidewaystable}
 \scriptsize
 \centering
+\caption{MNIST few-shot classification results.}
 \setlength{\tabcolsep}{2pt}
 \input{results/loracs/cf-mnist.tex}
-\caption{MNIST few-shot classification results.}
 \label{tab:semisupervised-mnist}
-\end{table}
+\end{sidewaystable}
 
-\begin{table}
+\begin{sidewaystable}
 \scriptsize
 \setlength{\tabcolsep}{2pt}
 \centering
-\input{results/loracs/cf-omniglot.tex}
 \caption{Omniglot few-shot classification results.}
+\input{results/loracs/cf-omniglot.tex}
 \label{tab:semisupervised-omniglot}
-\end{table}
+\end{sidewaystable}
+
 \begin{table}
+\centering
+\caption{MNIST few-shot classification with labeled inducing points.}
 \scriptsize
 \setlength{\tabcolsep}{2pt}
 \begin{tabular}{r|cc}
@@ -98,11 +99,8 @@ deterministically encoding and decoding each pseudo-input.}
         & 0.9428 & 0.9474\\
 \bottomrule
 \end{tabular}
-\centering
-\caption{MNIST few-shot classification with labeled inducing points.}
 \label{tab:inducing-point-labels}
 \end{table}
-\end{landscape}
 
 \begin{figure}
 \centering
@@ -164,7 +162,7 @@ for several TMC inference queries. The main queries we are interested in are:
     when computing gradients of the ELBO w.r.t $\inducingpoints$ in the \acronym\;prior.
 \end{enumerate}
 
-\paragraph{Message passing} Message
+\textbf{Message passing} Message
 passing treats the tree as an undirected graph. 
 We first pick start node $v_{\text{start}}$
 and request messages from each of $v_{\text{start}}$'s neighbors.
@@ -216,7 +214,8 @@ $v_k$, $v_l$, and $v_m$:
 \begin{equation}
 \begin{split}
     \Sigma_i &\triangleq \left((\nu_k + e_{ik})(\nu_l + e_{il}) + (\nu_l + e_{il})(\nu_m + e_{im}) + (\nu_m + e_{im})(\nu_k + e_{ik})\right)I \\
-    \log Z_i &= -\frac{1}{2}\left((\nu_m + e_{im})\|\mu_k - \mu_l\|^2_{\Sigma_i} + (\nu_k + e_{ik})\|\mu_l - \mu_m\|^2_{\Sigma_i} + (\nu_l + e_{il})\|\mu_m - \mu_k\|^2_{\Sigma_i}\right) - \frac{1}{2}\log|\Sigma_i| - \log2\pi
+    \log Z_i &= -\frac{1}{2}\left((\nu_m + e_{im})\|\mu_k - \mu_l\|^2_{\Sigma_i} + (\nu_k + e_{ik})\|\mu_l - \mu_m\|^2_{\Sigma_i} + (\nu_l + e_{il})\|\mu_m - \mu_k\|^2_{\Sigma_i}\right)  \\
+             &- \frac{1}{2}\log|\Sigma_i| - \log2\pi
 \end{split}
 \end{equation}
 
@@ -228,7 +227,7 @@ With these messages, we can answer all the aforementioned inference queries.
     which in turn utilizes gradients sent via message passing.
 \end{enumerate}
 
-\paragraph{Implementation} We chose
+\textbf{Implementation} We chose
 to implement the TMC and message
 passing in Cython because we found raw Python to be
 too slow due to function call and type-checking
@@ -287,7 +286,7 @@ cancel out, we obtain the following ELBO.
     \end{split}
 \end{equation}
 
-\paragraph{Inference procedure}
+\textbf{Inference procedure}
 In general, $\q(\tree; \inducingpoints)$ can
 be sampled using vanilla SPR Metropolis-Hastings,
 so samples from this distribution are readily available. 
@@ -338,6 +337,7 @@ $\inducingpoints$ is more tricky. We first examine the ELBO.
 
 Consider the gradient of the ELBO with respect to $\inducingpoints$.
 
+\small
 \begin{equation}
     \begin{split}
     \nabla_{\inducingpoints}\L[q] &=
@@ -355,6 +355,7 @@ Consider the gradient of the ELBO with respect to $\inducingpoints$.
     &+ \E_\q\left[\nabla_{\inducingpoints}\left(\log \q(\tree) + \log \q(e_\n)\right)\log\frac{\p(e_\n | \tree)}{\q(e_\n)}\frac{\p(\z_\n \given \z_\n, e_\n, t_\n, \tree; \inducingpoints)}{\q(t_\n \given \z_\n, e_\n, \tree; \inducingpoints)}\right]
     \end{split}
 \end{equation}
+\normalsize
 
 In the last step, we expand out expectation over $e_\n$ and
 then pass the derivative through like we did for $\tree$.
@@ -383,7 +384,9 @@ For MNIST and Omniglot, our architectures are in \autoref{tab:mnist-arch} and Ce
 
 \begin{table}
 \centering
+\caption{Network architectures for MNIST and Omniglot}
 \begin{subfigure}[h]{0.4\textwidth}
+\caption{Encoder}
 \begin{tabular}{lll}
 \toprule
 Layer type & Shape \\
@@ -395,9 +398,9 @@ FC + ReLU & 512 \\
 Gaussian & 40 \\
 \bottomrule
 \end{tabular}
-\caption{Encoder}
 \end{subfigure}
 \begin{subfigure}[h]{0.4\textwidth}
+\caption{Decoder}
 \begin{tabular}{lll}
 \toprule
 Layer type & Shape \\
@@ -409,15 +412,15 @@ Deconv + ReLU & [3, 3, 1], stride 2 \\
 Bernoulli & \\
 \bottomrule
 \end{tabular}
-\caption{Decoder}
 \end{subfigure}
-\caption{Network architectures for MNIST and Omniglot}
 \label{tab:mnist-arch}
 \end{table}
 
 \begin{table}
 \centering
+\caption{Network architectures for CelebA}
 \begin{subfigure}[h]{0.4\textwidth}
+\caption{Encoder}
 \begin{tabular}{lll}
 \toprule
 Layer type & Shape \\
@@ -429,9 +432,9 @@ FC + ReLU & 512 \\
 Gaussian & 40 \\
 \bottomrule
 \end{tabular}
-\caption{Encoder}
 \end{subfigure}
 \begin{subfigure}[h]{0.4\textwidth}
+\caption{Decoder}
 \begin{tabular}{lll}
 \toprule
 Layer type & Shape \\
@@ -443,9 +446,7 @@ Deconv + ReLU & [3, 3, 3], stride 2 \\
 Bernoulli & \\
 \bottomrule
 \end{tabular}
-\caption{Decoder}
 \end{subfigure}
-\caption{Network architectures for CelebA}
 \label{tab:celeba-arch}
 \end{table}
 

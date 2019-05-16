@@ -26,16 +26,14 @@ We consider an interactive process during which a user incrementally adds constr
 \end{itemize}
 In realizing this scheme, a suitable clustering algorithm and querying strategy must be designed. Similar issues have been confronted in flat clustering---with must-link and cannot-link constraints---but the solutions are unsuitable for hierarchies, and thus a fresh treatment is warranted.
 
-\subsubsection*{The clustering algorithm}
-
+\textbf{The clustering algorithm:}
 What is a method of hierarchical clustering that takes into account the geometry of the data points as well as user-imposed constraints? 
 
 We adopt an \emph{interactive Bayesian} approach. The learning procedure is uncertain about the intended tree and this uncertainty is captured in the form of a distribution over all possible trees. Initially, this distribution is informed solely by the geometry of the data but once interaction begins, it is also shaped by the growing set of constraints.
 
 The nonparametric Bayes literature contains a variety of different distributional models for hierarchical clustering. We describe a general methodology for extending these to incorporate user-specified constraints. For concreteness, we focus on the Dirichlet diffusion tree~\citep{Neal2003}, which has enjoyed empirical success. We show that triplet constraints are quite easily accommodated: when using a Metropolis-Hastings sampler, they can efficiently be enforced, and the state space remains strongly connected, assuring convergence to the unique stationary distribution.
 
-\subsubsection*{The querying strategy}
-
+\textbf{The querying strategy:}
 What is a good way to select the subsets $S$? A simple option is to pick them at random from $\data$. We show that this strategy leads to convergence to the target tree $\tree^*$. Along the way, we define a suitable distance function for measuring how close $\tree$ is to $\tree^*$. 
 
 %This allows us to give a simple rule for when to stop querying if we seek a tree $\epsilon$-close to the target.
@@ -432,15 +430,7 @@ in the same manner as sampling a branch,
 but avoiding paths that would resulted in violated triplets.
 
 
-\subsubsection*{Description of constrained-SPR sampler}
-%The pruning procedure for the constrained-SPR sampler
-%is identical to the unconstrained pruning procedure.
-%Sampling a valid regraft location, however, involves
-%eliminating all possible locations that would
-%result in violated triplets. For the DDT,
-%this can be accomplished by modifying
-%the generative process used to sample regraft branches.
-
+\textbf{Description of constrained-SPR sampler}
 Recall that in the DDT's sampling procedure for regraft branches,
 a particle at a node picks a branch, and either diverges from that
 branch or recursively samples the node's child.

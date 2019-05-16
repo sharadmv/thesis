@@ -99,7 +99,6 @@ as a probabilistic model
 $\p(\dataset \given \tree) = \exp{-C(\tau, \dataset)/T}$ for some temperature $T$.
 Recovering a hierarchical clustering of the
 data is therefore a maximum likelihood problem:
-
 \begin{align*}
     \tree^* = \argmax_{\tree} \exp{-C(\tau, \dataset)/T}
 \end{align*}
@@ -130,7 +129,7 @@ cannot disambiguate between equally valid clusterings or indicate to a user that
 \begin{figure*}[htp!]
     \centering
     \includegraphics[width=0.8\textwidth]{img/structure/3-cluster-both}
-    \caption{Examples of ambiguous hierarchical structure in data. The left set of points could plausibly be hierarchically clustered in three different ways, where any two points could be clustered before the other. The right set of points has two plausible hierarchical clusterings, where 1 and 2 could be clustered first, or 2 and 3 could be clustered first.}
+    \caption{Examples of ambiguous hierarchical structure in data. The left set of points could plausibly be hierarchically clustered in three different ways. The right set of points has two plausible hierarchical clusterings.}
     \label{fig:ambiguous-structure}
 \end{figure*}
 
@@ -214,7 +213,8 @@ which is also visualized in \autoref{fig:graphical-model-blds}.
 Because the MNIW prior is conjugate
 with a linear dynamical system likelihood,
 the posterior distribution $\p(\dynmat, \dyncovar \given \sequencen)$ is also MNIW
-and can be computed in closed form.
+and can be computed in closed form. This structure class
+is explored in more detail in \autoref{chap:solar}.
 
 Another structure class of interest is trees,
 specifically hierarchical clusterings.
